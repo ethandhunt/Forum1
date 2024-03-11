@@ -56,10 +56,6 @@ if (isset($_POST["purge_avatars_conf"])) {
     }
 }
 
-if (isset($_POST["git_pull"])) {
-    system("git pull");
-}
-
 function get_unused_avatars() {
     global $conn;
 
@@ -319,10 +315,6 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
             <?php
         }
         ?>
-    </form>
-
-    <form method="post">
-        <input type="submit" name="git_pull" value="git pull">
     </form>
 
     <script>
