@@ -59,8 +59,8 @@ array_multisort($comment_reports_dismissed, SORT_ASC, $comment_reports);
             <tr class="<?php echo $row_class ?>">
                 <td> <?php echo prettify_title($row["title_tor"]) ?> </td>
                 <td> <?php echo prettify_body($row["body_tor"], 100) ?> </td>
-                <td> <?php echo $row["user_id_tor"] ?> </td>
-                <td> <?php echo $row["post_id"] ?> </td>
+                <td> <a href="users.php?id=<?php echo $row["user_id_tor"] ?>"> <?php echo $row["user_id_tor"] ?> </a> </td>
+                <td> <a href="view_post.php?id=<?php echo $row["post_id"] ?>"> <?php echo $row["post_id"] ?> </a> </td>
                 <td> <a href="users.php?id=<?php echo $row["reporter_user_id"] ?>"> <?php echo $row["reporter_user_id"] ?> </a> </td>
                 <td> <?php echo $row["reporter_ip"] ?> </td>
                 <td> <?php echo prettify_datetime($row["report_timestamp"]) ?> </td>
@@ -94,7 +94,7 @@ array_multisort($comment_reports_dismissed, SORT_ASC, $comment_reports);
             ?>
             <tr class="<?php echo $row_class ?>">
                 <td> <?php echo prettify_body($row["body_tor"], 100) ?> </td>
-                <td> <?php echo $row["user_id_tor"] ?> </td>
+                <td> <a href="users.php?id=<?php echo $row["user_id_tor"] ?>"> <?php echo $row["user_id_tor"] ?> </a> </td>
                 <td> <?php echo $row["comment_id"] ?> </td>
                 <td> <a href="users.php?id=<?php echo $row["reporter_user_id"] ?>"> <?php echo $row["reporter_user_id"] ?> </a> </td>
                 <td> <?php echo $row["reporter_ip"] ?> </td>

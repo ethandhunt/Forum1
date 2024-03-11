@@ -105,7 +105,7 @@ $post = $post_query->fetch_array();
             <tr>
                 <td> <?php echo prettify_title($report["title_tor"]) ?> </td>
                 <td> <?php echo prettify_body($report["body_tor"]) ?> </td>
-                <td> <?php echo $report["post_id"] ?> </td>
+                <td> <a href="view_post.php?id=<?php echo $report["post_id"] ?>"> <?php echo $report["post_id"] ?> </a> </td>
                 <td> <?php echo prettify_datetime($report["report_timestamp"]) ?> </td>
                 <?php
                 if (!$invalid_post) {
@@ -134,7 +134,7 @@ $post = $post_query->fetch_array();
                 </tr>
                 <tr>
                     <td> <?php echo prettify_username($reported_user["username"]) ?> </td>
-                    <td> <?php echo $report["user_id_tor"] ?> </td>
+                    <td> <a href="users.php?id=<?php echo $report["user_id_tor"] ?>"> <?php echo $report["user_id_tor"] ?> </a> </td>
                     <td> <?php echo prettify_datetime($reported_user["join_datetime"]) ?> </td>
                     <td> <?php echo $reported_user["register_address"] ?> </td>
                     <td>
@@ -165,7 +165,7 @@ $post = $post_query->fetch_array();
                 </tr>
                 <tr>
                     <td> <?php echo prettify_username($reporter_user["username"]) ?> </td>
-                    <td> <?php echo $report["reporter_user_id"] ?> </td>
+                    <td> <a href="users.php?id=<?php echo $report["reporter_user_id"] ?>"> <?php echo $report["reporter_user_id"] ?> </a> </td>
                     <td> <?php echo prettify_datetime($reporter_user["join_datetime"]) ?> </td>
                     <td> <?php echo $reporter_user["register_address"] ?> </td>
                     <td> <?php echo $report["reporter_ip"] ?> </td>
