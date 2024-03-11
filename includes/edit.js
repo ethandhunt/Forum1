@@ -43,7 +43,7 @@ function delete_post() {
 function pin_post() {
     let pin_value = parseInt(document.getElementById("post-pinned").innerText)
     let new_pin_value = 1 - pin_value
-    if (confirm('pin this post?')) {
+    if (confirm(new_pin_value == 1 ? 'pin this post?' : 'unpin this post?')) {
         fetch(`view_post.php${document.location.search}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
