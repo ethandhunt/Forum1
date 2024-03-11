@@ -165,6 +165,7 @@ if (!isset($_SESSION["user_id"])) {
     <table class="forum-table">
     <?php
     $posts_arr = array();
+    $pin_arr = array();
     $likes_arr = array();
     $time_arr = array();
     $mentions_arr = array();
@@ -182,8 +183,10 @@ if (!isset($_SESSION["user_id"])) {
             'comments' => get_comments($row['post_id']),
             'timestamp' => $row['timestamp'],
             'timestamp_pretty' => prettify_timestamp(strtotime($row['timestamp'])),
-            'mentions' => get_mentions($row['post_id'])
+            'mentions' => get_mentions($row['post_id']),
+            'pinned' => $row["pinned"]
         );
+        $pin_arr[$i] = $row["pinned"];
         $likes_arr[$i] = get_likes($row['post_id']);
         $time_arr[$i] = strtotime($row['timestamp']);
         $mentions_arr[$i] = get_mentions($row['post_id']);
@@ -200,15 +203,15 @@ if (!isset($_SESSION["user_id"])) {
     }
     
     if ($sortby == 'recent') {
-        array_multisort($time_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
+        array_multisort($pin_arr, SORT_DESC, $time_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
     } elseif ($sortby == 'votes') {
-        array_multisort($likes_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
+        array_multisort($pin_arr, SORT_DESC, $likes_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
     } elseif ($sortby == 'mentions') {
-        array_multisort($mentions_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
+        array_multisort($pin_arr, SORT_DESC, $mentions_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
     } elseif ($sortby == 'comments') {
-        array_multisort($comments_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
+        array_multisort($pin_arr, SORT_DESC, $comments_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
     } elseif ($sortby == 'recent comments') {
-        array_multisort($comment_recency_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
+        array_multisort($pin_arr, SORT_DESC, $comment_recency_arr, SORT_DESC, SORT_NUMERIC, $posts_arr);
     }
 
     for ($i=0; $i < count($posts_arr); $i++) {
@@ -224,6 +227,15 @@ if (!isset($_SESSION["user_id"])) {
         }
         ?>
         <tr class="forum-post-link">
+            <!-- <td><i class="fa fa-map-pin" <?php  ?>></i></td> -->
+            <td>
+                <?php
+                if($post["pinned"]) {
+                    ?>
+                    <i class="fa fa-map-pin"></i>
+                    <?php
+                }
+                ?></td>
             <td class="forum-post-username"> <?php echo htmlentities($post["username"], ENT_QUOTES) ?> </td>
             <td class="forum-post-mentions<?php if($post["mentions"]>0) {echo " mentioned";} ?>"> @<?php echo $post["mentions"] ?> </td>
             <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" > <?php echo $post["title"] ?> </a> </td>

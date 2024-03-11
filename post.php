@@ -18,7 +18,7 @@ if (!isset($_SESSION["user_id"])) {
         throw new Exception('Cannot post as a banned user', 401);
     }
 
-    $conn->query("INSERT INTO posts (author_user_id, title, body, edited) VALUES ($author_id, '$title', '$body', 0)");
+    $conn->query("INSERT INTO posts (author_user_id, title, body, edited, pinned) VALUES ($author_id, '$title', '$body', 0, 0)");
     $post_id = $conn->insert_id;
     header("Location: view_post.php?id=$post_id");
 }

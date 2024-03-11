@@ -39,3 +39,18 @@ function delete_post() {
         })
     }
 }
+
+function pin_post() {
+    let pin_value = parseInt(document.getElementById("post-pinned").innerText)
+    let new_pin_value = 1 - pin_value
+    if (confirm('pin this post?')) {
+        fetch(`view_post.php${document.location.search}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `pin_post=1&pin_value=${new_pin_value}`
+        }).then((res) => {
+            console.log(`pinned post`)
+            document.location.href = 'forum.php'
+        })
+    }
+}

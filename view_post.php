@@ -85,23 +85,44 @@ if (isset($_POST["delete_post"])) {
 
     if (!intval($post_id)) {
         throw new Exception('Invalid post id', 404);
-    } else {
-        $post = $conn->query("SELECT author_user_id FROM posts WHERE post_id=$post_id")->fetch_array();
-
-        if ($post["author_user_id"] != $_SESSION["user_id"] && !$_SESSION["moderator"]) {
-            throw new Exception("Cannot delete another users post", 401);
-        } else {
-            // $conn->query(
-            //     "DELETE posts, comments, post_votes FROM posts " .
-            //     "INNER JOIN comments ON comments.post_id=posts.post_id " .
-            //     "INNER JOIN post_votes ON post_votes.post_id=posts.post_id" .
-            //     "WHERE posts.post_id=$post_id"
-            // );
-            $conn->query("DELETE FROM posts WHERE post_id=$post_id");
-            $conn->query("DELETE FROM comments WHERE post_id=$post_id");
-            $conn->query("DELETE FROM post_votes WHERE post_id=$post_id");
-        }
     }
+    $post = $conn->query("SELECT author_user_id FROM posts WHERE post_id=$post_id")->fetch_array();
+
+    if ($post["author_user_id"] != $_SESSION["user_id"] && !$_SESSION["moderator"]) {
+        throw new Exception("Cannot delete another users post", 401);
+    }
+    // $conn->query(
+    //     "DELETE posts, comments, post_votes FROM posts " .
+    //     "INNER JOIN comments ON comments.post_id=posts.post_id " .
+    //     "INNER JOIN post_votes ON post_votes.post_id=posts.post_id" .
+    //     "WHERE posts.post_id=$post_id"
+    // );
+    $conn->query("DELETE FROM posts WHERE post_id=$post_id");
+    $conn->query("DELETE FROM comments WHERE post_id=$post_id");
+    $conn->query("DELETE FROM post_votes WHERE post_id=$post_id");
+}
+
+if (isset($_POST["pin_post"])) {
+    echo "fired pin_post";
+    $post_id = intval($_GET["id"]);
+    $pin_value = "0";
+
+    if ($_POST["pin_value"] == "1") {
+        $pin_value = "1";
+    }
+    if ($_POST["pin_value"] == "0") {
+        $pin_value = "0";
+    }
+
+    if (!intval($post_id)) {
+        throw new Exception("Invalid post id", 404);
+    }
+
+    if (!$_SESSION["moderator"]) {
+        throw new Exception("Cannot pin post as non-moderator", 401);
+    }
+
+    $conn->query("UPDATE posts SET pinned=$pin_value WHERE post_id=$post_id");
 }
 ?>
 
@@ -143,6 +164,7 @@ if ($author["administrator"]) {
     <div class="post-title">
         <?php echo prettify_title($post["title"]) ?>
     </div>
+    <div hidden id="post-pinned"><?php echo $post["pinned"] ?></div>
     <div class="post">
         <div class="post-left">
             <?php
@@ -206,6 +228,11 @@ if ($author["administrator"]) {
                 if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
                     ?>
                     <button class="delete-button" onclick="delete_post()"><i class="fa fa-trash"></i></button>
+                    <?php
+                }
+                if ($_SESSION["moderator"]) {
+                    ?>
+                    <button class="pin-button" onclick="pin_post()"><i class="fa fa-map-pin"></i></button>
                     <?php
                 }
                 ?>
