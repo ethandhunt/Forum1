@@ -33,12 +33,15 @@ if (isset($_POST["dismiss_report"])) {
 
 if (isset($_POST["delete_post"])) {
     $post_id = $report["post_id"];
-    $conn->query(
-        "DELETE posts, comments, post_votes FROM posts " .
-        "INNER JOIN comments ON comments.post_id=posts.post_id " .
-        "INNER JOIN post_votes ON post_votes.post_id=posts.post_id" .
-        "WHERE posts.post_id=$post_id"
-    );
+    // $conn->query(
+    //     "DELETE posts, comments, post_votes FROM posts " .
+    //     "INNER JOIN comments ON comments.post_id=posts.post_id " .
+    //     "INNER JOIN post_votes ON post_votes.post_id=posts.post_id" .
+    //     "WHERE posts.post_id=$post_id"
+    // );
+    $conn->query("DELETE FROM posts WHERE post_id=$post_id");
+    $conn->query("DELETE FROM comments WHERE post_id=$post_id");
+    $conn->query("DELETE FROM post_votes WHERE post_id=$post_id");
     $conn->query("UPDATE post_reports SET dismissed=1 WHERE report_id=$report_id");
     header("Location: reports.php");
     exit(0);

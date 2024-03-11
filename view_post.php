@@ -91,12 +91,15 @@ if (isset($_POST["delete_post"])) {
         if ($post["author_user_id"] != $_SESSION["user_id"] && !$_SESSION["moderator"]) {
             throw new Exception("Cannot delete another users post", 401);
         } else {
-            $conn->query(
-                "DELETE posts, comments, post_votes FROM posts " .
-                "INNER JOIN comments ON comments.post_id=posts.post_id " .
-                "INNER JOIN post_votes ON post_votes.post_id=posts.post_id" .
-                "WHERE posts.post_id=$post_id"
-            );
+            // $conn->query(
+            //     "DELETE posts, comments, post_votes FROM posts " .
+            //     "INNER JOIN comments ON comments.post_id=posts.post_id " .
+            //     "INNER JOIN post_votes ON post_votes.post_id=posts.post_id" .
+            //     "WHERE posts.post_id=$post_id"
+            // );
+            $conn->query("DELETE FROM posts WHERE post_id=$post_id");
+            $conn->query("DELETE FROM comments WHERE post_id=$post_id");
+            $conn->query("DELETE FROM post_votes WHERE post_id=$post_id");
         }
     }
 }
