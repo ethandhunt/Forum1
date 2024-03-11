@@ -120,6 +120,9 @@
 .delete-button:hover {
   color: rgb(231, 30, 30);
 }
+.pin-button:hover {
+  color: rgb(12, 97, 97);
+}
 .report-anchor {
   color: black;
 }
