@@ -1,0 +1,194 @@
+.mention {
+  color: rgb(255, 208, 80);
+  border: 1px solid rgb(255, 208, 80);
+  border-radius: 3px;
+  background-color: rgb(255, 246, 223);
+  padding: 1px;
+}
+
+.post-left {
+  float: left;
+  width: 10%;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid #333;
+  margin-right: 10px;
+  overflow: hidden;
+}
+.post-right {
+  float: right;
+  width: 90%;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid #333;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  display: flex;
+}
+.post-username {
+  padding: 8px;
+  text-decoration: none;
+  display: block;
+  color: black;
+}
+.post-title {
+  font-size: 30px;
+  color: #555;
+  margin: 20px;
+  padding: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.post {
+  margin: 20px;
+  display: flex;
+}
+.post-comment {
+  margin: 20px;
+  display: flex;
+}
+.post-avatar {
+  object-fit: contain;
+  width: 100%;
+  margin-bottom: 0px;
+}
+.post-about-me {
+  margin: 0px 8px 8px 8px;
+  overflow-wrap: break-word;
+}
+.post-timestamp {
+  margin-left: 8px;
+  margin-bottom: 8px;
+}
+.post-body {
+  float: left;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.post-body-body {
+  padding: 10px;
+  flex-grow: 1;
+}
+.edited {
+  color: grey;
+  padding: 10px;
+}
+.post-modify {
+  float: right;
+  width: fit-content;
+  display: flex;
+  align-items: self-start;
+  padding-top: 5px;
+  padding-right: 5px;
+}
+.post-modify button {
+  background-color: white;
+  border: none;
+}
+
+/* comment-form css */
+.comment-form textarea {
+  resize: none;
+
+}
+.comment-form {
+  /* width: 300px; */
+  margin: 20px;
+  margin-left: 25px;
+  padding-left: 10%;
+}
+.comment-form input {
+  padding: 6px 10px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  display: block;
+}
+.comment-form textarea#body {
+  width: 60%;
+}
+.comment-form input[type=submit] {
+  background-color: rgb(12, 153, 12);
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 200px;
+}
+/* end comment-form css */
+
+/* post and comment modification buttons css */
+.edit-button:hover {
+  color: rgb(12, 97, 97);
+}
+.delete-button:hover {
+  color: rgb(231, 30, 30);
+}
+.report-anchor {
+  color: black;
+}
+.report-anchor:hover {
+  color: rgb(231, 30, 30);
+}
+/* end comment modification button css */
+
+/* edit-comment-form css */
+.edit-comment-form {
+  width: 80%;
+  margin: 10px;
+  overflow: hidden;
+  float: left;
+}
+.edit-comment-form input {
+  padding: 6px 10px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  display: block;
+}
+.edit-comment-form textarea {
+  /* float: left; */
+  width: 100%;
+  resize: none;
+  height: 70%;
+}
+.edit-comment-form input[type=submit] {
+  background-color: rgb(12, 153, 12);
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 200px;
+}
+/* end edit-comment-form css */
+
+/* edit-post-form css */
+.edit-post-form {
+  width: 90%;
+  margin: 10px;
+  overflow: hidden;
+  float: left;
+}
+.edit-post-form input {
+  padding: 6px 10px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  display: block;
+}
+.edit-post-form textarea {
+  /* float: left; */
+  width: 100%;
+  resize: none;
+  height: 70%;
+}
+.edit-post-form input[type=submit] {
+  background-color: rgb(12, 153, 12);
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 200px;
+}
+.moderator-username {
+  color: coral;
+}
+.administrator-username {
+  color: red;
+}
+.banned-username {
+  color: rgb(138, 14, 14)
+}
+/* end edit-post-form css */

@@ -1,0 +1,68 @@
+.user-admin-form {
+    width: fit-content;
+    margin: 10px;
+    overflow: hidden;
+    /* float: left; */
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.user-admin-form input {
+    padding: 6px 10px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    display: block;
+}
+
+.delete-conf {
+    background-color: red;
+    color: white;
+}
+
+.ban-conf {
+    background-color: darkorange;
+    color: white;
+}
+
+.alert {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 0px;
+    display: block;
+}
+
+.user_conf_details td {
+    vertical-align: top;
+}
+
+.post-admin-div {
+    width: fit-content;
+    margin: 10px;
+    overflow: hidden;
+    /* float: left; */
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.collapsible-content {
+    display: none
+}
+
+.purge-avatars-form {
+    width: fit-content;
+    margin: 10px;
+    overflow: hidden;
+    /* float: left; */
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.purge-avatars-conf {
+    background-color: darkorange;
+    color: white;
+}

@@ -1,0 +1,265 @@
+html body {
+    margin: 0;
+    padding-bottom: 30px;
+}
+
+/* adapted from https://www.w3schools.com/css/css_navbar.asp */
+.navbar-container {
+    font-family: 'Courier New', Courier, monospace;
+}
+.navbar-container ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #222;
+}
+.navbar-container li a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+.navbar-container li a:hover {
+    background-color: #555;
+}
+.ban-message {
+    display: inline-block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    background-color: #f44336;
+    color: white;
+}
+/* end navbar css */
+
+/* header css */
+.header {
+    background-color: #333;
+    color: white;
+    overflow: hidden;
+}
+.header .logo {
+    width: 50px;
+    height: 50px;
+    
+    float: left;
+}
+.header div {
+    padding: 6px 16px;
+    float: left;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 700;
+    font-size:larger;
+}
+/* end header css */
+
+/* footer css */
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 6px 6px;
+    background-color: #fff;
+    width: 100%;
+}
+.footer-margin {
+    margin-top: 30px;
+    bottom: 0;
+    position: absolute;
+    /* display: block; */
+}
+/* end footer css */
+
+/* table css */
+th {
+    background-color: #474747;
+    color: white;
+    padding: 5px;
+    font-weight: 100;
+}
+table {
+    border: none;
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+}
+tr {
+    transition: background-color 0.2s;
+}
+tr:hover {
+    background-color: #ebebeb;
+}
+/* end table css */
+
+/* center form css */
+/* adapted from https://www.w3schools.com/css/css_form.asp */
+.center-form {
+    margin: auto;
+    width: 300px;
+    padding-top: 50px;
+}
+.center-form input {
+    width: 100%;
+    padding: 6px 10px;
+    margin: 4px 0;
+    box-sizing: border-box;
+}
+.center-form input[type=submit] {
+    background-color: rgb(12, 153, 12);
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* alert css */
+/* adapted from https://www.w3schools.com/howto/howto_js_alert.asp */
+.alert {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 15px;
+}
+.close-button {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.close-button:hover {
+    color: black;
+}
+/* end alert css */
+
+/* post-form css */
+.post-form textarea {
+    resize: none;
+}
+.post-form {
+    /* width: 300px; */
+    padding: 8px;
+}
+.post-form input {
+    padding: 6px 10px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    display: block;
+}
+.post-form input#title {
+    width: 300px;
+}
+.post-form input[type=submit] {
+    background-color: rgb(12, 153, 12);
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 300px;
+}
+/* end post-form css */
+
+/* forum page css */
+.forum-post-link {
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #474747;
+}
+.forum-table {
+    margin: 10px;
+}
+.forum-post-username {
+    min-width: 100px;
+}
+.forum-post-mentions {
+    /* width: fit-content; */
+    width: auto;
+    white-space: nowrap;
+    margin-right: 10px;
+    margin-bottom: 2px;
+    display: inline-block;
+}
+.mentioned {
+    color: rgb(255, 208, 80);
+    background-color: rgb(255, 246, 223);
+    border: 1px solid rgb(255, 208, 80);
+    border-radius: 3px;
+}
+.forum-post-title {
+    width: 100%;
+}
+.forum-post-likes {
+    text-align: right;
+    min-width: 30px;
+}
+.forum-post-comments {
+    text-align: right;
+    white-space: nowrap;
+}
+.forum-post-timestamp {
+    overflow: hidden;
+    white-space: pre;
+    text-align: right;
+}
+.vote {
+    font-size: 55px;
+    color: lightgray;
+}
+.can_vote {
+    color: black;
+    cursor: pointer;
+}
+.sortby-form {
+    margin: 10px;
+}
+.sortby-form input {
+    background-color: rgb(221, 221, 221);
+    border: none;
+    padding: 4px;
+}
+.sortby-form select {
+    background-color: white;
+    border: none;
+    padding: 4px;
+}
+/* end forum page css */
+
+/* account page css */
+.account-form textarea {
+    resize: none;
+}
+.account-form {
+    margin: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.account-form input {
+    padding: 6px 10px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    display: block;
+}
+.account-form input#about_me {
+    width: 200px;
+}
+.account-form input[type=submit] {
+    background-color: rgb(12, 153, 12);
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 200px;
+}
+.account-details {
+    margin: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.account-details td.td-left {
+    width: 100px;
+}
+/* end account page css */

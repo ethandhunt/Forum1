@@ -1,0 +1,30 @@
+.report-form {
+    width: fit-content;
+    margin: 10px;
+    overflow: hidden;
+    /* float: left; */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.report-form input {
+    padding: 6px 10px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    display: block;
+}
+
+.report-form td {
+    vertical-align: top;
+    padding: 0px 10px 10px;
+}
+
+.report-button {
+    background-color: red;
+    color: white;
+}
+
+.report-form textarea {
+    width: 95%; /* textarea clips at 100% */
+    resize: none;
+    margin-top: 10px;
+}

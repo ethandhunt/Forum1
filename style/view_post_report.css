@@ -1,0 +1,52 @@
+h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 10px;
+}
+
+table {
+    margin: 10px;
+}
+
+table td {
+    padding: 0px 5px;
+    vertical-align: top;
+}
+
+.reported-post-table td {
+    border: 1px solid black;
+}
+
+.goober {
+    float: right;
+    margin: 10px;
+}
+
+.report-details {
+    float: left;
+    margin-bottom: 30px; /* account for footer */
+}
+
+.action-form {
+    margin: 10px;
+}
+
+.action-form input[type=submit] {
+    display: block;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.button-danger:hover {
+    background-color: red;
+    color: white;
+}
+
+.button-warning:hover {
+    background-color: darkorange;
+    color: white;
+}
+
+.statement {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 10px;
+}
