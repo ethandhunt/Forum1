@@ -21,7 +21,7 @@ if (isset($_POST["comment"])) {
     } elseif ($_SESSION["banned"]) {
         throw new Exception("Cannot edit comment while banned");
     } else {
-        $conn->query("INSERT INTO comments (body, author_user_id, post_id) VALUES ('$body', $author_id, $post_id)");
+        $conn->query("INSERT INTO comments (body, author_user_id, post_id, edited) VALUES ('$body', $author_id, $post_id, 0)");
     }
 }
 

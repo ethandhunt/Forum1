@@ -18,7 +18,7 @@ if (isset($_POST["report_post"])) {
 
     $reporter_user_id = $_SESSION["user_id"];
     $reporter_ip = $_SERVER["REMOTE_ADDR"];
-    $conn->query("INSERT INTO post_reports (title_tor, body_tor, user_id_tor, post_id, reporter_user_id, reporter_ip, statement) VALUES ('$title_tor', '$body_tor', '$user_id_tor', '$post_id', '$reporter_user_id', '$reporter_ip', '$statement')");
+    $conn->query("INSERT INTO post_reports (title_tor, body_tor, user_id_tor, post_id, reporter_user_id, reporter_ip, statement, dismissed) VALUES ('$title_tor', '$body_tor', '$user_id_tor', '$post_id', '$reporter_user_id', '$reporter_ip', '$statement', 0)");
     header("Location: view_post.php?id=$post_id");
 }
 
@@ -37,7 +37,7 @@ if (isset($_POST["report_comment"])) {
 
     $reporter_user_id = $_SESSION["user_id"];
     $reporter_ip = $_SERVER["REMOTE_ADDR"];
-    $conn->query("INSERT INTO comment_reports (body_tor, user_id_tor, comment_id, reporter_user_id, reporter_ip, statement) VALUES ('$body_tor', '$user_id_tor', '$comment_id', '$reporter_user_id', '$reporter_ip', '$statement')");
+    $conn->query("INSERT INTO comment_reports (body_tor, user_id_tor, comment_id, reporter_user_id, reporter_ip, statement, dismissed) VALUES ('$body_tor', '$user_id_tor', '$comment_id', '$reporter_user_id', '$reporter_ip', '$statement', 0)");
     $go_back = true;
 }
 
