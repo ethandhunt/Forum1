@@ -1,0 +1,64 @@
+/* forum page css */
+.forum-post-link {
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #474747;
+}
+.forum-table {
+    margin: 10px;
+}
+.forum-post-username {
+    min-width: 100px;
+}
+.forum-post-mentions {
+    /* width: fit-content; */
+    width: auto;
+    white-space: nowrap;
+    margin-right: 10px;
+    margin-bottom: 2px;
+    display: inline-block;
+}
+.mentioned {
+    color: rgb(255, 208, 80);
+    background-color: rgb(255, 246, 223);
+    border: 1px solid rgb(255, 208, 80);
+    border-radius: 3px;
+}
+.forum-post-title {
+    width: 100%;
+}
+.forum-post-likes {
+    text-align: right;
+    min-width: 30px;
+}
+.forum-post-comments {
+    text-align: right;
+    white-space: nowrap;
+}
+.forum-post-timestamp {
+    overflow: hidden;
+    white-space: pre;
+    text-align: right;
+}
+.vote {
+    font-size: 55px;
+    color: lightgray;
+}
+.can_vote {
+    color: black;
+    cursor: pointer;
+}
+.sortby-form {
+    margin: 10px;
+}
+.sortby-form input {
+    background-color: rgb(221, 221, 221);
+    border: none;
+    padding: 4px;
+}
+.sortby-form select {
+    background-color: white;
+    border: none;
+    padding: 4px;
+}
+/* end forum page css */
