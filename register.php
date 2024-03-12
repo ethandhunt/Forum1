@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
     $ip_addr = $_SERVER["REMOTE_ADDR"];
 
     $same_username = $conn->query("SELECT user_id FROM users WHERE username='$escaped_username'");
-    $banned_ip = $conn->query("SELECT user_id FROM users WHERE register_address='$ip_addr' AND banned=1");
+    // $banned_ip = $conn->query("SELECT user_id FROM users WHERE register_address='$ip_addr' AND banned=1");
     
     // don't register if there is already a user with the username
     if ($same_username->num_rows != 0) {
@@ -30,9 +30,9 @@ if (isset($_POST['submit'])) {
     } elseif (ctype_space($username) || $username == "") {
         $bad_username = true;
         $bad_username_message = "You cannot have an empty or all-whitespace username";
-    } elseif ($banned_ip->num_rows != 0) {
-        $bad_username = true;
-        $bad_username_message = "You cannot register from this ip";
+    // } elseif ($banned_ip->num_rows != 0) {
+    //     $bad_username = true;
+    //     $bad_username_message = "You cannot register from this ip";
     } else {
         $conn->query("INSERT INTO users (username, password_hash, avatar_path, register_address, moderator, administrator, banned) VALUES ('$escaped_username', '$pass_hash', '$avatar_path', '$ip_addr', 0, 0, 0)");
         header("Location: login.php"); // redirect to login.php on successful registration
