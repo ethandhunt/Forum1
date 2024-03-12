@@ -6,6 +6,7 @@ $user_id = $_SESSION["user_id"];
 $likes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH);
 $comments = $conn->query("SELECT comment_id, post_id, body, timestamp FROM comments")->fetch_all(MYSQLI_BOTH);
 $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
+$online_users = $conn->query("SELECT * FROM users WHERE last_online > NOW() - INTERVAL 1 MINUTE")->fetch_all(MYSQLI_BOTH);
 
 function can_vote($post_id, $type) {
     global $likes, $user_id;
@@ -273,7 +274,6 @@ if (!isset($_SESSION["user_id"])) {
         }
         ?>
         <tr class="forum-post-link">
-            <!-- <td><i class="fa fa-map-pin" <?php  ?>></i></td> -->
             <td>
                 <?php
                 if($post["pinned"]) {
@@ -296,6 +296,10 @@ if (!isset($_SESSION["user_id"])) {
     }
     ?>
     </table>
+
+    <div class="online-div">
+        Online users: <?php echo count($online_users) ?>
+    </div>
 
     <?php include "includes/footer.php" ?>
 </body>

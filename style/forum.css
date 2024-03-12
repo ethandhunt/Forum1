@@ -79,3 +79,8 @@
 .unread {
     color: blue;
 }
+
+.online-div {
+    font-family: 'Courier New', Courier, monospace;
+    margin: 10px;
+}
