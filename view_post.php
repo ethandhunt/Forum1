@@ -137,7 +137,9 @@ if (is_null($post)) {
 }
 $author_id = $post["author_user_id"];
 $author = $conn->query("SELECT * FROM users WHERE user_id=$author_id")->fetch_array();
-$comments = $conn->query("SELECT * FROM comments WHERE post_id=$post_id");
+$comments = $conn->query("SELECT * FROM comments WHERE post_id=$post_id")->fetch_all(MYSQLI_BOTH);
+
+$_SESSION["read_posts"][$post_id] = $comments[count($comments)-1]["comment_id"];
 
 $username_append_classes = "";
 if ($author["moderator"]) {
@@ -242,8 +244,9 @@ if ($author["administrator"]) {
     </div>
 
     <?php
-    if ($comments->num_rows > 0) {
-        while ($row = $comments->fetch_assoc()) {
+    if (count($comments) > 0) {
+        for ($i=0; $i < count($comments); $i++) {
+            $row = $comments[$i];
             $comment_author_id = $row["author_user_id"];
             $comment_author = $conn->query("SELECT * FROM users WHERE user_id=$comment_author_id")->fetch_array();
 

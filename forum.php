@@ -100,6 +100,21 @@ function comment_recency($post_id) {
     return $most_recent;
 }
 
+function most_recent_comment($post_id) {
+    global $comments;
+    $most_recent = 0;
+    $comment = NULL;
+    for ($i=0; $i < count($comments); $i++) {
+        $row = $comments[$i];
+        if ($row["post_id"] == $post_id && strtotime($row["timestamp"]) > $most_recent) {
+            $most_recent = strtotime($row["timestamp"]);
+            $comment = $row;
+            // var_dump($row["body"], $row["timestamp"]);
+        }
+    }
+    return $comment;
+}
+
 
 if (isset($_POST["vote"])) {
     $post_id = $_POST["post_id"];
@@ -121,6 +136,17 @@ if (isset($_POST["vote"])) {
 
 if (isset($_GET["sortby"])) {
     $_SESSION["sortby"] = $_GET["sortby"];
+}
+
+if (isset($_POST["mark_read"])) {
+    for ($i=0; $i < count($posts); $i++) {
+        $row = $posts[$i];
+        if (!is_null(most_recent_comment($row["post_id"]))) {
+            $_SESSION["read_posts"][$row["post_id"]] = most_recent_comment($row["post_id"])["comment_id"];
+        } else {
+            $_SESSION["read_posts"][$row["post_id"]] = NULL;
+        }
+    }
 }
 
 if (!isset($_SESSION["user_id"])) {
@@ -163,6 +189,10 @@ if (!isset($_SESSION["user_id"])) {
         </select>
     </form>
 
+    <form class="mark-read-form" method="post">
+        <input type="submit" name="mark_read" value="Mark all as read">
+    </form>
+
     <table class="forum-table">
     <?php
     $posts_arr = array();
@@ -179,9 +209,11 @@ if (!isset($_SESSION["user_id"])) {
         $posts_arr[$i] = array(
             'post_id' => $row['post_id'],
             'username' => $user['username'],
+            'user_id' => $row['author_user_id'],
             'title' => prettify_title($row['title']),
             'likes' => get_likes($row['post_id']),
             'comments' => get_comments($row['post_id']),
+            'most_recent_comment' => most_recent_comment($row['post_id']),
             'timestamp' => $row['timestamp'],
             'timestamp_pretty' => prettify_timestamp(strtotime($row['timestamp'])),
             'mentions' => get_mentions($row['post_id']),
@@ -226,6 +258,19 @@ if (!isset($_SESSION["user_id"])) {
         if (can_vote($post["post_id"], "down")) {
             $downvote_append_class = "can_vote";
         }
+
+        $anchor_append_class = " unread";
+        if (
+            // post was marked as read
+            array_key_exists($post["post_id"], $_SESSION["read_posts"]) && (
+                // most recent comment is the same
+                isset($post["most_recent_comment"]) && $_SESSION["read_posts"][$post["post_id"]] == $post["most_recent_comment"]["comment_id"]
+                // post doesn't have any comments
+                || is_null($post["most_recent_comment"])
+            )
+        ) {
+            $anchor_append_class = "";
+        }
         ?>
         <tr class="forum-post-link">
             <!-- <td><i class="fa fa-map-pin" <?php  ?>></i></td> -->
@@ -236,10 +281,11 @@ if (!isset($_SESSION["user_id"])) {
                     <i class="fa fa-map-pin"></i>
                     <?php
                 }
-                ?></td>
-            <td class="forum-post-username"> <?php echo htmlentities($post["username"], ENT_QUOTES) ?> </td>
+                ?>
+            </td>
+            <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"> <?php echo htmlentities($post["username"], ENT_QUOTES) ?> </a> </td>
             <td class="forum-post-mentions<?php if($post["mentions"]>0) {echo " mentioned";} ?>"> @<?php echo $post["mentions"] ?> </td>
-            <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" > <?php echo $post["title"] ?> </a> </td>
+            <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" class="forum-post-link<?php echo $anchor_append_class ?>"> <?php echo $post["title"] ?> </a> </td>
             <td class="forum-post-timestamp"> <?php echo $post["timestamp_pretty"] ?> </td>
             <td class="forum-post-comments"> <?php echo $post["comments"] ?> comments </td>
             <td class="forum-post-likes" id="likes-<?php echo $post["post_id"] ?>"> <?php echo $post["likes"] ?> </td>

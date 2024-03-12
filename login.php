@@ -18,8 +18,9 @@ if (isset($_POST['submit'])) {
         $_SESSION['username'] = $user_arr['username'];
         $_SESSION['moderator'] = $user_arr['moderator'];
         $_SESSION['administrator'] = $user_arr['administrator'];
-        $_SESSION['sortby'] = '';
+        $_SESSION['sortby'] = 'votes';
         $_SESSION['banned'] = $user_arr['banned'];
+        $_SESSION['read_posts'] = array();
         header('Location: index.php');
     }
 }

@@ -26,6 +26,7 @@
 }
 .forum-post-title {
     width: 100%;
+    color: black;
 }
 .forum-post-likes {
     text-align: right;
@@ -61,4 +62,20 @@
     border: none;
     padding: 4px;
 }
-/* end forum page css */
+
+.mark-read-form {
+    margin: 10px;
+}
+.mark-read-form input {
+    background-color: rgb(221, 221, 221);
+    border: none;
+    padding: 4px;
+}
+
+.forum-post-link {
+    text-decoration: none;
+}
+
+.unread {
+    color: blue;
+}
