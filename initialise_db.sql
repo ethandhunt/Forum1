@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2024 at 10:34 PM
+-- Generation Time: Mar 13, 2024 at 12:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -118,7 +118,9 @@ CREATE TABLE `users` (
   `administrator` tinyint(1) NOT NULL,
   `banned` tinyint(1) NOT NULL,
   `join_datetime` datetime NOT NULL DEFAULT current_timestamp(),
-  `register_address` varchar(30) NOT NULL
+  `register_address` varchar(30) NOT NULL,
+  `last_address` varchar(30) NOT NULL,
+  `last_online` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
