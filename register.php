@@ -9,13 +9,20 @@ if (isset($_POST['submit'])) {
     $pass_hash = password_hash($password, PASSWORD_DEFAULT);
     $escaped_username = mysqli_escape_string($conn, $username);
 
+    $allowed_file_extensions = ["webp", "jpg", "jpeg", "gif", "png"];
     $avatar_path = '';
     if ($_FILES["avatar"] && $_FILES["avatar"]["size"]>0) {
-        $target_filename = sha1_file($_FILES["avatar"]["tmp_name"]) . "." . pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION);
+        $file_ext = pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION);
+        if (in_array($file_ext, $allowed_file_extensions)) {
+            $target_filename = sha1_file($_FILES["avatar"]["tmp_name"]) . "." . $file_ext;
 
-        move_uploaded_file($_FILES["avatar"]["tmp_name"], "avatars/$target_filename");
+            move_uploaded_file($_FILES["avatar"]["tmp_name"], "avatars/$target_filename");
 
-        $avatar_path = "avatars/$target_filename";
+            $avatar_path = "avatars/$target_filename";
+        } else {
+            $bad_avatar = true;
+            $bad_avatar_message = "avatar file extension must be one of " . implode(", ", $allowed_file_extensions) . " (case sensitive) <br> you can ask me to add a filetype to the allow list";
+        }
     }
 
     $ip_addr = $_SERVER["REMOTE_ADDR"];
@@ -33,6 +40,8 @@ if (isset($_POST['submit'])) {
     // } elseif ($banned_ip->num_rows != 0) {
     //     $bad_username = true;
     //     $bad_username_message = "You cannot register from this ip";
+    } elseif ($bad_avatar) {
+
     } else {
         $conn->query("INSERT INTO users (username, password_hash, avatar_path, register_address, moderator, administrator, banned) VALUES ('$escaped_username', '$pass_hash', '$avatar_path', '$ip_addr', 0, 0, 0)");
         header("Location: login.php"); // redirect to login.php on successful registration
@@ -55,7 +64,7 @@ if (isset($_POST['submit'])) {
     <form class="center-form" method="post" enctype="multipart/form-data">
         <input type="text" name="username" placeholder="Username" maxlength=30>
         <?php
-        if (isset($bad_username) && $bad_username == TRUE) {
+        if (isset($bad_username) && $bad_username) {
             ?>
             <div class="alert">
                 <?php echo $bad_username_message ?>
@@ -68,6 +77,16 @@ if (isset($_POST['submit'])) {
         <input type="password" name="password" placeholder="Password">
         <label for="avatar"> Upload an avatar: </label>
         <input type="file" name="avatar" accept="image/png, image/jpeg">
+        <?php
+        if (isset($bad_avatar) && $bad_avatar) {
+            ?>
+            <div class="alert">
+                <?php echo $bad_avatar_message ?>
+                <span class="close-button" onclick="this.parentElement.style.display = 'none'"> &times; </span>
+            </div>
+            <?php
+        }
+        ?>
         <input type="submit" name="submit" value="Submit">
     </form>
 
