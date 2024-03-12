@@ -43,7 +43,7 @@ if (isset($_POST['submit'])) {
     } elseif ($bad_avatar) {
 
     } else {
-        $conn->query("INSERT INTO users (username, password_hash, avatar_path, register_address, moderator, administrator, banned) VALUES ('$escaped_username', '$pass_hash', '$avatar_path', '$ip_addr', 0, 0, 0)");
+        $conn->query("INSERT INTO users (username, password_hash, avatar_path, register_address, moderator, administrator, banned, about_me) VALUES ('$escaped_username', '$pass_hash', '$avatar_path', '$ip_addr', 0, 0, 0, '')");
         header("Location: login.php"); // redirect to login.php on successful registration
     }
 }
