@@ -84,3 +84,15 @@
     font-family: 'Courier New', Courier, monospace;
     margin: 10px;
 }
+
+.pre-post-table {
+    display: flex;
+}
+
+.pre-left {
+    float: left;
+}
+
+.pre-right {
+    float: right;
+}

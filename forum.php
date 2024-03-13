@@ -179,20 +179,28 @@ if (!isset($_SESSION["user_id"])) {
     }
     ?>
 
-    <form class="sortby-form">
-        <input type="submit" name="sortby" value="Sort by:">
-        <select name="sortby" title="press [Sort by:] to sort">
-            <option <?php if ($_SESSION["sortby"] == 'votes') {echo"selected";}?>> votes </option>
-            <option <?php if ($_SESSION["sortby"] == 'recent') {echo"selected";}?>> recent </option>
-            <option <?php if ($_SESSION["sortby"] == 'mentions') {echo"selected";}?>> mentions </option>
-            <option <?php if ($_SESSION["sortby"] == 'comments') {echo"selected";}?>> comments </option>
-            <option <?php if ($_SESSION["sortby"] == 'recent comments') {echo"selected";}?>> recent comments </option>
-        </select>
-    </form>
+    <div class="pre-post-table">
+        <div class="pre-left">
+            <form class="sortby-form">
+                <input type="submit" name="sortby" value="Sort by:">
+                <select name="sortby" title="press [Sort by:] to sort">
+                    <option <?php if ($_SESSION["sortby"] == 'votes') {echo"selected";}?>> votes </option>
+                    <option <?php if ($_SESSION["sortby"] == 'recent') {echo"selected";}?>> recent </option>
+                    <option <?php if ($_SESSION["sortby"] == 'mentions') {echo"selected";}?>> mentions </option>
+                    <option <?php if ($_SESSION["sortby"] == 'comments') {echo"selected";}?>> comments </option>
+                    <option <?php if ($_SESSION["sortby"] == 'recent comments') {echo"selected";}?>> recent comments </option>
+                </select>
+            </form>
 
-    <form class="mark-read-form" method="post">
-        <input type="submit" name="mark_read" value="Mark all as read">
-    </form>
+            <form class="mark-read-form" method="post">
+                <input type="submit" name="mark_read" value="Mark all as read">
+            </form>
+        </div>
+
+        <div class="online-div pre-right">
+            Online users: <?php echo count($online_users) ?>
+        </div>
+    </div>
 
     <table class="forum-table">
     <?php
@@ -296,10 +304,6 @@ if (!isset($_SESSION["user_id"])) {
     }
     ?>
     </table>
-
-    <div class="online-div">
-        Online users: <?php echo count($online_users) ?>
-    </div>
 
     <?php include "includes/footer.php" ?>
 </body>
