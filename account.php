@@ -32,7 +32,7 @@ $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE us
 <html lang="en">
 
 <head>
-    <title> Home </title>
+    <title> Account </title>
     <link rel="stylesheet" href="style/style.css">
 </head>
 
@@ -64,7 +64,7 @@ $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE us
     </form>
 
     <form class="account-form" method="post">
-        <input type="password" name="password" placeholder="Password" maxlength=100>
+        <input type="password" name="password" placeholder="Password" maxlength=100 autocomplete="new-password">
         <input type="submit" name="set_password" value="Set password">
     </form>
 
