@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2024 at 12:29 AM
+-- Generation Time: Mar 14, 2024 at 08:28 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,7 +33,8 @@ CREATE TABLE `comments` (
   `author_user_id` int(11) NOT NULL,
   `body` varchar(2000) NOT NULL,
   `timestamp` datetime NOT NULL DEFAULT current_timestamp(),
-  `edited` tinyint(1) NOT NULL
+  `edited` tinyint(1) NOT NULL,
+  `image_href` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -46,6 +47,7 @@ CREATE TABLE `comment_reports` (
   `report_id` int(11) NOT NULL,
   `body_tor` varchar(2000) NOT NULL,
   `user_id_tor` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
   `comment_id` int(11) NOT NULL,
   `reporter_user_id` int(11) NOT NULL,
   `reporter_ip` varchar(40) NOT NULL,
@@ -67,7 +69,8 @@ CREATE TABLE `posts` (
   `post_id` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `edited` tinyint(1) NOT NULL,
-  `pinned` tinyint(1) NOT NULL
+  `pinned` tinyint(1) NOT NULL,
+  `image_href` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -119,7 +122,7 @@ CREATE TABLE `users` (
   `banned` tinyint(1) NOT NULL,
   `join_datetime` datetime NOT NULL DEFAULT current_timestamp(),
   `register_address` varchar(30) NOT NULL,
-  `last_address` varchar(30) NOT NULL,
+  `last_address` varchar(30) DEFAULT NULL,
   `last_online` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
