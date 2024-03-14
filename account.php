@@ -17,6 +17,13 @@ if (isset($_POST["update_about_me"])) {
     $conn->query("UPDATE users SET about_me='$escaped_about_me' WHERE user_id=$user_id");
 }
 
+if (isset($_POST["set_password"])) {
+    $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+    $user_id = $_SESSION["user_id"];
+    $conn->query("UPDATE users SET password_hash='$password_hash' WHERE user_id=$user_id");
+}
+
 $user_id = $_SESSION["user_id"];
 $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE user_id=$user_id")->fetch_array();
 ?>
@@ -51,9 +58,14 @@ $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE us
         <input type="file" name="avatar">
         <input type="submit" name="update_avatar" value="Update avatar">
     </form>
-    <form class="account-form" enctype="multipart/form-data" method="post">
+    <form class="account-form" method="post">
         <input type="text" name="about_me" id="about_me" placeholder="About Me" maxlength=100 value="<?php echo prettify_about_me($user["about_me"]) ?>">
         <input type="submit" name="update_about_me" value="Update about me">
+    </form>
+
+    <form class="account-form" method="post">
+        <input type="password" name="password" placeholder="Password" maxlength=100>
+        <input type="submit" name="set_password" value="Set password">
     </form>
 
     <?php include "includes/footer.php" ?>

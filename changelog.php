@@ -17,14 +17,14 @@ include "includes/db.php"
     <?php include "includes/navbar.php" ?>
 
     <h2> Working on </h2>
-    <ul>
+    <ul class="changelog">
         <li> Ads </li>
         <li> New mention count in navbar </li>
         <li> auto scroll to new comments/scroll to new comments button </li>
     </ul>
 
     <h2> Completed updates </h2>
-    <ul>
+    <ul class="changelog">
         <li> prettified timestamp </li>
         <li> comment timestamps </li>
         <li> edit comments </li>
@@ -59,6 +59,7 @@ include "includes/db.php"
         <li class="update-interval"> 14/03/24 </li>
         <li> images </li>
         <li> changelog </li>
+        <li> set password in account page </li>
     </ul>
 
     <?php include "includes/footer.php" ?>
