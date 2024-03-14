@@ -13,6 +13,7 @@ if (!intval($_GET["id"])) {
 
 if (isset($_POST["comment"])) {
     $body = mysqli_real_escape_string($conn, $_POST["body"]);
+    $image_href = mysqli_real_escape_string($conn, $_POST["image_href"]);
     $author_id = $_SESSION["user_id"];
     $post_id = intval($_GET["id"]);
 
@@ -21,12 +22,13 @@ if (isset($_POST["comment"])) {
     } elseif ($_SESSION["banned"]) {
         throw new Exception("Cannot edit comment while banned");
     } else {
-        $conn->query("INSERT INTO comments (body, author_user_id, post_id, edited) VALUES ('$body', $author_id, $post_id, 0)");
+        $conn->query("INSERT INTO comments (body, author_user_id, post_id, edited, image_href) VALUES ('$body', $author_id, $post_id, 0, '$image_href')");
     }
 }
 
 if (isset($_POST["edit_comment"])) {
     $body = mysqli_real_escape_string($conn, $_POST["body"]);
+    $image_href = mysqli_real_escape_string($conn, $_POST["image_href"]);
     $comment_id = $_POST["comment_id"];
 
     if (!intval($comment_id)) {
@@ -39,7 +41,7 @@ if (isset($_POST["edit_comment"])) {
         } elseif ($_SESSION["banned"]) {
             throw new Exception("Cannot edit comment while banned");
         } else {
-            $conn->query("UPDATE comments SET body='$body', edited=1 WHERE comment_id=$comment_id");
+            $conn->query("UPDATE comments SET body='$body', edited=1, image_href='$image_href' WHERE comment_id=$comment_id");
         }
     }
 }
@@ -63,6 +65,7 @@ if (isset($_POST["delete_comment"])) {
 if (isset($_POST["edit_post"])) {
     $post_id = intval($_GET["id"]);
     $body = mysqli_real_escape_string($conn, $_POST["body"]);
+    $image_href = mysqli_real_escape_string($conn, $_POST["image_href"]);
 
     // double check post_id for no real reason
     if (!intval($post_id)) {
@@ -75,7 +78,7 @@ if (isset($_POST["edit_post"])) {
         } elseif ($_SESSION["banned"]) {
             throw new Exception("Cannot edit comment while banned");
         } else {
-            $conn->query("UPDATE posts SET body='$body', edited=1 WHERE post_id=$post_id");
+            $conn->query("UPDATE posts SET body='$body', edited=1, image_href='$image_href' WHERE post_id=$post_id");
         }
     }
 }
@@ -139,7 +142,11 @@ $author_id = $post["author_user_id"];
 $author = $conn->query("SELECT * FROM users WHERE user_id=$author_id")->fetch_array();
 $comments = $conn->query("SELECT * FROM comments WHERE post_id=$post_id")->fetch_all(MYSQLI_BOTH);
 
-$_SESSION["read_posts"][$post_id] = $comments[count($comments)-1]["comment_id"];
+if (count($comments) > 0) {
+    $_SESSION["read_posts"][$post_id] = $comments[count($comments)-1]["comment_id"];
+} else {
+    $_SESSION["read_posts"][$post_id] = NULL;
+}
 
 $username_append_classes = "";
 if ($author["moderator"]) {
@@ -215,30 +222,42 @@ if ($author["administrator"]) {
                 ?>
                 <form class="edit-post-form" method="post" id="edit-post-form" hidden>
                     <textarea class="scripted-textarea" name="body" id="edit-post-body"><?php echo htmlentities($post["body"], ENT_QUOTES) ?></textarea>
+                    <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($post["image_href"], ENT_QUOTES) ?>">
                     <input type="submit" name="edit_post" value="Edit">
                 </form>
                 <?php
             }
             ?>
-            <div class="post-modify">
+            <div class="post-right-right">
+                <div class="post-modify">
+                    <?php
+                    if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
+                        ?>
+                        <button class="edit-button" onclick="edit_post()"><i class="fa fa-edit"></i></button>
+                        <?php
+                    }
+                    if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                        ?>
+                        <button class="delete-button" onclick="delete_post()"><i class="fa fa-trash"></i></button>
+                        <?php
+                    }
+                    if ($_SESSION["moderator"]) {
+                        ?>
+                        <button class="pin-button" onclick="pin_post()"><i class="fa fa-map-pin"></i></button>
+                        <?php
+                    }
+                    ?>
+                    <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i></a>
+                </div>
                 <?php
-                if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
+                if ($post["image_href"] != "") {
                     ?>
-                    <button class="edit-button" onclick="edit_post()"><i class="fa fa-edit"></i></button>
-                    <?php
-                }
-                if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
-                    ?>
-                    <button class="delete-button" onclick="delete_post()"><i class="fa fa-trash"></i></button>
-                    <?php
-                }
-                if ($_SESSION["moderator"]) {
-                    ?>
-                    <button class="pin-button" onclick="pin_post()"><i class="fa fa-map-pin"></i></button>
+                    <div class="post-image">
+                        <img src="<?php echo filter_var(htmlentities($post["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
+                    </div>
                     <?php
                 }
                 ?>
-                <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i></a>
             </div>
         </div>
     </div>
@@ -306,26 +325,38 @@ if ($author["administrator"]) {
                         ?>
                         <form class="edit-comment-form" method="post" id="edit-comment-form-<?php echo $row["comment_id"]?>" hidden>
                             <textarea class="scripted-textarea" name="body" id="edit-comment-body-<?php echo $row["comment_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
+                            <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($row["image_href"], ENT_QUOTES) ?>">
                             <input type="submit" name="edit_comment" value="Edit">
                             <input type="hidden" name="comment_id" value="<?php echo $row["comment_id"] ?>">
                         </form>
                         <?php
                     }
                     ?>
-                    <div class="post-modify">
-                        <?php
-                        if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
-                            ?>
-                            <button class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i></button>
+                    <div class="post-right-right">
+                        <div class="post-modify">
                             <?php
-                        }
-                        if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                            if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
+                                ?>
+                                <button class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i></button>
+                                <?php
+                            }
+                            if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                                ?>
+                                <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i></button>
+                                <?php
+                            }
                             ?>
-                            <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i></button>
+                            <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i></a>
+                        </div>
+                        <?php
+                        if ($post["image_href"] != "") {
+                            ?>
+                            <div class="post-image">
+                                <img src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
+                            </div>
                             <?php
                         }
                         ?>
-                        <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i></a>
                     </div>
                 </div>
             </div>
@@ -337,6 +368,7 @@ if ($author["administrator"]) {
         ?>
         <form class="comment-form" method="post">
             <textarea class="scripted-textarea" name="body" id="body"></textarea>
+            <input type="text" maxlength="1000" name="image_href" placeholder="Image URL">
             <input type="submit" name="comment" value="Comment">
         </form>
         <?php
