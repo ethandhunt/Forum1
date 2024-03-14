@@ -83,6 +83,7 @@ $comment = $comment_query->fetch_array();
         <table class="reported-comment-table">
             <tr>
                 <th> Body </th>
+                <th> Post_id </th>
                 <th> Comment_id </th>
                 <th> Report date </th>
                 <?php
@@ -95,6 +96,7 @@ $comment = $comment_query->fetch_array();
             </tr>
             <tr>
                 <td> <?php echo prettify_body($report["body_tor"]) ?> </td>
+                <td> <a href="view_post.php?id=<?php echo $report["post_id"] ?>"> <?php echo $report["post_id"] ?> </a> </td>
                 <td> <?php echo $report["comment_id"] ?> </td>
                 <td> <?php echo prettify_datetime($report["report_timestamp"]) ?> </td>
                 <?php
@@ -124,7 +126,7 @@ $comment = $comment_query->fetch_array();
                 </tr>
                 <tr>
                     <td> <?php echo prettify_username($reported_user["username"]) ?> </td>
-                    <td> <?php echo $report["user_id_tor"] ?> </td>
+                    <td> <a href="<?php echo $report["user_id_tor"] ?>"> <?php echo $report["user_id_tor"] ?> </a> </td>
                     <td> <?php echo prettify_datetime($reported_user["join_datetime"]) ?> </td>
                     <td> <?php echo $reported_user["register_address"] ?> </td>
                     <td>
@@ -155,7 +157,7 @@ $comment = $comment_query->fetch_array();
                 </tr>
                 <tr>
                     <td> <?php echo prettify_username($reporter_user["username"]) ?> </td>
-                    <td> <?php echo $report["reporter_user_id"] ?> </td>
+                    <td> <a href="<?php echo $report["reporter_user_id"] ?>"> <?php echo $report["reporter_user_id"] ?> </a> </td>
                     <td> <?php echo prettify_datetime($reporter_user["join_datetime"]) ?> </td>
                     <td> <?php echo $reporter_user["register_address"] ?> </td>
                     <td> <?php echo $report["reporter_ip"] ?> </td>
