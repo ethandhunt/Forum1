@@ -246,8 +246,12 @@ if ($author["administrator"]) {
                         <button class="pin-button" onclick="pin_post()"><i class="fa fa-map-pin"></i></button>
                         <?php
                     }
+                    if (!$_SESSION["banned"]) {
+                        ?>
+                        <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i></a>
+                        <?php
+                    }
                     ?>
-                    <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i></a>
                 </div>
                 <?php
                 if ($post["image_href"] != "") {
@@ -345,8 +349,12 @@ if ($author["administrator"]) {
                                 <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i></button>
                                 <?php
                             }
+                            if (!$_SESSION["banned"]) {
+                                ?>
+                                <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i></a>
+                                <?php
+                            }
                             ?>
-                            <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i></a>
                         </div>
                         <?php
                         if ($post["image_href"] != "") {

@@ -2,6 +2,10 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+if ($_SESSION["banned"]) {
+    throw new Exception("Cannot access report page as a reported user");
+}
+
 if (isset($_POST["report_post"])) {
     $title_tor = mysqli_real_escape_string($conn, $_POST["title_tor"]);
     $body_tor = mysqli_real_escape_string($conn, $_POST["body_tor"]);
