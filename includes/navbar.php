@@ -23,6 +23,7 @@
             }
             ?>
             <a href="bug_report.php"> Bug report </a>
+            <a href="changelog.php"> Changelog </a>
             <?php
             if (isset($_SESSION['administrator']) && $_SESSION['administrator']) {
                 ?>
