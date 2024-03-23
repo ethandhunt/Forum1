@@ -19,12 +19,19 @@ include "includes/db.php"
     <h2> Working on </h2>
     <ul class="changelog">
         <li> Ads </li>
+        <li> chatroom page css </li>
         <li> New mention count in navbar </li>
         <li> auto scroll to new comments/scroll to new comments button </li>
     </ul>
 
     <h2> Completed updates </h2>
     <ul class="changelog">
+        <li class="update-interval"> 23/03/24 </li>
+        <li> added live chat <li>
+        <li class="update-interval"> 14/03/24 </li>
+        <li> images </li>
+        <li> changelog </li>
+        <li> set password in account page </li>
         <li> prettified timestamp </li>
         <li> comment timestamps </li>
         <li> edit comments </li>
@@ -56,10 +63,6 @@ include "includes/db.php"
         <li> visited attribute of post on forum page </li>
         <li> fix avatar lfi vulnerability </li>
         <li> online users count on forum page  </li>
-        <li class="update-interval"> 14/03/24 </li>
-        <li> images </li>
-        <li> changelog </li>
-        <li> set password in account page </li>
     </ul>
 
     <?php include "includes/footer.php" ?>
