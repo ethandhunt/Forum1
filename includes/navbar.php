@@ -19,6 +19,7 @@
             if (isset($_SESSION["banned"]) && !$_SESSION["banned"]) {
                 ?>
                 <a href="post.php"> Post </a>
+                <a href="chat.php?view=chatrooms"> Live Chat </a>
                 <?php
             }
             ?>
