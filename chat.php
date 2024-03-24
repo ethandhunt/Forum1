@@ -27,7 +27,7 @@ if (isset($_POST["send_message"])) {
     $num = $num - $MAX_CHAT_ROWS;
     if ($num > 0) {
         $conn->query(
-            "DELETE FROM chat_messages ORDER BY timestamp ASC " .
+            "DELETE FROM chat_messages ORDER BY timestamp ASC WHERE chat_room_id=$chat_id " .
                 "LIMIT $num"
         );
     }
