@@ -2,6 +2,16 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SESSION["banned"]) {
+    header("index.php");
+    exit();
+}
+
 $show_chat = false;
 $show_chat_rooms = false;
 $MAX_CHAT_ROWS = 100;
@@ -27,7 +37,7 @@ if (isset($_POST["send_message"])) {
     $num = $num - $MAX_CHAT_ROWS;
     if ($num > 0) {
         $conn->query(
-            "DELETE FROM chat_messages ORDER BY timestamp ASC " .
+            "DELETE FROM chat_messages ORDER BY timestamp ASC WHERE chat_room_id=$chat_id " .
                 "LIMIT $num"
         );
     }
@@ -65,7 +75,11 @@ if (isset($_POST["send_message"])) {
         }
 
         $password = mysqli_real_escape_string($conn, $_GET["password"]);
-        $chat_room = $conn->query("SELECT * FROM chat_rooms WHERE chat_room_id=$chat_id AND password='$password'")->fetch_array();
+        $chat_room_query = $conn->query("SELECT * FROM chat_rooms WHERE chat_room_id=$chat_id AND password='$password'");
+        if ($chat_room_query->num_rows != 1) {
+            echo json_encode(["error" => "Could not find chat room with id $chat_id"]);
+            exit;
+        }
         $chat_messages = $conn->query("SELECT chat_messages.*, users.username FROM chat_messages INNER JOIN users on users.user_id=chat_messages.author_user_id WHERE chat_room_id=$chat_id ORDER BY timestamp DESC LIMIT 100")->fetch_all(MYSQLI_ASSOC);
         // var_dump($chat_room, $chat_messages);
         echo json_encode($chat_messages);
