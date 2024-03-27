@@ -54,7 +54,7 @@ async function send_message(message_content) {
         {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `send_message&message_content=${message_content}`
+            body: `send_message&message_content=${encodeURIComponent(message_content)}`
         }
     )
 }
