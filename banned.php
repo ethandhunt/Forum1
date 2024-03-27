@@ -25,8 +25,6 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
 
     <div class="ban-description">
         You've been banned, you can no longer make posts, comment on posts, or upvote posts
-        <br>
-        You cannot register another account with the ip <?php echo $user["register_address"] ?>
     </div>
     <?php
     if (random_int(0, 10) == 0) {
