@@ -33,7 +33,8 @@ if (isset($_SESSION["user_id"])) {
         $conn->query("UPDATE users SET register_address='$ip_addr' WHERE user_id=$user_id");
     }
 
-    // update last_online field
-    $conn->query("UPDATE users SET last_online=NOW() WHERE user_id=$user_id");
+    // update last_online and last_address field
+    $addr = $_SERVER["REMOTE_ADDR"];
+    $conn->query("UPDATE users SET last_online=NOW(), last_address='$addr' WHERE user_id=$user_id");
 }
 ?>
