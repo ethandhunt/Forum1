@@ -126,18 +126,15 @@ if (isset($_POST["send_message"])) {
         } else {
         ?>
             <h2> <?php echo htmlentities($chat_room["title"]) ?> </h2>
-            <div id="chat_div"></div>
+            <div id="chat_div1"></div>
+            <div id="chat_div2" hidden></div>
             <input id="text_input" type="text">
             <script>
                 update_chat().then(() => {
                     text_input.scrollIntoView()
                 })
 
-                setInterval(() => {
-                    update_chat().then(() => {
-                        text_input.scrollIntoView()
-                    })
-                }, 5000)
+                setInterval(update_chat, 5000)
 
                 let text_input = document.getElementById('text_input')
                 text_input.focus()
