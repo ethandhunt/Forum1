@@ -18,16 +18,23 @@ include "includes/db.php"
 
     <h2> Working on </h2>
     <ul class="changelog">
-        <li> Ads </li>
+        <li> dms </li>
         <li> chatroom page css </li>
+        <li> Ads* </li>
         <li> New mention count in navbar </li>
         <li> auto scroll to new comments/scroll to new comments button </li>
     </ul>
 
+    <h2> Look at the repo on github to see the source code </h2>
+    <a class="clean" href="https://github.com/ethandhunt/Forum1"> ethandhunt/Forum1 </a>
+
     <h2> Completed updates </h2>
     <ul class="changelog">
+        <li class="update-interval"> 28/03/24 </li>
+        <li> added timestamps to live chat </li>
+        <li> worked on live chat css</li>
         <li class="update-interval"> 23/03/24 </li>
-        <li> added live chat <li>
+        <li> added live chat </li>
         <li class="update-interval"> 14/03/24 </li>
         <li> images </li>
         <li> changelog </li>
