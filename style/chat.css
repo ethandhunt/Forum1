@@ -1,4 +1,17 @@
-h2, #chat_div, #text_input {
+h2, .message {
     font-family: Arial, Helvetica, sans-serif;
+}
+
+h2, #text_input {
     margin: 10px;
+}
+
+.message {
+    margin-left: 10px;
+}
+
+.timestamp {
+    display: inline-block;
+    color: #666;
+    margin-right: 10px;
 }
