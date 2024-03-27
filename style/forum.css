@@ -85,6 +85,11 @@
     margin: 10px;
 }
 
+.online-user {
+    margin-right: 12px;
+    display: inline-block;
+}
+
 .pre-post-table {
     display: flex;
 }

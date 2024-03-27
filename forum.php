@@ -198,7 +198,13 @@ if (!isset($_SESSION["user_id"])) {
         </div>
 
         <div class="online-div pre-right">
-            Online users: <?php echo count($online_users) ?>
+            Online users (<?php echo count($online_users) ?>): 
+            <?php
+            foreach ($online_users as $x) {
+                $y = $x["username"];
+                echo "<div class='online-user'>$y</div>";
+            }
+            ?>
         </div>
     </div>
 
