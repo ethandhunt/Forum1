@@ -1,4 +1,4 @@
-<header>
+<div class="header">
     <img src="images/logo.jpg" class="logo">
     <div>
         Forum 1
@@ -10,4 +10,4 @@
          <li><a></a></li>
          <li><a>ehj</a></li>
      </ul>   
-</header>
+</div>

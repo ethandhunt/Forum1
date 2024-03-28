@@ -26,7 +26,7 @@ body {
 /* end navbar css */
 
 /* header css */
-header {
+.header {
     position: absolute;
 
     font-weight: 700;
@@ -41,7 +41,11 @@ header {
     z-index: 1;
 }
 
-li, a {
+.nav-links {
+    background-color: #f44336;
+}
+
+/* li, a {
     text-decoration: none;
     color: rgb(255, 255, 255);
 }
@@ -58,9 +62,9 @@ li, a {
 
 .nav-links a:hover {
     color: #ff2f2f;
-}
+} */
 
-header .logo {
+.header .logo {
     width: 50px;
     height: 50px;
     
