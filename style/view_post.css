@@ -9,7 +9,6 @@
 .post-left {
   float: left;
   width: 10%;
-  font-family: Arial, Helvetica, sans-serif;
   border: 1px solid #333;
   margin-right: 10px;
   overflow: hidden;
@@ -17,7 +16,6 @@
 .post-right {
   float: right;
   width: 90%;
-  font-family: Arial, Helvetica, sans-serif;
   border: 1px solid #333;
   overflow-wrap: break-word;
   overflow: hidden;
@@ -37,7 +35,6 @@
   color: #555;
   margin: 20px;
   padding: 5px;
-  font-family: Arial, Helvetica, sans-serif;
 }
 .post {
   margin: 20px;

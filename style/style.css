@@ -1,31 +1,18 @@
-html body {
-    margin: 0;
-    padding-bottom: 30px;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+body {
+    font-size: 18px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+
+    color: black;
+
+    margin: 0px;  
+    padding: 0px;        
 }
 
 /* adapted from https://www.w3schools.com/css/css_navbar.asp */
-.navbar-container {
-    font-family: 'Courier New', Courier, monospace;
-}
-.navbar-container ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #222;
-}
-.navbar-container li a {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    transition: background-color 0.2s;
-    cursor: pointer;
-}
-.navbar-container li a:hover {
-    background-color: #555;
-}
+
 .ban-message {
     display: inline-block;
     text-align: center;
@@ -39,24 +26,55 @@ html body {
 /* end navbar css */
 
 /* header css */
-.header {
-    background-color: #333;
-    color: white;
-    overflow: hidden;
+header {
+    position: absolute;
+
+    font-weight: 700;
+    background-color: rgba(0, 0, 0, 0);
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 15px 5%;
+    width: auto;
+    z-index: 1;
 }
-.header .logo {
+
+li, a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+
+.nav-links li {
+    list-style: none;
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.nav-links li a {
+    transition: all 0.3s ease 0s;
+}
+
+.nav-links a:hover {
+    color: #ff2f2f;
+}
+
+header .logo {
     width: 50px;
     height: 50px;
     
     float: left;
 }
-.header div {
+
+/* .header div {
     padding: 6px 16px;
     float: left;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: 700;
     font-size:larger;
-}
+} */
+
+
 /* end header css */
 
 /* footer css */
@@ -86,7 +104,6 @@ th {
 table {
     border: none;
     border-collapse: collapse;
-    font-family: Arial, Helvetica, sans-serif;
 }
 tr {
     transition: background-color 0.2s;
@@ -172,7 +189,6 @@ tr:hover {
 }
 .account-form {
     margin: 20px;
-    font-family: Arial, Helvetica, sans-serif;
 }
 .account-form input {
     padding: 6px 10px;
@@ -192,7 +208,6 @@ tr:hover {
 }
 .account-details {
     margin: 20px;
-    font-family: Arial, Helvetica, sans-serif;
 }
 .account-details td.td-left {
     width: 100px;

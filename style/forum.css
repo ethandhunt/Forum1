@@ -1,7 +1,6 @@
 /* forum page css */
 .forum-post-link {
     text-decoration: none;
-    font-family: Arial, Helvetica, sans-serif;
     color: #474747;
 }
 .forum-table {
@@ -81,7 +80,6 @@
 }
 
 .online-div {
-    font-family: 'Courier New', Courier, monospace;
     margin: 10px;
 }
 

@@ -162,22 +162,12 @@ if (!isset($_SESSION["user_id"])) {
     <title> Forum </title>
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/forum.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <script src="includes/vote.js"></script>
 </head>
 
 <body>
     <?php include "includes/header.php" ?>
-
-    <?php include "includes/navbar.php" ?>
-
-    <?php
-    if (random_int(0, 5) == 0) {
-        ?>
-        <img src="easter/ad2.gif" style="margin:auto">
-        <?php
-    }
-    ?>
 
     <div class="pre-post-table">
         <div class="pre-left">
