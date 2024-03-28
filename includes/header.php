@@ -19,19 +19,12 @@
                     ?>
                     <a href="forum.php"> Forum </a>
 
-                    <!-- <div class="dropdown">
-                        <button class="dropbtn">"User Image"</button>
-                        <div class="dropdown-content">
-                            <a href="account.php">Profile</a>
-                            <a href="logout.php">Logout</a>
-                        </div>
-                    </div> -->
                     <?php
                 }
                 if (isset($_SESSION["banned"]) && !$_SESSION["banned"]) {
                     ?>
                     <a href="post.php"> Post </a>
-                    <a href="chat.php?view=chatrooms"> Live Chat </a>
+                    <a href="chat.php?view=chatrooms"> Chat </a>
                     <?php
                 }
                 ?>
@@ -57,4 +50,19 @@
             </li>
         </ul>   
     </div>
+
+    <?php
+    if (isset($_SESSION["user_id"])) {
+        ?>
+        <div class="dropdown">
+            <img class="dropbtn" src="images/logo.jpg" class="logo">
+            <div class="dropdown-content">
+                <a href="account.php">Profile</a>
+                <a href="logout.php">Logout</a>
+            </div>
+        </div>
+        <?php
+        }
+    ?>
+
 </div>

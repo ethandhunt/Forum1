@@ -38,9 +38,7 @@ $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE us
 
 <body>
     <?php include "includes/header.php" ?>
-
-    <?php include "includes/navbar.php" ?>
-
+    
     <div class="account-details">
         <table>
             <tr id="account-details-username">
