@@ -55,7 +55,7 @@
     if (isset($_SESSION["user_id"])) {
         ?>
         <div class="dropdown">
-            <img class="dropbtn" src="<?php echo $user["avatar_path"] ?>" width=100>
+            <img class="dropbtn" src="avatars/default.jpg" width=100>
             <div class="dropdown-content">
                 <a href="account.php">Profile</a>
                 <a href="logout.php">Logout</a>
