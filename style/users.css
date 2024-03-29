@@ -8,11 +8,6 @@
     float: left;
 }
 
-h2 {
-    padding: 0;
-    margin: 0;
-}
-
 table {
     padding-left: 1%;
     display: inline-block;
@@ -35,3 +30,5 @@ table {
 .users-administrator-options a:hover {
     background-color: rgb(71, 71, 71);
 }
+
+/* end of user css */
