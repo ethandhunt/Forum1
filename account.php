@@ -25,7 +25,7 @@ if (isset($_POST["set_password"])) {
 }
 
 $user_id = $_SESSION["user_id"];
-$user = $conn->query("SELECT username, about_me, avatar_path, join_datetime FROM users WHERE user_id=$user_id")->fetch_array();
+$user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array();
 ?>
 
 <!DOCTYPE html>
@@ -44,10 +44,26 @@ $user = $conn->query("SELECT username, about_me, avatar_path, join_datetime FROM
         <img src="<?php echo $user["avatar_path"] ?>" width=180px>
 
         <table>
-            <tr id="account-username">
+            <tr>
                 <td> <h2><?php echo $user["username"] ?></h2> </td>
+
+                <td>        
+                    <?php
+                        if ($user["banned"]) {
+                            echo "BANNED";
+                        } else {
+                            if ($user["administrator"]) {
+                                echo "(Administrator)";
+                            } else {
+                                if ($user["moderator"]) {
+                                    echo "(Moderator)";
+                                } 
+                            }
+                        }
+                    ?>
+                </td>
             </tr>
-            <tr id="account-about-me">
+            <tr>
                 <td> <?php echo $user["about_me"] ?> </td>
             </tr>
             <tr>

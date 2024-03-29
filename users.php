@@ -16,20 +16,37 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
 <head>
     <title> <?php echo prettify_username($user["username"]) ?> </title>
     <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/users.css">
+    <link rel="stylesheet" href="style/users_2.css">
 </head>
 
 <body>
     <?php include "includes/header.php" ?>
 
-    <div class="account-details">
+    <div class="account">
         <img src="<?php echo $user["avatar_path"] ?>" width=180px>
 
         <table>
-            <tr id="account-username">
+            <tr>
                 <td> <h2><?php echo $user["username"] ?></h2> </td>
+
+                <td>        
+                    <?php
+                        if ($user["banned"]) {
+                            echo "(BANNED)";
+                        } else {
+                            if ($user["administrator"]) {
+                                echo "(Administrator)";
+                            } else {
+                                if ($user["moderator"]) {
+                                    echo "(Moderator)";
+                                } 
+                            }
+                        }
+                    ?>
+                </td>
+
             </tr>
-            <tr id="account-about-me">
+            <tr>
                 <td> <?php echo $user["about_me"] ?> </td>
             </tr>
             <tr>
@@ -38,50 +55,9 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
         </table>
     </div>
 
-    <!-- <table class="account-details">
-        <tr>
-            <th> Username </th>
-            <th> User_id </th>
-            <th> Avatar </th>
-            <th> Join date </th>
-            <th> Moderator </th>
-            <th> Administrator </th>
-            <th> Banned </th>
-        </tr>
-        <tr>
-            <td> <?php echo prettify_username($user["username"]) ?> </td>
-            <td> <?php echo $user["user_id"] ?> </td>
-            <td> <img src="<?php echo $user["avatar_path"] ?>" width=100> </td>
-            <td> <?php echo prettify_datetime($user["join_datetime"]) ?> </td>
-            <td>
-            <?php
-                if ($user["moderator"]) {
-                    echo "Moderator";
-                } else {
-                    echo "Not";
-                }
-                ?>
-            </td>
-            <td>
-                <?php
-                if ($user["administrator"]) {
-                    echo "Administrator";
-                } else {
-                    echo "Not";
-                }
-                ?>
-            </td>
-            <td>
-                <?php
-                if ($user["banned"]) {
-                    echo "Banned";
-                } else {
-                    echo "Not banned";
-                }
-                ?>
-            </td>
-        </tr>
-    </table>
+    <div class="account-posts">
+        <h2>Test</h2>
+    </div>
 
     <?php
     if ($_SESSION["administrator"]) {
@@ -92,7 +68,7 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
         </div>
         <?php
     }
-    ?> -->
+    ?>
 
     <?php include "includes/footer.php" ?>
 </body>
