@@ -34,6 +34,7 @@ $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE us
 <head>
     <title> Account </title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/account.css">
 </head>
 
 <body>
