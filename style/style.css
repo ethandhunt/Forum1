@@ -131,6 +131,8 @@ body {
 }
 /* end footer css */
 
+
+
 /* table css */
 th {
     background-color: #474747;
@@ -141,12 +143,6 @@ th {
 table {
     border: none;
     border-collapse: collapse;
-}
-tr {
-    transition: background-color 0.2s;
-}
-tr:hover {
-    background-color: #ebebeb;
 }
 /* end table css */
 
@@ -219,34 +215,3 @@ tr:hover {
     width: 300px;
 }
 /* end post-form css */
-
-/* account page css */
-.account-form textarea {
-    resize: none;
-}
-.account-form {
-    margin: 20px;
-}
-.account-form input {
-    padding: 6px 10px;
-    margin: 4px 0;
-    box-sizing: border-box;
-    display: block;
-}
-.account-form input#about_me {
-    width: 200px;
-}
-.account-form input[type=submit] {
-    background-color: rgb(12, 153, 12);
-    border: none;
-    color: white;
-    cursor: pointer;
-    width: 200px;
-}
-.account-details {
-    margin: 20px;
-}
-.account-details td.td-left {
-    width: 100px;
-}
-/* end account page css */

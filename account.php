@@ -41,18 +41,19 @@ $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE us
     <?php include "includes/header.php" ?>
     
     <div class="account-details">
+        <img src="<?php echo $user["avatar_path"] ?>" width=180px>
+
         <table>
             <tr id="account-details-username">
-                <td class="td-left"> username: </td> <td> <?php echo $user["username"] ?> </td>
+                <td> <h2><?php echo $user["username"] ?></h2> </td>
             </tr>
             <tr id="account-details-about-me">
-                <td class="td-left"> about me: </td> <td> <?php echo $user["about_me"] ?> </td>
+                <td> <?php echo $user["about_me"] ?> </td>
             </tr>
         </table>
-        avatar: <br> <img src="<?php echo $user["avatar_path"] ?>" width=100>
     </div>
 
-    <form class="account-form" enctype="multipart/form-data" method="post">
+    <!-- <form class="account-form" enctype="multipart/form-data" method="post">
         <label for="avatar"> Upload an avatar </label>
         <input type="file" name="avatar">
         <input type="submit" name="update_avatar" value="Update avatar">
@@ -65,7 +66,7 @@ $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE us
     <form class="account-form" method="post">
         <input type="password" name="password" placeholder="Password" maxlength=100 autocomplete="new-password">
         <input type="submit" name="set_password" value="Set password">
-    </form>
+    </form> -->
 
     <?php include "includes/footer.php" ?>
 </body>
