@@ -1,17 +1,23 @@
-.account-details {
+.account {
     margin: 20px;
     height: 180px;
 }
 
-.account-details img {
+.account img {
     border-radius: 25%;
     float: left;
+}
+
+td h2 {
+    padding: 0px 8px 0px 0px;
 }
 
 table {
     padding-left: 1%;
     display: inline-block;
 }
+
+
 
 .users-administrator-options {
     margin: 20px;
