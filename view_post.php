@@ -264,10 +264,6 @@ if ($author["administrator"]) {
         </div>
     </div>
 
-    <div class="post-title">
-        <?php echo prettify_title("Comments") ?>
-    </div>
-
     <?php
     if (count($comments) > 0) {
         for ($i=0; $i < count($comments); $i++) {
@@ -284,6 +280,11 @@ if ($author["administrator"]) {
                 $username_append_classes = $username_append_classes . " administrator-username";
             }
             ?>
+            
+            <div class="post-title">
+                <?php echo prettify_title("Comments") ?>
+            </div>
+
             <div class="post-comment">
                 <div class="post-left">
                     <?php
