@@ -264,7 +264,6 @@ if ($author["administrator"]) {
         </div>
     </div>
 
-    <br>
     <div class="post-title">
         <?php echo prettify_title("Comments") ?>
     </div>
@@ -277,6 +276,7 @@ if ($author["administrator"]) {
             $comment_author = $conn->query("SELECT * FROM users WHERE user_id=$comment_author_id")->fetch_array();
 
             $username_append_classes = "";
+            
             if ($comment_author["moderator"]) {
                 $username_append_classes = $username_append_classes . " moderator-username";
             }
