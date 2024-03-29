@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2024 at 02:43 AM
+-- Generation Time: Mar 28, 2024 at 10:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,10 @@ CREATE TABLE `chat_messages` (
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- RELATIONSHIPS FOR TABLE `chat_messages`:
+--
+
 -- --------------------------------------------------------
 
 --
@@ -48,6 +52,10 @@ CREATE TABLE `chat_rooms` (
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `title` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- RELATIONSHIPS FOR TABLE `chat_rooms`:
+--
 
 -- --------------------------------------------------------
 
@@ -64,6 +72,14 @@ CREATE TABLE `comments` (
   `edited` tinyint(1) NOT NULL,
   `image_href` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- RELATIONSHIPS FOR TABLE `comments`:
+--   `author_user_id`
+--       `users` -> `user_id`
+--   `post_id`
+--       `posts` -> `post_id`
+--
 
 -- --------------------------------------------------------
 
@@ -84,6 +100,12 @@ CREATE TABLE `comment_reports` (
   `dismissed` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- RELATIONSHIPS FOR TABLE `comment_reports`:
+--   `reporter_user_id`
+--       `users` -> `user_id`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -100,6 +122,12 @@ CREATE TABLE `posts` (
   `pinned` tinyint(1) NOT NULL,
   `image_href` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- RELATIONSHIPS FOR TABLE `posts`:
+--   `author_user_id`
+--       `users` -> `user_id`
+--
 
 -- --------------------------------------------------------
 
@@ -120,6 +148,12 @@ CREATE TABLE `post_reports` (
   `dismissed` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- RELATIONSHIPS FOR TABLE `post_reports`:
+--   `reporter_user_id`
+--       `users` -> `user_id`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -132,6 +166,14 @@ CREATE TABLE `post_votes` (
   `vote_id` int(11) NOT NULL,
   `weight` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- RELATIONSHIPS FOR TABLE `post_votes`:
+--   `post_id`
+--       `posts` -> `post_id`
+--   `user_id`
+--       `users` -> `user_id`
+--
 
 -- --------------------------------------------------------
 
@@ -155,6 +197,10 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- RELATIONSHIPS FOR TABLE `users`:
+--
+
+--
 -- Indexes for dumped tables
 --
 
@@ -174,31 +220,38 @@ ALTER TABLE `chat_rooms`
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
-  ADD PRIMARY KEY (`comment_id`);
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `post id` (`post_id`),
+  ADD KEY `author user id` (`author_user_id`);
 
 --
 -- Indexes for table `comment_reports`
 --
 ALTER TABLE `comment_reports`
-  ADD PRIMARY KEY (`report_id`);
+  ADD PRIMARY KEY (`report_id`),
+  ADD KEY `reporter user id` (`reporter_user_id`);
 
 --
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`post_id`);
+  ADD PRIMARY KEY (`post_id`),
+  ADD KEY `post author user id` (`author_user_id`);
 
 --
 -- Indexes for table `post_reports`
 --
 ALTER TABLE `post_reports`
-  ADD PRIMARY KEY (`report_id`);
+  ADD PRIMARY KEY (`report_id`),
+  ADD KEY `post report reporter user id` (`reporter_user_id`);
 
 --
 -- Indexes for table `post_votes`
 --
 ALTER TABLE `post_votes`
-  ADD PRIMARY KEY (`vote_id`);
+  ADD PRIMARY KEY (`vote_id`),
+  ADD KEY `post vote user id` (`user_id`),
+  ADD KEY `post vote post id` (`post_id`);
 
 --
 -- Indexes for table `users`
@@ -257,6 +310,42 @@ ALTER TABLE `post_votes`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `author user id` FOREIGN KEY (`author_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `comment_reports`
+--
+ALTER TABLE `comment_reports`
+  ADD CONSTRAINT `reporter user id` FOREIGN KEY (`reporter_user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `post author user id` FOREIGN KEY (`author_user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `post_reports`
+--
+ALTER TABLE `post_reports`
+  ADD CONSTRAINT `post report reporter user id` FOREIGN KEY (`reporter_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `post_votes`
+--
+ALTER TABLE `post_votes`
+  ADD CONSTRAINT `post vote post id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `post vote user id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
