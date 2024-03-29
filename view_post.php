@@ -168,8 +168,6 @@ if ($author["administrator"]) {
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <div class="post-title">
         <?php echo prettify_title($post["title"]) ?>
     </div>

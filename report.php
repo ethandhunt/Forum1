@@ -80,8 +80,6 @@ if (isset($_GET["comment_id"])) {
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <?php
     if (isset($go_back) && $go_back) {
         ?>

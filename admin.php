@@ -94,8 +94,6 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <form method="post" class="user-admin-form">
         <label for="find_by"> Select by: </label>
         <select name="find_by">

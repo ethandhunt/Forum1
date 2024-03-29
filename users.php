@@ -22,8 +22,6 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <table class="account-details">
         <tr>
             <th> Username </th>

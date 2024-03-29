@@ -20,9 +20,7 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
 
 <body>
     <?php include "includes/header.php" ?>
-
-    <?php include "includes/navbar.php" ?>
-
+    
     <div class="ban-description">
         You've been banned, you can no longer make posts, comment on posts, or upvote posts
     </div>

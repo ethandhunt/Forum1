@@ -59,8 +59,6 @@ if (isset($_POST['submit'])) {
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <form class="center-form" method="post" enctype="multipart/form-data">
         <input type="text" name="username" placeholder="Username" maxlength=30>
         <?php

@@ -13,8 +13,6 @@ include "includes/db.php"
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <?php
     ?>
 

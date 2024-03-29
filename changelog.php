@@ -14,8 +14,6 @@ include "includes/db.php"
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <h2> Working on </h2>
     <ul class="changelog">
         <li> dms </li>

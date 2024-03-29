@@ -13,8 +13,6 @@ include "includes/db.php"
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <!-- <img src="easter/ad2.gif" height=400> -->
     forum will probably be reset each day until I make actual moderation stuff
     <br>
