@@ -16,6 +16,10 @@ h2 {
     padding: 0;
 }
 
+td a {
+    text-decoration: none;
+}
+
 /* adapted from https://www.w3schools.com/css/css_navbar.asp */
 
 .ban-message {
@@ -145,10 +149,16 @@ th {
     padding: 5px;
     font-weight: 100;
 }
+
 table {
     border: none;
     border-collapse: collapse;
 }
+
+td a {
+    text-decoration: none;
+}
+
 /* end table css */
 
 /* center form css */
