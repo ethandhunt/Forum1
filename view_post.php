@@ -264,6 +264,11 @@ if ($author["administrator"]) {
         </div>
     </div>
 
+    <br>
+    <div class="post-title">
+        <?php echo prettify_title("Comments") ?>
+    </div>
+
     <?php
     if (count($comments) > 0) {
         for ($i=0; $i < count($comments); $i++) {
