@@ -8,6 +8,7 @@ if (!isset($_GET["id"]) || !intval($_GET["id"])) {
 
 $user_id = intval($_GET["id"]);
 $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array();
+$posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +23,7 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
 <body>
     <?php include "includes/header.php" ?>
 
-    <div class="account">
+    <div class="account-details">
         <img src="<?php echo $user["avatar_path"] ?>" width=180px>
 
         <table>
@@ -55,8 +56,24 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
         </table>
     </div>
 
-    <div class="account-posts">
-        <h2>Test</h2>
+    <div class="account-activity">
+        <div class="recent-posts"> 
+            <h2>Recent Posts</h2>   
+            <table>
+                <?php
+                for ($i=0; $i < count($posts); $i++) {
+                    if ($i == 5) break;
+                    $row = $posts[$i];
+                    ?>
+                    <tr class="form-post">
+                        <td><a href="view_post.php?id=<?php echo $row["post_id"] ?>"><?php echo prettify_title($row["title"])?></a></td>
+                    </tr>
+                    <?php
+                }
+                
+                ?>
+            </table>
+        </div>
     </div>
 
     <?php
