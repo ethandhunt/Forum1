@@ -168,44 +168,61 @@ if ($author["administrator"]) {
 <body>
     <?php include "includes/header.php" ?>
 
-    <div class="post-title">
+    <!-- <div class="post-title">
         <?php echo prettify_title($post["title"]) ?>
-    </div>
+        -
+        <?php echo prettify_datetime($post["timestamp"]) ?>
+    </div> -->
+
     <div hidden id="post-pinned"><?php echo $post["pinned"] ?></div>
+
+    <div class="post-title">
+         <?php echo ($post["title"]) ?>
+         -
+         <?php echo prettify_datetime($post["timestamp"]) ?>
+    </div> 
+
     <div class="post">
-        <div class="post-left">
-            <?php
-            if (!$author["banned"]) {
-                ?>
-                <a class="post-username<?php echo $username_append_classes ?>" href="users.php?id=<?php echo $author_id?>">
-                    <?php echo prettify_username($author["username"]) ?>
-                </a>
-                <?php
-            } else {
-                ?>
-                <a class="post-username banned-username" href="users.php?id=<?php echo $author_id?>"> &lt;banned user&gt; </a>
-                <?php
-            }
-            ?>
-            <div class="post-timestamp">
-                <?php echo prettify_datetime($post["timestamp"]) ?>
-            </div>
-            <?php
-            if (!$author["banned"]) {
-                ?>
-                <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
-                <div class="post-about-me">
-                    <?php echo htmlentities($author["about_me"], ENT_QUOTES) ?>
-                </div>
-                <?php
-            }
-            ?>
+        <div class="post-top">
+            <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
+    
+            <table>
+                <tr>
+                    <td class="post-username"> 
+                        <a href="users.php?id=<?php echo $author_id?>">
+                             <h2><?php echo prettify_username($author["username"]) ?></h2>
+                        </a>       
+                    </td>
+                                    
+                    <td class="post-author-rank">        
+                        <?php
+                            if ($author["banned"]) {
+                                echo "(BANNED)";
+                            } else {
+                                if ($author["administrator"]) {
+                                    echo "(Administrator)";
+                                } else {
+                                    if ($author["moderator"]) {
+                                        echo "(Moderator)";
+                                    } 
+                                }
+                            }
+                        ?>
+                    </td>
+                </tr>
+                                    
+                <tr class="post-about-me">
+                    <td> <?php echo $author["about_me"] ?> </td>
+                </tr>
+            </table>
         </div>
-        <div class="post-right">
+
+        <div class="post-bottom">
             <div class="post-body" id="post-body">
                 <div class="post-body-body">
                     <?php echo prettify_body($post["body"]) ?>
                 </div>
+
                 <?php
                 if ($post["edited"]) {
                     ?>
@@ -214,19 +231,22 @@ if ($author["administrator"]) {
                     <?php
                 }
                 ?>
+
             </div>
+
             <?php
             if ($author_id == $_SESSION["user_id"]) {
                 ?>
                 <form class="edit-post-form" method="post" id="edit-post-form" hidden>
-                    <textarea class="scripted-textarea" name="body" id="edit-post-body"><?php echo htmlentities($post["body"], ENT_QUOTES) ?></textarea>
+                    <textarea class="scripted-textarea" name="body" id="edit-post-body" placeholder="Type Comment Here.."><?php echo htmlentities($post["body"], ENT_QUOTES) ?></textarea>
                     <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($post["image_href"], ENT_QUOTES) ?>">
                     <input type="submit" name="edit_post" value="Edit">
                 </form>
                 <?php
             }
             ?>
-            <div class="post-right-right">
+
+            <div class="post-right">
                 <div class="post-modify">
                     <?php
                     if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
@@ -266,55 +286,53 @@ if ($author["administrator"]) {
 
     <?php
     if (count($comments) > 0) {
+        ?>
+        <div class="post-title">
+            <?php echo prettify_title("Comments") ?>
+        </div>
+        <?php
         for ($i=0; $i < count($comments); $i++) {
             $row = $comments[$i];
             $comment_author_id = $row["author_user_id"];
             $comment_author = $conn->query("SELECT * FROM users WHERE user_id=$comment_author_id")->fetch_array();
-
-            $username_append_classes = "";
-            
-            if ($comment_author["moderator"]) {
-                $username_append_classes = $username_append_classes . " moderator-username";
-            }
-            if ($comment_author["administrator"]) {
-                $username_append_classes = $username_append_classes . " administrator-username";
-            }
             ?>
-            
-            <div class="post-title">
-                <?php echo prettify_title("Comments") ?>
-            </div>
 
-            <div class="post-comment">
-                <div class="post-left">
-                    <?php
-                    if (!$comment_author["banned"]) {
-                        ?>
-                        <a class="post-username<?php echo $username_append_classes ?>" href="users.php?id=<?php echo $comment_author_id?>">
-                            <?php echo prettify_username($comment_author["username"]) ?>
-                        </a>
-                        <?php
-                    } else {
-                        ?>
-                        <a class="post-username banned-username" href="users.php?id=<?php echo $comment_author_id?>"> &lt;banned user&gt; </a>
-                        <?php
-                    }
-                    ?>
-                    <div class="post-timestamp">
-                        <?php echo prettify_timestamp(strtotime($row["timestamp"])) ?>
-                    </div>
-                    <?php
-                    if (!$comment_author["banned"]) {
-                        ?>
-                        <img src="<?php echo $comment_author["avatar_path"] ?>" class="post-avatar">
-                        <div class="post-about-me">
-                            <?php echo htmlentities($comment_author["about_me"], ENT_QUOTES) ?>
-                        </div>
-                        <?php
-                    }
-                    ?>
+            <div class="post-comment post">
+                <div class="post-top">
+                    <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
+
+                    <table>
+                        <tr>
+                            <td class="post-username"> 
+                                <a href="users.php?id=<?php echo $author_id?>">
+                                     <h2><?php echo prettify_username($author["username"]) ?></h2>
+                                </a>       
+                            </td>
+
+                            <td class="post-author-rank">        
+                                <?php
+                                    if ($author["banned"]) {
+                                        echo "(BANNED)";
+                                    } else {
+                                        if ($author["administrator"]) {
+                                            echo "(Administrator)";
+                                        } else {
+                                            if ($author["moderator"]) {
+                                                echo "(Moderator)";
+                                            } 
+                                        }
+                                    }
+                                ?>
+                            </td>
+                        </tr>
+
+                        <tr class="post-about-me">
+                            <td> <?php echo $author["about_me"] ?> </td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="post-right">
+                
+                <div class="post-bottom">
                     <div class="post-body" id="comment-body-<?php echo $row["comment_id"] ?>">
                         <div class="post-body-body">
                             <?php echo prettify_body($row["body"]) ?>
@@ -328,6 +346,7 @@ if ($author["administrator"]) {
                         }
                         ?>
                     </div>
+
                     <?php
                     if ($comment_author_id == $_SESSION["user_id"]) {
                         ?>
@@ -340,39 +359,32 @@ if ($author["administrator"]) {
                         <?php
                     }
                     ?>
-                    <div class="post-right-right">
+
+                    <div class="post-right">
                         <div class="post-modify">
                             <?php
-                            if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
+                            if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
                                 ?>
-                                <button class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i></button>
+                                <button class="edit-button" onclick="edit_comment()"><i class="fa fa-edit"></i></button>
                                 <?php
                             }
-                            if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                            if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
                                 ?>
-                                <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i></button>
+                                <button class="delete-button" onclick="delete_comment()"><i class="fa fa-trash"></i></button>
                                 <?php
                             }
                             if (!$_SESSION["banned"]) {
                                 ?>
-                                <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i></a>
+                                <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i></a>
                                 <?php
                             }
                             ?>
                         </div>
-                        <?php
-                        if ($post["image_href"] != "") {
-                            ?>
-                            <div class="post-image">
-                                <img src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
-                            </div>
-                            <?php
-                        }
-                        ?>
                     </div>
                 </div>
             </div>
-            <?php
+        </div>
+        <?php
         }
     }
 
@@ -380,7 +392,6 @@ if ($author["administrator"]) {
         ?>
         <form class="comment-form" method="post">
             <textarea class="scripted-textarea" name="body" id="body"></textarea>
-            <input type="text" maxlength="1000" name="image_href" placeholder="Image URL">
             <input type="submit" name="comment" value="Comment">
         </form>
         <?php

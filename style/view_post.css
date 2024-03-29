@@ -6,86 +6,114 @@
   padding: 1px;
 }
 
-.post-left {
-  float: left;
-  width: 10%;
-  border: 1px solid #333;
-  margin-right: 10px;
-  overflow: hidden;
-}
-.post-right {
-  float: right;
-  width: 90%;
-  border: 1px solid #333;
-  overflow-wrap: break-word;
-  overflow: hidden;
-  display: flex;
-}
-/* .post-right-right {
-  flex-direction: column;
-} */
-.post-username {
-  padding: 8px;
-  text-decoration: none;
-  display: block;
-  color: black;
-}
-.post-title {
-  font-size: 30px;
-  color: #555;
-  margin: 20px;
-  padding: 5px;
-}
 .post {
   margin: 20px;
-  display: flex;
+  display: block;
+  width: 80%;
+  min-height: 100px;
+  overflow: hidden;
 }
-.post-comment {
+
+.post-top {
+  height: 120px;
+  width: 80%;
+}
+
+.post-top img {
+  border-radius: 25%;
+  float: left;
+}
+
+.post-top table {
+  padding-left: 20px;
+  display: inline-block;
+}
+
+.post-bottom {
+  float: left;
+  padding-left: 9.3%;
+  width: 80%;
+
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+
+.post-bottom-right {
+  width: 100px;
+  height: 28px;
+  float: right;
+}
+
+.post-title {
+  font-weight: bold;
+  font-size: larger;
   margin: 20px;
   display: flex;
 }
-.post-avatar {
-  object-fit: contain;
-  width: 100%;
-  margin-bottom: 0px;
-}
+
 .post-about-me {
-  margin: 0px 8px 8px 8px;
+  display: block;
+  padding: 0px 0px 20px 0px;
   overflow-wrap: break-word;
 }
-.post-timestamp {
-  margin-left: 8px;
-  margin-bottom: 8px;
+
+.post-author-rank {
+  padding: 0px 8px 0px 0px;
 }
+
+.post-username {
+  display: inline-block;
+}
+
+.post-avatar {
+  object-fit: contain;
+  width: 120px;
+}
+
+td h2 {
+  padding: 0px 8px 0px 0px;
+}
+
+td a {
+  color: black;
+}
+
+.edited {
+  color: grey;
+}
+
 .post-body {
   float: left;
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  padding: 5px 0px 5px 0px;
 }
-.post-body-body {
-  padding: 10px;
-  flex-grow: 1;
+
+.post-right {
+  float:  left;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  display: flex;
 }
+
+
+
+/* .post-comment {
+  margin: 20px;
+  display: flex;
+}
+
 .post-image img {
   max-width: 200px;
   max-height: 200px;
   background-size: cover;
   float: right;
   margin: 10px;
-}
-.edited {
-  color: grey;
-  padding: 10px;
-}
-.post-modify {
-  float: right;
-  width: fit-content;
-  display: flex;
-  align-items: self-start;
-  padding-top: 5px;
-  padding-right: 5px;
-}
+} */
+
+
 .post-modify button {
   background-color: white;
   border: none;
@@ -96,29 +124,39 @@
   resize: none;
 
 }
+
 .comment-form {
-  /* width: 300px; */
   margin: 20px;
-  margin-left: 25px;
-  padding-left: 10%;
+  margin-bottom: 40px;
+
+  width: 35%;
+
+  display: inline-block;
 }
+
 .comment-form input {
   padding: 6px 10px;
   margin: 4px 0;
   box-sizing: border-box;
   display: block;
 }
+
 .comment-form textarea#body {
   width: 60%;
 }
+
 .comment-form input[type=submit] {
   background-color: rgb(12, 153, 12);
   border: none;
   color: white;
   cursor: pointer;
   width: 200px;
+  border-radius: 25%;
 }
+
 /* end comment-form css */
+
+
 
 /* post and comment modification buttons css */
 .edit-button:hover {
@@ -133,10 +171,13 @@
 .report-anchor {
   color: black;
 }
+
 .report-anchor:hover {
   color: rgb(231, 30, 30);
 }
 /* end comment modification button css */
+
+
 
 /* edit-comment-form css */
 .edit-comment-form {
@@ -193,14 +234,5 @@
   color: white;
   cursor: pointer;
   width: 200px;
-}
-.moderator-username {
-  color: coral;
-}
-.administrator-username {
-  color: red;
-}
-.banned-username {
-  color: rgb(138, 14, 14)
 }
 /* end edit-post-form css */
