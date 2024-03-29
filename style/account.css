@@ -1,15 +1,15 @@
-.account-details {
+.account {
     margin: 20px;
+    height: 180px;
 }
 
-.account-details img {
+.account img {
     border-radius: 25%;
     float: left;
 }
 
-table {
-    padding-left: 1%;
-    display: inline-block;
+.update-account {
+    margin: 20px;
 }
 
 h2 {
@@ -17,22 +17,26 @@ h2 {
     margin: 0;
 }
 
-/* account page css */
+table {
+    padding-left: 1%;
+    display: inline-block;
+}
+
 .account-form textarea {
     resize: none;
 }
 .account-form {
-    margin: 20px;
+    margin: 5px 10px 0px 0px;
+    display: inline-block;
 }
 .account-form input {
     padding: 6px 10px;
     margin: 4px 0;
     box-sizing: border-box;
     display: block;
-}
-.account-form input#about_me {
     width: 200px;
 }
+
 .account-form input[type=submit] {
     background-color: rgb(12, 153, 12);
     border: none;
@@ -40,4 +44,5 @@ h2 {
     cursor: pointer;
     width: 200px;
 }
+
 /* end account page css */
