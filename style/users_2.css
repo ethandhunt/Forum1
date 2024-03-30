@@ -17,6 +17,14 @@ td h2 {
     padding: 0px 8px 0px 0px;
 }
 
+tbody tr {
+    display: block;
+}
+
+tr td {
+    padding: 0px 5px 0px 5px;
+}
+
 .account-activity {
     margin: 20px;
 }

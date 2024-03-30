@@ -21,6 +21,14 @@ table {
     display: inline-block;
 }
 
+tbody tr {
+    display: block;
+}
+
+tr td {
+    padding: 0px 5px 0px 5px;
+}
+
 .account-form textarea {
     resize: none;
 }
