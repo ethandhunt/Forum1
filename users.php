@@ -9,6 +9,8 @@ if (!isset($_GET["id"]) || !intval($_GET["id"])) {
 $user_id = intval($_GET["id"]);
 $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array();
 $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
+$comments = $conn->query("SELECT * FROM comments")->fetch_all(MYSQLI_BOTH);
+$post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +57,33 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
             </tr>
             <td><br></td>
             <tr>
-                <td>Total Comments</td>
+                <td>
+                    <?php 
+                        for ($i=0; $i < count($comments); $i++) {
+                            $row = $comments[$i];
+                            $amount = 0;
+                            if ($row["author_user_id"] == $user_id) {
+                                $amount += $i;
+                            }
+                        }
+                        echo $amount . " Comments"
+                    ?>
+                </td>
+                <td>•</td>
+                <td>
+                    <?php 
+                        for ($i=0; $i < count($post_votes); $i++) {
+                            $row = $post_votes[$i];
+                            $amount = 0;
+                            if ($row["user_id"] == $user_id) {
+                                if ($row["weight"] >= 1) {
+                                    $amount += $i;
+                                }
+                            }
+                        }
+                        echo $amount . " Upvote(s) Given"
+                    ?>
+                </td>
             </tr>
         </table>
     </div>
