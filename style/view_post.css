@@ -44,7 +44,7 @@
   float: right;
 }
 
-.post-title {
+.post-title, .comment-title  {
   font-weight: bold;
   font-size: larger;
   margin: 20px;
@@ -96,6 +96,10 @@ td a {
   overflow-wrap: break-word;
   overflow: hidden;
   display: flex;
+}
+
+.post-timestamp {
+  padding: 0px 8px 0px 8px;
 }
 
 
