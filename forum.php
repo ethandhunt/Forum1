@@ -309,7 +309,7 @@ if (!isset($_SESSION["user_id"])) {
                 ?>
             </td> 
             <!-- <td class="form-post-user-image"><img src="<?php echo $user["avatar_path"] ?>" width=45px></td> -->
-            <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo $user["username"] ?></a> </td>
+            <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo $post["username"] ?></a> </td>
             <td>        
                 <?php
                     if ($user["banned"]) {
