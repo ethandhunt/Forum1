@@ -304,20 +304,20 @@ if ($author["administrator"]) {
                     <table>
                         <tr>
                             <td class="post-username"> 
-                                <a href="users.php?id=<?php echo $author_id?>">
-                                     <h2><?php echo prettify_username($author["username"]) ?></h2>
+                                <a href="users.php?id=<?php echo $comment_author_id?>">
+                                     <h2><?php echo prettify_username($comment_author["username"]) ?></h2>
                                 </a>       
                             </td>
 
                             <td class="post-author-rank">        
                                 <?php
-                                    if ($author["banned"]) {
+                                    if ($comment_author["banned"]) {
                                         echo "(banned)";
                                     } else {
-                                        if ($author["administrator"]) {
+                                        if ($comment_author["administrator"]) {
                                             echo "(Administrator)";
                                         } else {
-                                            if ($author["moderator"]) {
+                                            if ($comment_author["moderator"]) {
                                                 echo "(Moderator)";
                                             } 
                                         }
@@ -327,7 +327,7 @@ if ($author["administrator"]) {
                         </tr>
 
                         <tr class="post-about-me">
-                            <td> <?php echo $author["about_me"] ?> </td>
+                            <td> <?php echo $comment_author["about_me"] ?> </td>
                         </tr>
                     </table>
                 </div>
@@ -363,12 +363,12 @@ if ($author["administrator"]) {
                     <div class="post-right">
                         <div class="post-modify">
                             <?php
-                            if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
+                            if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
                                 ?>
                                 <button class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i></button>
                                 <?php
                             }
-                            if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                            if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
                                 ?>
                                 <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i></button>
                                 <?php
