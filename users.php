@@ -9,8 +9,8 @@ if (!isset($_GET["id"]) || !intval($_GET["id"])) {
 $user_id = intval($_GET["id"]);
 $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array();
 $posts = $conn->query("SELECT post_id, author_user_id, title FROM posts")->fetch_all(MYSQLI_BOTH);
-$comments = $conn->query("SELECT author_user_id FROM comments")->fetch_all(MYSQLI_BOTH);
-$post_votes = $conn->query("SELECT user_id, weight FROM post_votes")->fetch_all(MYSQLI_BOTH)
+$comments = $conn->query("SELECT * FROM comments")->fetch_all(MYSQLI_BOTH);
+$post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
 ?>
 
 <!DOCTYPE html>
@@ -58,29 +58,35 @@ $post_votes = $conn->query("SELECT user_id, weight FROM post_votes")->fetch_all(
             <td><br></td>
             <tr>
                 <td>
-                    <?php 
-                        for ($i=0; $i < count($comments); $i++) {
-                            $row = $comments[$i];
-                            $amount = 0;
-                            if ($row["author_user_id"] == $user_id) {
-                                $amount += $i;
-                            }
-                        }
-                        echo $amount . " Comments"
+                    <?php
+                         $amount = 0;
+
+                         for ($i=0; $i < count($comments); $i++) {
+                             $row = $comments[$i];
+
+                             if ($row["author_user_id"] == $user_id) {
+                                 $amount++;
+                             }
+                         }
+                         
+                         echo $amount . " Comment(s)";
                     ?>
                 </td>
                 <td>•</td>
                 <td>
                     <?php 
+                        $amount = 0;
+
                         for ($i=0; $i < count($post_votes); $i++) {
                             $row = $post_votes[$i];
-                            $amount = 0;
+
                             if ($row["user_id"] == $user_id) {
                                 if ($row["weight"] >= 1) {
-                                    $amount += $i;
+                                    $amount++;
                                 }
                             }
                         }
+
                         echo $amount . " Upvote(s) Given"
                     ?>
                 </td>
