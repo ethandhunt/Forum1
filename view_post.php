@@ -287,8 +287,16 @@ if ($author["administrator"]) {
     <?php
     if (count($comments) > 0) {
         ?>
-        <div class="post-title">
+        <div class="comment-title">
             <?php echo prettify_title("Comments") ?>
+            <?php
+                $amount = 0;
+                for ($i=0; $i < count($comments); $i++) {
+                    $amount++;
+                }
+
+                echo "(" . $amount . ")";
+            ?>
         </div>
         <?php
         for ($i=0; $i < count($comments); $i++) {
@@ -319,11 +327,13 @@ if ($author["administrator"]) {
                                         } else {
                                             if ($comment_author["moderator"]) {
                                                 echo "(Moderator)";
-                                            } 
+                                            }
                                         }
                                     }
                                 ?>
                             </td>
+                            <td>•</td>
+                            <td class="post-timestamp"><?php echo prettify_timestamp(strtotime($row["timestamp"])) ?></td>
                         </tr>
 
                         <tr class="post-about-me">
@@ -406,7 +416,7 @@ if ($author["administrator"]) {
         
         let textareas = document.getElementsByClassName('scripted-textarea')
         // resize comment textarea
-        for (let i=0; i<textareas.length; i++) {
+        for (let i=0; i < textareas.length; i++) {
             textareas[i].addEventListener("input", function (e) {
                 this.style.height = "auto";
                 this.style.height = this.scrollHeight + "px";
