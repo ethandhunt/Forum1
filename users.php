@@ -53,6 +53,10 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
             <tr>
                 <td> Joined <?php echo prettify_datetime($user["join_datetime"]) ?> </td>
             </tr>
+            <td><br></td>
+            <tr>
+                <td>Total Comments</td>
+            </tr>
         </table>
     </div>
 
@@ -64,11 +68,14 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
                 for ($i=0; $i < count($posts); $i++) {
                     if ($i == 5) break;
                     $row = $posts[$i];
-                    ?>
-                    <tr class="form-post">
-                        <td><a href="view_post.php?id=<?php echo $row["post_id"] ?>"><?php echo prettify_title($row["title"])?></a></td>
-                    </tr>
-                    <?php
+
+                    if ($row["author_user_id"] == $user_id) {
+                        ?>
+                        <tr class="form-post">
+                            <td><a href="view_post.php?id=<?php echo $row["post_id"] ?>"><?php echo prettify_title($row["title"])?></a></td>
+                        </tr>
+                        <?php
+                    }
                 }
                 
                 ?>
