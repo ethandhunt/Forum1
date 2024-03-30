@@ -197,7 +197,7 @@ if ($author["administrator"]) {
                     <td class="post-author-rank">        
                         <?php
                             if ($author["banned"]) {
-                                echo "(BANNED)";
+                                echo "(banned)";
                             } else {
                                 if ($author["administrator"]) {
                                     echo "(Administrator)";
@@ -312,7 +312,7 @@ if ($author["administrator"]) {
                             <td class="post-author-rank">        
                                 <?php
                                     if ($author["banned"]) {
-                                        echo "(BANNED)";
+                                        echo "(banned)";
                                     } else {
                                         if ($author["administrator"]) {
                                             echo "(Administrator)";

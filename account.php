@@ -50,7 +50,7 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
                 <td>        
                     <?php
                         if ($user["banned"]) {
-                            echo "BANNED";
+                            echo "(banned)";
                         } else {
                             if ($user["administrator"]) {
                                 echo "(Administrator)";

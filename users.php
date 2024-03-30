@@ -33,7 +33,7 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
                 <td>        
                     <?php
                         if ($user["banned"]) {
-                            echo "(BANNED)";
+                            echo "(banned)";
                         } else {
                             if ($user["administrator"]) {
                                 echo "(Administrator)";
