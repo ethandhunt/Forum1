@@ -365,12 +365,12 @@ if ($author["administrator"]) {
                             <?php
                             if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
                                 ?>
-                                <button class="edit-button" onclick="edit_comment()"><i class="fa fa-edit"></i></button>
+                                <button class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i></button>
                                 <?php
                             }
                             if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
                                 ?>
-                                <button class="delete-button" onclick="delete_comment()"><i class="fa fa-trash"></i></button>
+                                <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i></button>
                                 <?php
                             }
                             if (!$_SESSION["banned"]) {
