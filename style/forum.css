@@ -3,12 +3,23 @@
     text-decoration: none;
     color: #474747;
 }
+
+.forum-post-link td {
+    padding: 0px 5px 0px 5px;
+}
+
 .forum-table {
     margin: 10px;
 }
-.forum-post-username {
-    min-width: 100px;
+
+.form-post-user-image img {
+    border-radius: 50%;
 }
+
+.forum-post-username a {
+    font-weight: bold;
+}
+
 .forum-post-mentions {
     /* width: fit-content; */
     width: auto;
@@ -29,7 +40,7 @@
 }
 .forum-post-likes {
     text-align: right;
-    min-width: 30px;
+    min-width: 10px;
 }
 .forum-post-comments {
     text-align: right;

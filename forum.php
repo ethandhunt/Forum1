@@ -210,7 +210,7 @@ if (!isset($_SESSION["user_id"])) {
     for ($i=0; $i < count($posts); $i++) {
         $row = $posts[$i];
         $post_user_id = $row["author_user_id"];
-        $user = $conn->query("SELECT username FROM users WHERE user_id=$post_user_id")->fetch_array();
+        $user = $conn->query("SELECT * FROM users WHERE user_id=$post_user_id")->fetch_array();
         $posts_arr[$i] = array(
             'post_id' => $row['post_id'],
             'username' => $user['username'],
@@ -277,8 +277,9 @@ if (!isset($_SESSION["user_id"])) {
             $anchor_append_class = "";
         }
         ?>
-        <tr class="forum-post-link">
-            <td>
+        <!-- <tr class="forum-post-link">
+
+            <td class="forum-post-pinned">
                 <?php
                 if($post["pinned"]) {
                     ?>
@@ -286,7 +287,7 @@ if (!isset($_SESSION["user_id"])) {
                     <?php
                 }
                 ?>
-            </td>
+            </td> 
             <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"> <?php echo htmlentities($post["username"], ENT_QUOTES) ?> </a> </td>
             <td class="forum-post-mentions<?php if($post["mentions"]>0) {echo " mentioned";} ?>"> @<?php echo $post["mentions"] ?> </td>
             <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" class="forum-post-link<?php echo $anchor_append_class ?>"> <?php echo $post["title"] ?> </a> </td>
@@ -295,7 +296,49 @@ if (!isset($_SESSION["user_id"])) {
             <td class="forum-post-likes" id="likes-<?php echo $post["post_id"] ?>"> <?php echo $post["likes"] ?> </td>
             <td> <i class="fa fa-caret-up vote <?php echo $upvote_append_class ?>" id="upvote-<?php echo $post["post_id"]?>" onclick="vote(<?php echo $post["post_id"]?>,'up')"></i> </td>
             <td> <i class="fa fa-caret-down vote <?php echo $downvote_append_class ?>" id="downvote-<?php echo $post["post_id"]?>" onclick="vote(<?php echo $post["post_id"]?>,'down')"></i> </td>
+        </tr> -->
+
+        <tr class="forum-post-link">
+            <td class="forum-post-pinned">
+                <?php
+                if($post["pinned"]) {
+                    ?>
+                    <i class="fa fa-map-pin"></i>
+                    <?php
+                }
+                ?>
+            </td> 
+            <!-- <td class="form-post-user-image"><img src="<?php echo $user["avatar_path"] ?>" width=45px></td> -->
+            <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo $user["username"] ?></a> </td>
+            <td>        
+                <?php
+                    if ($user["banned"]) {
+                        echo "(banned)";
+                    } else {
+                        if ($user["administrator"]) {
+                            echo "(Administrator)";
+                        } else {
+                            if ($user["moderator"]) {
+                                echo "(Moderator)";
+                            } 
+                        }
+                    }
+                ?>
+            </td>
+            <td>•</td>
+            <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" class="forum-post-link<?php echo $anchor_append_class ?>"> <?php echo $post["title"] ?> </a> </td>
+            <td class="forum-post-mentions<?php if($post["mentions"]>0) {echo " mentioned";} ?>"> @<?php echo $post["mentions"] ?> </td>
+            <td>•</td>
+            <td class="forum-post-timestamp"> <?php echo $post["timestamp_pretty"] ?> </td>
+            <td>•</td>
+            <td class="forum-post-comments"> <?php echo $post["comments"] ?> Comments </td>
+            <td>•</td>
+            <td class="forum-post-likes" id="likes-<?php echo $post["post_id"] ?>"> <?php echo $post["likes"] ?> </td>
+            <td> <i class="fa fa-caret-up vote <?php echo $upvote_append_class ?>" id="upvote-<?php echo $post["post_id"]?>" onclick="vote(<?php echo $post["post_id"]?>,'up')"></i> </td>
+            <td> <i class="fa fa-caret-down vote <?php echo $downvote_append_class ?>" id="downvote-<?php echo $post["post_id"]?>" onclick="vote(<?php echo $post["post_id"]?>,'down')"></i> </td>
+
         </tr>
+
         <?php
     }
     ?>
