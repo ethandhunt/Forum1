@@ -13,11 +13,6 @@
     display: inline-block;
 }
 
-.account-username, .account-username h2 {
-    min-width: 1px;
-    overflow: hidden;
-}
-
 td h2 {
     padding: 0px 8px 0px 0px;
 }
