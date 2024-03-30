@@ -8,9 +8,9 @@ if (!isset($_GET["id"]) || !intval($_GET["id"])) {
 
 $user_id = intval($_GET["id"]);
 $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array();
-$posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
-$comments = $conn->query("SELECT * FROM comments")->fetch_all(MYSQLI_BOTH);
-$post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
+$posts = $conn->query("SELECT post_id, author_user_id, title FROM posts")->fetch_all(MYSQLI_BOTH);
+$comments = $conn->query("SELECT author_user_id FROM comments")->fetch_all(MYSQLI_BOTH);
+$post_votes = $conn->query("SELECT user_id, weight FROM post_votes")->fetch_all(MYSQLI_BOTH)
 ?>
 
 <!DOCTYPE html>
