@@ -366,7 +366,6 @@ if ($author["administrator"]) {
                             </td>
                             <td>•</td>
                             <td class="post-timestamp"><?php echo prettify_timestamp(strtotime($row["timestamp"])) ?></td>
-                            <td>•</td>
                             <td>
                                 <?php
                                     for ($o=0; $o < count($blocked_users); $o++)  {
@@ -375,7 +374,7 @@ if ($author["administrator"]) {
                                        if ($comment_author_id == $row['blocked_user_id'] && $_SESSION['user_id'] == $row['user_id']) {
                                         ?>
                                         <?php
-                                            echo "Blocked";
+                                            echo " • Blocked";
                                        }
                                     } 
                                 ?>
