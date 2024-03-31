@@ -34,6 +34,12 @@ if (isset($_POST["block_user"])) {
         throw new Exception("Invalid user_id", 404);
     } elseif ($_SESSION["banned"]) {
         throw new Exception("Cannot block users while banned");
+    } else {
+        $blocked_user = $conn->query("SELECT blocked_user_id FROM blocked_users WHERE user_id=$user_id")->fetch_array();
+
+        if ($blocked_user['blocked_user_id'] == $blocked_user_id) {
+            throw new Exception("Cannot block user more than once");
+        }
     }
 
     $conn->query("INSERT INTO blocked_users (user_id, blocked_user_id) VALUES ('$user_id', '$blocked_user_id')");
@@ -360,6 +366,20 @@ if ($author["administrator"]) {
                             </td>
                             <td>•</td>
                             <td class="post-timestamp"><?php echo prettify_timestamp(strtotime($row["timestamp"])) ?></td>
+                            <td>•</td>
+                            <td>
+                                <?php
+                                    for ($o=0; $o < count($blocked_users); $o++)  {
+                                       $row = $blocked_users[$o];
+                                    
+                                       if ($comment_author_id == $row['blocked_user_id'] && $_SESSION['user_id'] == $row['user_id']) {
+                                        ?>
+                                        <?php
+                                            echo "Blocked";
+                                       }
+                                    } 
+                                ?>
+                            </td>
                             <td>•</td>
                             <td>
                                 <div class="dropdown">
