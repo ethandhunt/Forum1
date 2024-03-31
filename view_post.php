@@ -45,6 +45,25 @@ if (isset($_POST["block_user"])) {
     $conn->query("INSERT INTO blocked_users (user_id, blocked_user_id) VALUES ('$user_id', '$blocked_user_id')");
 }
 
+if (isset($_POST["unblock_user"])) {
+    $blocked_user_id = $_POST["blocked_user_id"];
+    $user_id = $_SESSION["user_id"];
+
+    if (!intval($blocked_user_id)) {
+        throw new Exception("Invalid user_id", 404);
+    } elseif ($_SESSION["banned"]) {
+        throw new Exception("Cannot block users while banned");
+    } else {
+        $blocked_user = $conn->query("SELECT blocked_user_id FROM blocked_users WHERE user_id=$user_id")->fetch_array();
+
+        if ($blocked_user['blocked_user_id'] != $blocked_user_id) {
+            throw new Exception("Cannot unblock user that you havent blocked");
+        }
+    }
+
+    $conn->query("DELETE FROM blocked_users WHERE user_id=$user_id");
+}
+
 if (isset($_POST["edit_comment"])) {
     $body = mysqli_real_escape_string($conn, $_POST["body"]);
     $image_href = mysqli_real_escape_string($conn, $_POST["image_href"]);
