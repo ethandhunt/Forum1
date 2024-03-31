@@ -14,59 +14,25 @@
   overflow: hidden;
 }
 
-.post-top {
-  height: 120px;
-  width: 80%;
+.post-content {
+  min-height: 120px;
+  padding-bottom: 20px;
+
+  overflow: hidden;
 }
 
-.blocked-post-comment {
-  margin: 20px;
-  display: block;
-  width: 80%;
-  min-height: 20px;
-}
-
-/* .blocked-post-top {
-  height: 50px;
-  width: 80%;
-} */
-
-
-.post-top img, .blocked-post-top img {
+.post img {
   border-radius: 25%;
   float: left;
 }
 
-.post-top table {
+.post-content table {
   padding-left: 20px;
   display: inline-block;
 }
 
-.blocked-post-top table {
+.blocked-post-content table {
   display: inline-block;
-}
-
-tr td {
-  padding: 0px 5px 0px 5px;
-}
-
-td a {
-  color: black;
-}
-
-.post-bottom {
-  float: left;
-  padding-left: 145px;
-  width: 95%;
-
-  overflow-wrap: break-word;
-  overflow: hidden;
-}
-
-.post-bottom-right {
-  width: 100px;
-  height: 28px;
-  float: right;
 }
 
 .post-title, .comment-title  {
@@ -76,10 +42,8 @@ td a {
   display: flex;
 }
 
-.post-about-me {
-  display: block;
-  padding: 0px 0px 20px 0px;
-  overflow-wrap: break-word;
+.post-user {
+  border-bottom: 3px solid rgb(66, 66, 66);
 }
 
 .post-username {
@@ -91,17 +55,12 @@ td a {
   width: 120px;
 }
 
-.edited {
-  color: grey;
-}
-
 .post-body {
   float: left;
+  display: block;
   width: 95%;
-  display: flex;
-  flex-direction: column;
 
-  padding: 5px;
+  padding-left: 25px;
 }
 
 .post-right {
@@ -111,6 +70,25 @@ td a {
   display: flex;
 }
 
+
+.blocked-post-comment {
+  margin: 20px;
+  display: block;
+  width: 80%;
+  min-height: 20px;
+}
+
+tr td {
+  padding: 0px 5px 0px 5px;
+}
+
+td a {
+  color: black;
+}
+
+.edited {
+  color: grey;
+}
 
 
 /* .post-comment {
@@ -179,27 +157,39 @@ button i, .report-anchor i {
 /* post and comment modification buttons css */
 
 .edit-button:hover {
+  transition: all 0.3s ease 0s;
   color: rgb(12, 97, 97);
   cursor: pointer;
 }
 .block-button:hover {
+  transition: all 0.3s ease 0s;
   color: rgb(231, 30, 30);
   cursor: pointer;
 }
 .delete-button:hover {
+  transition: all 0.3s ease 0s;
   color: rgb(231, 30, 30);
   cursor: pointer;
 }
 .pin-button:hover {
+  transition: all 0.3s ease 0s;
   color: rgb(12, 97, 97);
   cursor: pointer;
 }
 .report-anchor {
   padding: 0px 5px 0px 5px;
   font-size: small;
+
 }
 .report-anchor:hover {
+  transition: all 0.3s ease 0s;
   color: rgb(231, 30, 30);
+  cursor: pointer;
+}
+
+#show-comment:hover {
+  transition: all 0.3s ease 0s;
+  color: rgb(55, 198, 255);
   cursor: pointer;
 }
 /* end comment modification button css */
@@ -207,26 +197,29 @@ button i, .report-anchor i {
 
 
 /* edit-comment-form css */
-.edit-comment-form {
+.edit-comment-form, .edit-post-form {
   width: 80%;
-  margin: 10px;
+  padding-left: 25px;
   overflow: hidden;
   float: left;
   height: fit-content;
 }
-.edit-comment-form input {
+
+.edit-comment-form input, .edit-post-form input {
   padding: 6px 10px;
   margin: 4px 0;
   box-sizing: border-box;
   display: block;
+
 }
-.edit-comment-form textarea {
+.edit-comment-form textarea, .edit-post-form textarea {
   /* float: left; */
-  width: 100%;
+  width: 99%;
   resize: none;
   height: 70%;
 }
-.edit-comment-form input[type=submit] {
+
+.edit-comment-form input[type=submit], .edit-post-form input[type=submit] {
   background-color: rgb(12, 153, 12);
   border: none;
   color: white;
@@ -234,32 +227,3 @@ button i, .report-anchor i {
   width: 200px;
 }
 /* end edit-comment-form css */
-
-/* edit-post-form css */
-.edit-post-form {
-  width: 90%;
-  margin: 10px;
-  overflow: hidden;
-  float: left;
-  height: fit-content;
-}
-.edit-post-form input {
-  padding: 6px 10px;
-  margin: 4px 0;
-  box-sizing: border-box;
-  display: block;
-}
-.edit-post-form textarea {
-  /* float: left; */
-  width: 100%;
-  resize: none;
-  height: 70%;
-}
-.edit-post-form input[type=submit] {
-  background-color: rgb(12, 153, 12);
-  border: none;
-  color: white;
-  cursor: pointer;
-  width: 200px;
-}
-/* end edit-post-form css */
