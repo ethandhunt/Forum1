@@ -330,6 +330,7 @@ if ($author["administrator"]) {
         </div>
     </div>
     <br>
+    <div class="comments">
     <?php
     if (count($comments) > 0) {
         ?>
@@ -344,8 +345,6 @@ if ($author["administrator"]) {
                 echo "(" . $amount . ")";
             ?>
         </div>
-
-        <div class="comments">
             <?php
                 for ($i=0; $i < count($comments); $i++) {
                     $row = $comments[$i];
@@ -452,6 +451,7 @@ if ($author["administrator"]) {
                                         }
                                     ?>
                                 </div>
+                                <br>
                             </div>
                             <?php
                         } else {
@@ -550,12 +550,13 @@ if ($author["administrator"]) {
                             <?php
                         }
                     ?>
-                </div>
-            </div>
         <?php
         }
     }
 
+    ?>
+    </div>
+    <?php
     if (!$_SESSION["banned"]) {
         ?>
         <form class="comment-form" method="post">
