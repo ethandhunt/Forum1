@@ -51,8 +51,7 @@ $post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
             </tr>
             <tr>
                 <td> <?php echo $user["about_me"] ?> </td>
-            </tr>
-            <tr>
+                <td>•</td>
                 <td> Joined <?php echo prettify_datetime($user["join_datetime"]) ?> </td>
             </tr>
             <td><br></td>
@@ -74,7 +73,7 @@ $post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
                 </td>
                 <td>•</td>
                 <td>
-                    <?php 
+                    <!-- <?php 
                         $amount = 0;
 
                         for ($i=0; $i < count($post_votes); $i++) {
@@ -88,6 +87,20 @@ $post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
                         }
 
                         echo $amount . " Upvote(s) Given"
+                    ?> -->
+
+                    <?php 
+                        $amount = 0;
+
+                        for ($i=0; $i < count($posts); $i++) {
+                            $row = $posts[$i];
+
+                            if ($row['author_user_id'] == $user_id) {
+                                $amount++;
+                            }
+                        }
+
+                        echo $amount . " Post(s)"
                     ?>
                 </td>
             </tr>
