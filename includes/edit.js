@@ -67,3 +67,16 @@ function pin_post() {
         })
     }
 }
+
+function show_comment(comment_id) {
+    let content = document.getElementById(`post-comment-${comment_id}`)
+    let button = document.getElementById('show-comment')
+    
+    if (content.style.display == "block") {
+        content.style.display = "none"
+        button.textContent="Show Comment"
+    } else {
+        content.style.display = "block"
+        button.textContent="Hide Comment"
+    }
+}

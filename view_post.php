@@ -160,7 +160,7 @@ if (is_null($post)) {
 $author_id = $post["author_user_id"];
 $author = $conn->query("SELECT * FROM users WHERE user_id=$author_id")->fetch_array();
 $comments = $conn->query("SELECT * FROM comments WHERE post_id=$post_id")->fetch_all(MYSQLI_BOTH);
-$blocked_users = $conn->query("SELECT * FROM blocked_users WHERE user_id=$user_id")->fetch_all(MYSQLI_BOTH);
+$blocked_users = $conn->query("SELECT * FROM blocked_users WHERE user_id=$user_id")->fetch_array();
 
 if (count($comments) > 0) {
     $_SESSION["read_posts"][$post_id] = $comments[count($comments)-1]["comment_id"];
@@ -231,38 +231,33 @@ if ($author["administrator"]) {
                     </td>
                     <td>•</td>
                     <td>
-                        <div class="dropdown">
-                            <button class="settings-button"><i class="fa fa-gear"></i></button>
-                            <div class="dropdown-content">
-                                <?php
-                                    if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
-                                        ?>
-                                        <a class="edit-button" onclick="edit_comment(<?php echo $post_id ?>)"><i class="fa fa-edit"></i>Edit</a>
-                                        <?php
-                                    }
-                                    if ($author_id != $_SESSION["user_id"]) {
-                                        ?>
-                                        <a class="block-button" onclick="block_user(<?php echo $author_id ?>)"><i class="fa fa-ban"></i>Block</a>
-                                        <?php
-                                    }
-                                    if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
-                                        ?>
-                                        <a class="delete-button" onclick="delete_comment(<?php echo $post_id ?>)"><i class="fa fa-trash"></i>Delete</a>
-                                        <?php
-                                    }
-                                    if ($_SESSION["moderator"]) {
-                                        ?>
-                                        <a class="pin-button" onclick="pin_post()"><i class="fa fa-map-pin"></i>Pin</a>
-                                        <?php
-                                    }
-                                    if (!$_SESSION["banned"]) {
-                                        ?>
-                                        <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i>Report</a>
-                                        <?php
-                                    }
+                        <?php
+                            if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
                                 ?>
-                            </div>
-                        </div>
+                                <button class="edit-button" onclick="edit_post(<?php echo $post_id ?>)"><i class="fa fa-edit"></i>Edit</button>
+                                <?php
+                            }
+                            if ($author_id != $_SESSION["user_id"]) {
+                                ?>
+                                <button class="block-button" onclick="block_user(<?php echo $author_id ?>)"><i class="fa fa-ban"></i>Block</button>
+                                <?php
+                            }
+                            if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                                ?>
+                                <button class="delete-button" onclick="delete_post(<?php echo $post_id ?>)"><i class="fa fa-trash"></i>Delete</button>
+                                <?php
+                            }
+                            if ($_SESSION["moderator"]) {
+                                ?>
+                                <button class="pin-button" onclick="pin_post()"><i class="fa fa-map-pin"></i>Pin</button>
+                                <?php
+                            }
+                            if (!$_SESSION["banned"]) {
+                                ?>
+                                <button class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i>Report</button>
+                                <?php
+                            }
+                        ?>
                     </td>
                 </tr>
                                     
@@ -315,7 +310,7 @@ if ($author["administrator"]) {
             </div> -->
         </div>
     </div>
-
+    <br>
     <?php
     if (count($comments) > 0) {
         ?>
@@ -330,123 +325,214 @@ if ($author["administrator"]) {
                 echo "(" . $amount . ")";
             ?>
         </div>
-        <?php
-        for ($i=0; $i < count($comments); $i++) {
-            $row = $comments[$i];
-            $comment_author_id = $row["author_user_id"];
-            $comment_author = $conn->query("SELECT * FROM users WHERE user_id=$comment_author_id")->fetch_array();
-            ?>
 
-            <div class="post-comment post">
-                <div class="post-top">
-                    <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
+        <div class="comments">
+            <?php
+                for ($i=0; $i < count($comments); $i++) {
+                    $row = $comments[$i];
+                    $comment_author_id = $row["author_user_id"];
+                    $comment_author = $conn->query("SELECT * FROM users WHERE user_id=$comment_author_id")->fetch_array();
+                    ?>
 
-                    <table>
-                        <tr>
-                            <td class="post-username"> 
-                                <a href="users.php?id=<?php echo $comment_author_id?>">
-                                     <h2><?php echo prettify_username($comment_author["username"]) ?></h2>
-                                </a>       
-                            </td>
+                    <?php 
+                        if ($blocked_users["blocked_user_id"] == $comment_author_id) {
+                            ?>
+                            <div class="blocked-post-comment">
+                                <div class="blocked-post-top">
+                                    <table>
+                                        <tr>
+                                            <td class="post-username"> 
+                                                <h3><?php echo prettify_username("Blocked Comment") ?></h3>      
+                                            </td>
+                                            <td>•</td>
+                                            <td>
+                                                <button id="show-comment" onclick="show_comment(<?php echo $row["comment_id"] ?>)">Show Comment</button>
+                                            </td>
+                                            <td>•</td>
+                                            <td>
+                                                <?php
+                                                    if ($comment_author_id != $_SESSION["user_id"]) {
+                                                        ?>
+                                                        <button class="block-button" onclick="unblock_user(<?php echo $comment_author_id ?>)"><i class="fa fa-ban"></i>Unblock</button>
+                                                        <?php
+                                                    }
+                                                    if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                                                        ?>
+                                                        <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i>Delete</button>
+                                                        <?php
+                                                    }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
 
-                            <td class="post-author-rank">        
-                                <?php
-                                    if ($comment_author["banned"]) {
-                                        echo "(banned)";
-                                    } else {
-                                        if ($comment_author["administrator"]) {
-                                            echo "(Administrator)";
-                                        } else {
-                                            if ($comment_author["moderator"]) {
-                                                echo "(Moderator)";
-                                            }
+                            <div style="display: none;" id="post-comment-<?php echo $row["comment_id"] ?>" class="post-comment post">
+                                <div class="post-top">
+                                    <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
+
+                                    <table>
+                                        <tr>
+                                            <td class="post-username"> 
+                                                <a href="users.php?id=<?php echo $comment_author_id?>">
+                                                     <h2><?php echo prettify_username($comment_author["username"]) ?></h2>
+                                                </a>       
+                                            </td>
+
+                                            <td class="post-author-rank">        
+                                                <?php
+                                                    if ($comment_author["banned"]) {
+                                                        echo "(banned)";
+                                                    } else {
+                                                        if ($comment_author["administrator"]) {
+                                                            echo "(Administrator)";
+                                                        } else {
+                                                            if ($comment_author["moderator"]) {
+                                                                echo "(Moderator)";
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                            </td>
+                                            <td>•</td>
+                                            <td class="post-timestamp"><?php echo prettify_timestamp(strtotime($row["timestamp"])) ?></td>
+                                        </tr>
+
+                                        <tr class="post-about-me">
+                                            <td> <?php echo $comment_author["about_me"] ?> </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="post-bottom">
+                                    <div class="post-body" id="comment-body-<?php echo $row["comment_id"] ?>">
+                                        <div class="post-body-body">
+                                            <?php echo prettify_body($row["body"]) ?>
+                                        </div>
+                                        <?php
+                                        if ($row["edited"]) {
+                                            ?>
+                                            <br>
+                                            <span class="edited"> (edited) </span>
+                                            <?php
                                         }
-                                    }
-                                ?>
-                            </td>
-                            <td>•</td>
-                            <td class="post-timestamp"><?php echo prettify_timestamp(strtotime($row["timestamp"])) ?></td>
-                            <td>
-                                <?php
-                                    for ($o=0; $o < count($blocked_users); $o++)  {
-                                       $row = $blocked_users[$o];
-                                    
-                                       if ($comment_author_id == $row['blocked_user_id'] && $_SESSION['user_id'] == $row['user_id']) {
                                         ?>
+                                    </div>
+                                    
+                                    <?php
+                                    if ($comment_author_id == $_SESSION["user_id"]) {
+                                        ?>
+                                        <form class="edit-comment-form" method="post" id="edit-comment-form-<?php echo $row["comment_id"]?>" hidden>
+                                            <textarea class="scripted-textarea" name="body" id="edit-comment-body-<?php echo $row["comment_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
+                                            <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($row["image_href"], ENT_QUOTES) ?>">
+                                            <input type="submit" name="edit_comment" value="Edit">
+                                            <input type="hidden" name="comment_id" value="<?php echo $row["comment_id"] ?>">
+                                        </form>
                                         <?php
-                                            echo " • Blocked";
-                                       }
-                                    } 
-                                ?>
-                            </td>
-                            <td>•</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="settings-button"><i class="fa fa-gear"></i></button>
-                                    <div class="dropdown-content">
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                            <?php
+                        } else {
+                            ?>
+                            <div class="post-comment post">
+                                <div class="post-top">
+                                    <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
+
+                                    <table>
+                                        <tr>
+                                            <td class="post-username"> 
+                                                <a href="users.php?id=<?php echo $comment_author_id?>">
+                                                     <h2><?php echo prettify_username($comment_author["username"]) ?></h2>
+                                                </a>       
+                                            </td>
+
+                                            <td class="post-author-rank">        
+                                                <?php
+                                                    if ($comment_author["banned"]) {
+                                                        echo "(banned)";
+                                                    } else {
+                                                        if ($comment_author["administrator"]) {
+                                                            echo "(Administrator)";
+                                                        } else {
+                                                            if ($comment_author["moderator"]) {
+                                                                echo "(Moderator)";
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                            </td>
+                                            <td>•</td>
+                                            <td class="post-timestamp"><?php echo prettify_timestamp(strtotime($row["timestamp"])) ?></td>
+                                            <td>•</td>
+                                            <td>
+                                                <?php
+                                                    if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
+                                                        ?>
+                                                        <button class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i>Edit</button>
+                                                        <?php
+                                                    }
+                                                    if ($comment_author_id != $_SESSION["user_id"]) {
+                                                        ?>
+                                                        <button class="block-button" onclick="block_user(<?php echo $comment_author_id ?>)"><i class="fa fa-ban"></i>Block</button>
+                                                        <?php
+                                                    }
+                                                    if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                                                        ?>
+                                                        <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i>Delete</button>
+                                                        <?php
+                                                    }
+                                                    if (!$_SESSION["banned"]) {
+                                                        ?>
+                                                        <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i>Report</a>
+                                                        <?php
+                                                    }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                                        
+                                        <tr class="post-about-me">
+                                            <td> <?php echo $comment_author["about_me"] ?> </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                                        
+                                <div class="post-bottom">
+                                    <div class="post-body" id="comment-body-<?php echo $row["comment_id"] ?>">
+                                        <div class="post-body-body">
+                                            <?php echo prettify_body($row["body"]) ?>
+                                        </div>
                                         <?php
-                                            if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
-                                                ?>
-                                                <a class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i>Edit</a>
-                                                <?php
-                                            }
-                                            if ($comment_author_id != $_SESSION["user_id"]) {
-                                                ?>
-                                                <a class="block-button" onclick="block_user(<?php echo $comment_author_id ?>)"><i class="fa fa-ban"></i>Block</a>
-                                                <?php
-                                            }
-                                            if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
-                                                ?>
-                                                <a class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i>Delete</a>
-                                                <?php
-                                            }
-                                            if (!$_SESSION["banned"]) {
-                                                ?>
-                                                <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i>Report</a>
-                                                <?php
-                                            }
+                                        if ($row["edited"]) {
+                                            ?>
+                                            <br>
+                                            <span class="edited"> (edited) </span>
+                                            <?php
+                                        }
+                                        ?>
+                                    </div>
+                                    
+                                    <?php
+                                    if ($comment_author_id == $_SESSION["user_id"]) {
+                                        ?>
+                                        <form class="edit-comment-form" method="post" id="edit-comment-form-<?php echo $row["comment_id"]?>" hidden>
+                                            <textarea class="scripted-textarea" name="body" id="edit-comment-body-<?php echo $row["comment_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
+                                            <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($row["image_href"], ENT_QUOTES) ?>">
+                                            <input type="submit" name="edit_comment" value="Edit">
+                                            <input type="hidden" name="comment_id" value="<?php echo $row["comment_id"] ?>">
+                                        </form>
+                                        <?php
+                                        }
                                         ?>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-
-                        <tr class="post-about-me">
-                            <td> <?php echo $comment_author["about_me"] ?> </td>
-                        </tr>
-                    </table>
-                </div>
-                
-                <div class="post-bottom">
-                    <div class="post-body" id="comment-body-<?php echo $row["comment_id"] ?>">
-                        <div class="post-body-body">
-                            <?php echo prettify_body($row["body"]) ?>
-                        </div>
-                        <?php
-                        if ($row["edited"]) {
-                            ?>
-                            <br>
-                            <span class="edited"> (edited) </span>
                             <?php
-                        }
-                        ?>
-                    </div>
-
-                    <?php
-                    if ($comment_author_id == $_SESSION["user_id"]) {
-                        ?>
-                        <form class="edit-comment-form" method="post" id="edit-comment-form-<?php echo $row["comment_id"]?>" hidden>
-                            <textarea class="scripted-textarea" name="body" id="edit-comment-body-<?php echo $row["comment_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
-                            <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($row["image_href"], ENT_QUOTES) ?>">
-                            <input type="submit" name="edit_comment" value="Edit">
-                            <input type="hidden" name="comment_id" value="<?php echo $row["comment_id"] ?>">
-                        </form>
-                        <?php
                         }
                     ?>
                 </div>
             </div>
-        </div>
         <?php
         }
     }
