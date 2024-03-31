@@ -7,7 +7,6 @@
     <div class="navbar-container">
         <ul>
             <li>
-                <a href="index.php"> Home </a>
                 <?php
                 if (!isset($_SESSION["user_id"])) {
                     ?>
@@ -17,7 +16,7 @@
                 }
                 if (isset($_SESSION["user_id"])) {
                     ?>
-                    <a href="forum.php"> Forum </a>
+                    <a href="forum.php"> Home </a>
 
                     <?php
                 }
