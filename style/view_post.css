@@ -118,9 +118,15 @@ td a {
 } */
 
 
-.post-modify button {
-  background-color: white;
-  border: none;
+.dropdown-content a button, .settings-button { 
+   border: none;
+   background-color: rgba(255, 255, 255, 0);
+}
+
+a i {
+  height: 18px;
+  width: 18px;
+  padding-right: 12px;
 }
 
 /* comment-form css */
@@ -162,8 +168,12 @@ td a {
 
 
 /* post and comment modification buttons css */
+
 .edit-button:hover {
   color: rgb(12, 97, 97);
+}
+.block-button:hover {
+  color: rgb(231, 30, 30);
 }
 .delete-button:hover {
   color: rgb(231, 30, 30);
@@ -174,7 +184,6 @@ td a {
 .report-anchor {
   color: black;
 }
-
 .report-anchor:hover {
   color: rgb(231, 30, 30);
 }
