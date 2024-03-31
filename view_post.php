@@ -26,6 +26,19 @@ if (isset($_POST["comment"])) {
     }
 }
 
+if (isset($_POST["block_user"])) {
+    $blocked_user_id = $_POST["blocked_user_id"];
+    $user_id = $_SESSION["user_id"];
+
+    if (!intval($blocked_user_id)) {
+        throw new Exception("Invalid user_id", 404);
+    } elseif ($_SESSION["banned"]) {
+        throw new Exception("Cannot block users while banned");
+    }
+
+    $conn->query("INSERT INTO blocked_users (user_id, blocked_user_id) VALUES ('$user_id', '$blocked_user_id')");
+}
+
 if (isset($_POST["edit_comment"])) {
     $body = mysqli_real_escape_string($conn, $_POST["body"]);
     $image_href = mysqli_real_escape_string($conn, $_POST["image_href"]);
@@ -141,6 +154,7 @@ if (is_null($post)) {
 $author_id = $post["author_user_id"];
 $author = $conn->query("SELECT * FROM users WHERE user_id=$author_id")->fetch_array();
 $comments = $conn->query("SELECT * FROM comments WHERE post_id=$post_id")->fetch_all(MYSQLI_BOTH);
+$blocked_users = $conn->query("SELECT * FROM blocked_users WHERE user_id=$user_id")->fetch_all(MYSQLI_BOTH);
 
 if (count($comments) > 0) {
     $_SESSION["read_posts"][$post_id] = $comments[count($comments)-1]["comment_id"];
@@ -209,6 +223,41 @@ if ($author["administrator"]) {
                             }
                         ?>
                     </td>
+                    <td>•</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="settings-button"><i class="fa fa-gear"></i></button>
+                            <div class="dropdown-content">
+                                <?php
+                                    if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
+                                        ?>
+                                        <a class="edit-button" onclick="edit_comment(<?php echo $post_id ?>)"><i class="fa fa-edit"></i>Edit</a>
+                                        <?php
+                                    }
+                                    if ($author_id != $_SESSION["user_id"]) {
+                                        ?>
+                                        <a class="block-button" onclick="block_user(<?php echo $author_id ?>)"><i class="fa fa-ban"></i>Block</a>
+                                        <?php
+                                    }
+                                    if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                                        ?>
+                                        <a class="delete-button" onclick="delete_comment(<?php echo $post_id ?>)"><i class="fa fa-trash"></i>Delete</a>
+                                        <?php
+                                    }
+                                    if ($_SESSION["moderator"]) {
+                                        ?>
+                                        <a class="pin-button" onclick="pin_post()"><i class="fa fa-map-pin"></i>Pin</a>
+                                        <?php
+                                    }
+                                    if (!$_SESSION["banned"]) {
+                                        ?>
+                                        <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i>Report</a>
+                                        <?php
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                                     
                 <tr class="post-about-me">
@@ -246,31 +295,8 @@ if ($author["administrator"]) {
             }
             ?>
 
-            <div class="post-right">
+            <!-- <div class="post-right">
                 <div class="post-modify">
-                    <?php
-                    if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
-                        ?>
-                        <button class="edit-button" onclick="edit_post()"><i class="fa fa-edit"></i></button>
-                        <?php
-                    }
-                    if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
-                        ?>
-                        <button class="delete-button" onclick="delete_post()"><i class="fa fa-trash"></i></button>
-                        <?php
-                    }
-                    if ($_SESSION["moderator"]) {
-                        ?>
-                        <button class="pin-button" onclick="pin_post()"><i class="fa fa-map-pin"></i></button>
-                        <?php
-                    }
-                    if (!$_SESSION["banned"]) {
-                        ?>
-                        <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i></a>
-                        <?php
-                    }
-                    ?>
-                </div>
                 <?php
                 if ($post["image_href"] != "") {
                     ?>
@@ -280,7 +306,7 @@ if ($author["administrator"]) {
                     <?php
                 }
                 ?>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -334,6 +360,36 @@ if ($author["administrator"]) {
                             </td>
                             <td>•</td>
                             <td class="post-timestamp"><?php echo prettify_timestamp(strtotime($row["timestamp"])) ?></td>
+                            <td>•</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="settings-button"><i class="fa fa-gear"></i></button>
+                                    <div class="dropdown-content">
+                                        <?php
+                                            if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
+                                                ?>
+                                                <a class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i>Edit</a>
+                                                <?php
+                                            }
+                                            if ($comment_author_id != $_SESSION["user_id"]) {
+                                                ?>
+                                                <a class="block-button" onclick="block_user(<?php echo $comment_author_id ?>)"><i class="fa fa-ban"></i>Block</a>
+                                                <?php
+                                            }
+                                            if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                                                ?>
+                                                <a class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i>Delete</a>
+                                                <?php
+                                            }
+                                            if (!$_SESSION["banned"]) {
+                                                ?>
+                                                <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i>Report</a>
+                                                <?php
+                                            }
+                                        ?>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
 
                         <tr class="post-about-me">
@@ -367,30 +423,8 @@ if ($author["administrator"]) {
                             <input type="hidden" name="comment_id" value="<?php echo $row["comment_id"] ?>">
                         </form>
                         <?php
-                    }
+                        }
                     ?>
-
-                    <div class="post-right">
-                        <div class="post-modify">
-                            <?php
-                            if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
-                                ?>
-                                <button class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i></button>
-                                <?php
-                            }
-                            if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
-                                ?>
-                                <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i></button>
-                                <?php
-                            }
-                            if (!$_SESSION["banned"]) {
-                                ?>
-                                <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i></a>
-                                <?php
-                            }
-                            ?>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

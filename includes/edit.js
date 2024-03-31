@@ -40,6 +40,19 @@ function delete_post() {
     }
 }
 
+function block_user(user_id) {
+    if (confirm("block this user?")) {
+        fetch(`view_post.php${document.location.search}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `block_user=1&blocked_user_id=${user_id}`
+        }).then((res) => {
+            console.log(`blocked user_id ${user_id}`)
+            location.reload()
+        })
+    }
+}
+
 function pin_post() {
     let pin_value = parseInt(document.getElementById("post-pinned").innerText)
     let new_pin_value = 1 - pin_value
