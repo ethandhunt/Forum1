@@ -19,7 +19,20 @@
   width: 80%;
 }
 
-.post-top img {
+.blocked-post-comment {
+  margin: 20px;
+  display: block;
+  width: 80%;
+  min-height: 50px;
+}
+
+/* .blocked-post-top {
+  height: 50px;
+  width: 80%;
+} */
+
+
+.post-top img, .blocked-post-top img {
   border-radius: 25%;
   float: left;
 }
@@ -29,9 +42,21 @@
   display: inline-block;
 }
 
+.blocked-post-top table {
+  display: inline-block;
+}
+
+tr td {
+  padding: 0px 5px 0px 5px;
+}
+
+td a {
+  color: black;
+}
+
 .post-bottom {
   float: left;
-  padding-left: 9.3%;
+  padding-left: 145px;
   width: 80%;
 
   overflow-wrap: break-word;
@@ -57,10 +82,6 @@
   overflow-wrap: break-word;
 }
 
-.post-author-rank {
-  padding: 0px 8px 0px 0px;
-}
-
 .post-username {
   display: inline-block;
 }
@@ -68,14 +89,6 @@
 .post-avatar {
   object-fit: contain;
   width: 120px;
-}
-
-td h2 {
-  padding: 0px 8px 0px 0px;
-}
-
-td a {
-  color: black;
 }
 
 .edited {
@@ -88,7 +101,7 @@ td a {
   display: flex;
   flex-direction: column;
 
-  padding: 5px 0px 5px 0px;
+  padding: 5px;
 }
 
 .post-right {
@@ -96,10 +109,6 @@ td a {
   overflow-wrap: break-word;
   overflow: hidden;
   display: flex;
-}
-
-.post-timestamp {
-  padding: 0px 8px 0px 8px;
 }
 
 
@@ -118,15 +127,15 @@ td a {
 } */
 
 
-.dropdown-content a button, .settings-button { 
+button { 
    border: none;
    background-color: rgba(255, 255, 255, 0);
 }
 
-a i {
+button i, .report-anchor i {
   height: 18px;
   width: 18px;
-  padding-right: 12px;
+  padding-right: 4px;
 }
 
 /* comment-form css */
@@ -171,21 +180,27 @@ a i {
 
 .edit-button:hover {
   color: rgb(12, 97, 97);
+  cursor: pointer;
 }
 .block-button:hover {
   color: rgb(231, 30, 30);
+  cursor: pointer;
 }
 .delete-button:hover {
   color: rgb(231, 30, 30);
+  cursor: pointer;
 }
 .pin-button:hover {
   color: rgb(12, 97, 97);
+  cursor: pointer;
 }
 .report-anchor {
-  color: black;
+  padding: 0px 5px 0px 5px;
+  font-size: small;
 }
 .report-anchor:hover {
   color: rgb(231, 30, 30);
+  cursor: pointer;
 }
 /* end comment modification button css */
 
