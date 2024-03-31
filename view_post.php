@@ -254,7 +254,7 @@ if ($author["administrator"]) {
                             }
                             if (!$_SESSION["banned"]) {
                                 ?>
-                                <button class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i>Report</button>
+                                <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i>Report</a>
                                 <?php
                             }
                         ?>
