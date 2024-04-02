@@ -3,6 +3,52 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$comment_likes = $conn->query("SELECT * FROM comment_votes")->fetch_all(MYSQLI_BOTH);
+
+function get_comment_likes($comment_id) {
+    global $comment_likes;
+
+    $total = 0;
+    for ($i=0; $i < count($comment_likes); $i++) {
+        $row = $comment_likes[$i];
+        if ($row["comment_id"] == $comment_id) {
+            $total += $row["weight"];
+        }
+    }
+    return $total;
+}
+
+function can_vote_comment($comment_id, $type) {
+    global $comment_likes, $user_id;
+
+    if ($_SESSION["banned"]) {
+        return false;
+    }
+
+    if ($type == "up") {
+        $weight = 1;
+    } elseif ($type == "down") {
+        $weight = -1;
+    } else {
+        throw new Exception("Incorrect vote type");
+    }
+
+    $result = true;
+    for ($i=0; $i < count($comment_likes); $i++) {
+        $row = $comment_likes[$i];
+        if ($row["user_id"] == $user_id && $row["comment_id"] == $comment_id && $row["weight"] == $weight) {
+            $result = false;
+            break;
+        }
+    }
+    
+    return $result;
+}
+
 if (!isset($_GET["id"])) {
     header("Location: index.php");
 }
@@ -165,10 +211,31 @@ if (isset($_POST["pin_post"])) {
 
     $conn->query("UPDATE posts SET pinned=$pin_value WHERE post_id=$post_id");
 }
+
+if (isset($_POST["vote_comment"])) {
+    $comment_id = $_POST["comment_id"];
+    $type = $_POST["vote_type"];
+
+    if (can_vote_comment($comment_id, $type)) {
+        $conn->query("DELETE FROM comment_votes WHERE user_id=$user_id AND comment_id=$comment_id");
+
+        if ($type == "up") {
+            $weight = 1;
+        } elseif ($type == "down") {
+            $weight = -1;
+        } else {
+            throw new Exception("Incorrect vote type");
+        }
+       
+        $conn->query("INSERT INTO `comment_votes` (`user_id`, `comment_id`, `weight`) VALUES ('$user_id', '$comment_id', '$weight')");
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- <?php phpinfo(); ?> -->
 
 <?php
 $post_id = intval($_GET["id"]);
@@ -202,16 +269,11 @@ if ($author["administrator"]) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style/view_post.css">
     <script src="includes/edit.js"></script>
+    <script src="includes/vote.js"></script>
 </head>
 
 <body>
     <?php include "includes/header.php" ?>
-
-    <!-- <div class="post-title">
-        <?php echo prettify_title($post["title"]) ?>
-        -
-        <?php echo prettify_datetime($post["timestamp"]) ?>
-    </div> -->
 
     <div hidden id="post-pinned"><?php echo $post["pinned"] ?></div>
 
@@ -254,7 +316,7 @@ if ($author["administrator"]) {
                                 <button class="edit-button" onclick="edit_post(<?php echo $row["$post_id"] ?>)"><i class="fa fa-edit"></i>Edit</button>
                                 <?php
                             }
-                            if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
+                            if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
                                 ?>
                                 <button class="delete-button" onclick="delete_post(<?php echo $row["$post_id"] ?>)"><i class="fa fa-trash"></i>Delete</button>
                                 <?php
@@ -290,7 +352,7 @@ if ($author["administrator"]) {
                 ?>
             </div>
             <?php
-            if ($comment_author_id == $_SESSION["user_id"]) {
+            if ($author_id == $_SESSION["user_id"]) {
                 ?>
                 <form class="edit-post-form" method="post" id="edit-post-form-<?php echo $row["post_id"]?>" hidden>
                     <textarea class="scripted-textarea" name="body" id="edit-post-body-<?php echo $row["post_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
@@ -323,6 +385,17 @@ if ($author["administrator"]) {
                     $row = $comments[$i];
                     $comment_author_id = $row["author_user_id"];
                     $comment_author = $conn->query("SELECT * FROM users WHERE user_id=$comment_author_id")->fetch_array();
+                    $comment_id = $row["comment_id"];
+
+                    $upvote_append_class = "";
+                    if (can_vote_comment($comment_id, "up")) {
+                        $upvote_append_class = "can_vote";
+                    }
+
+                    $downvote_append_class = "";
+                    if (can_vote_comment($comment_id, "down")) {
+                        $downvote_append_class = "can_vote";
+                    }
                     ?>
                     <?php 
                         if ($blocked_users["blocked_user_id"] == $comment_author_id) {
@@ -336,7 +409,7 @@ if ($author["administrator"]) {
                                             </td>
                                             <td>•</td>
                                             <td>
-                                                <button id="show-comment" onclick="show_comment(<?php echo $row["comment_id"] ?>)">Show Comment</button>
+                                                <button id="show-comment" onclick="show_comment(<?php echo $comment_id ?>)">Show Comment</button>
                                             </td>
                                             <td>•</td>
                                             <td>
@@ -348,7 +421,7 @@ if ($author["administrator"]) {
                                                     }
                                                     if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
                                                         ?>
-                                                        <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i>Delete</button>
+                                                        <button class="delete-button" onclick="delete_comment(<?php echo $comment_id ?>)"><i class="fa fa-trash"></i>Delete</button>
                                                         <?php
                                                     }
                                                 ?>
@@ -357,7 +430,7 @@ if ($author["administrator"]) {
                                     </table>
                                 </div>
                             </div>
-                            <div style="display: none;" id="post-comment-<?php echo $row["comment_id"] ?>" class="post-comment post">
+                            <div style="display: none;" id="post-comment-<?php echo $comment_id ?>" class="post-comment post">
                                 <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
                                 <div class="post-content">
                                     <table>
@@ -386,7 +459,7 @@ if ($author["administrator"]) {
                                             <td class="post-timestamp"><?php echo prettify_timestamp(strtotime($row["timestamp"])) ?></td>
                                         </tr>
                                     </table>
-                                    <div class="post-body" id="comment-body-<?php echo $row["comment_id"] ?>">
+                                    <div class="post-body" id="comment-body-<?php echo $comment_id ?>">
                                         <?php echo prettify_body($row["body"]) ?>
                                         <?php
                                         if ($row["edited"]) {
@@ -400,11 +473,11 @@ if ($author["administrator"]) {
                                     <?php
                                     if ($comment_author_id == $_SESSION["user_id"]) {
                                         ?>
-                                        <form class="edit-comment-form" method="post" id="edit-comment-form-<?php echo $row["comment_id"]?>" hidden>
-                                            <textarea class="scripted-textarea" name="body" id="edit-comment-body-<?php echo $row["comment_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
+                                        <form class="edit-comment-form" method="post" id="edit-comment-form-<?php echo $comment_id?>" hidden>
+                                            <textarea class="scripted-textarea" name="body" id="edit-comment-body-<?php echo $comment_id ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
                                             <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($row["image_href"], ENT_QUOTES) ?>">
                                             <input type="submit" name="edit_comment" value="Edit">
-                                            <input type="hidden" name="comment_id" value="<?php echo $row["comment_id"] ?>">
+                                            <input type="hidden" name="comment_id" value="<?php echo $comment_id ?>">
                                         </form>
                                         <?php
                                         }
@@ -447,7 +520,7 @@ if ($author["administrator"]) {
                                                 <?php
                                                     if ($comment_author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
                                                         ?>
-                                                        <button class="edit-button" onclick="edit_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-edit"></i>Edit</button>
+                                                        <button class="edit-button" onclick="edit_comment(<?php echo $comment_id ?>)"><i class="fa fa-edit"></i>Edit</button>
                                                         <?php
                                                     }
                                                     if ($comment_author_id != $_SESSION["user_id"]) {
@@ -457,19 +530,23 @@ if ($author["administrator"]) {
                                                     }
                                                     if ($comment_author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
                                                         ?>
-                                                        <button class="delete-button" onclick="delete_comment(<?php echo $row["comment_id"] ?>)"><i class="fa fa-trash"></i>Delete</button>
+                                                        <button class="delete-button" onclick="delete_comment(<?php echo $comment_id ?>)"><i class="fa fa-trash"></i>Delete</button>
                                                         <?php
                                                     }
                                                     if (!$_SESSION["banned"]) {
                                                         ?>
-                                                        <a class="report-anchor" href="report.php?comment_id=<?php echo $row["comment_id"] ?>"><i class="fa fa-flag"></i>Report</a>
+                                                        <a class="report-anchor" href="report.php?comment_id=<?php echo $comment_id ?>"><i class="fa fa-flag"></i>Report</a>
                                                         <?php
                                                     }
                                                 ?>
                                             </td>
+                                            <td>•</td>
+                                            <td class="forum-post-likes" id="likes-<?php echo $comment_id ?>"> <?php echo get_comment_likes($comment_id) ?> </td>
+                                            <td> <i class="fa fa-caret-up vote <?php echo $upvote_append_class ?>" id="upvote-<?php echo $comment_id?>" onclick="vote_comment(<?php echo $comment_id?>,'up')"></i> </td>
+                                            <td> <i class="fa fa-caret-down vote <?php echo $downvote_append_class ?>" id="downvote-<?php echo $comment_id?>" onclick="vote_comment(<?php echo $comment_id?>,'down')"></i> </td>
                                         </tr>
                                     </table>
-                                    <div class="post-body" id="comment-body-<?php echo $row["comment_id"] ?>">
+                                    <div class="post-body" id="comment-body-<?php echo $comment_id ?>">
                                         <?php echo prettify_body($row["body"]) ?>
                                         <?php
                                         if ($row["edited"]) {
@@ -483,11 +560,11 @@ if ($author["administrator"]) {
                                     <?php
                                     if ($comment_author_id == $_SESSION["user_id"]) {
                                         ?>
-                                        <form class="edit-comment-form" method="post" id="edit-comment-form-<?php echo $row["comment_id"]?>" hidden>
-                                            <textarea class="scripted-textarea" name="body" id="edit-comment-body-<?php echo $row["comment_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
+                                        <form class="edit-comment-form" method="post" id="edit-comment-form-<?php echo $comment_id?>" hidden>
+                                            <textarea class="scripted-textarea" name="body" id="edit-comment-body-<?php echo $comment_id ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
                                             <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($row["image_href"], ENT_QUOTES) ?>">
                                             <input type="submit" name="edit_comment" value="Edit">
-                                            <input type="hidden" name="comment_id" value="<?php echo $row["comment_id"] ?>">
+                                            <input type="hidden" name="comment_id" value="<?php echo $comment_id ?>">
                                         </form>
                                         <?php
                                         }
