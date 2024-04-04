@@ -2,6 +2,10 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if ($_SESSION["banned"]) {
     throw new Exception("Cannot access report page as a reported user");
 }

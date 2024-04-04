@@ -1,5 +1,10 @@
 <?php
 include "includes/db.php";
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (isset($_SESSION["user_id"]) && isset($_POST["logout"])) {
     unset($_SESSION["user_id"]);
     unset($_SESSION["username"]);

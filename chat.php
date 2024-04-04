@@ -2,6 +2,10 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
     exit();
@@ -80,7 +84,7 @@ if (isset($_POST["send_message"])) {
             echo json_encode(["error" => "Could not find chat room with id $chat_id"]);
             exit;
         }
-        $chat_messages = $conn->query("SELECT chat_messages.*, users.username FROM chat_messages INNER JOIN users on users.user_id=chat_messages.author_user_id WHERE chat_room_id=$chat_id ORDER BY timestamp DESC LIMIT 100")->fetch_all(MYSQLI_ASSOC);
+        $chat_messages = $conn->query("SELECT chat_messages.*, users.username, users.avatar_path FROM chat_messages INNER JOIN users on users.user_id=chat_messages.author_user_id WHERE chat_room_id=$chat_id ORDER BY timestamp DESC LIMIT 100")->fetch_all(MYSQLI_ASSOC);
         // var_dump($chat_room, $chat_messages);
         echo json_encode($chat_messages);
         exit;

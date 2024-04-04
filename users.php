@@ -2,6 +2,10 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (!isset($_GET["id"]) || !intval($_GET["id"])) {
     throw new Exception("Invalid user_id", 404);
 }

@@ -2,6 +2,10 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $user_id = $_SESSION["user_id"];
 $likes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH);
 $comments = $conn->query("SELECT comment_id, post_id, body, timestamp FROM comments")->fetch_all(MYSQLI_BOTH);

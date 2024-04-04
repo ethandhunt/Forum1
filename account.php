@@ -2,6 +2,10 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (isset($_POST["update_avatar"])) {
     $target_filename = sha1_file($_FILES["avatar"]["tmp_name"]) . "." . pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION);
 

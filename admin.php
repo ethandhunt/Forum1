@@ -2,6 +2,10 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (!$_SESSION["administrator"]) {
     throw new Exception("cant access admin page as a non-admin", 401);
 }
