@@ -2,9 +2,9 @@
 include "includes/db.php";
 include "includes/prettify.php";
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+}
 
 $user_id = $_SESSION["user_id"];
 $likes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH);
@@ -153,10 +153,6 @@ if (isset($_POST["mark_read"])) {
             $_SESSION["read_posts"][$row["post_id"]] = NULL;
         }
     }
-}
-
-if (!isset($_SESSION["user_id"])) {
-    header("Location: login.php");
 }
 ?>
 
