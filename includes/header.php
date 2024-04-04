@@ -45,22 +45,21 @@
                     <?php
                 }
                 ?>
-            </li>
-        </ul>   
+        </ul>
     </div>
 
     <?php
     if (isset($_SESSION["user_id"])) {
         ?>
         <div class="dropdown">
-            <img class="dropbtn" src="avatars/default.jpg" width=100>
+            <img class="dropbtn" src="avatars/default.png" width=100>
             <div class="dropdown-content">
                 <a href="account.php">Profile</a>
                 <a href="logout.php">Logout</a>
             </div>
         </div>
         <?php
-        }
+    }
     ?>
 
 </div>

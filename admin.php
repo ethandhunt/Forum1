@@ -69,7 +69,7 @@ function get_unused_avatars() {
     }
     foreach ($avatar_files as $filename) {
         $filename = "avatars/$filename";
-        if (!in_array($filename, $used_avatars) && !is_dir($filename)) {
+        if (!in_array($filename, $used_avatars) && !is_dir($filename) && $filename != "avatars/default.png") {
             array_push($unused_avatars, $filename);
         }
     }
