@@ -294,9 +294,9 @@ if ($author["administrator"]) {
             <?php
             if ($author_id == $_SESSION["user_id"]) {
                 ?>
-                <form class="edit-post-form" method="post" id="edit-post-form-<?php echo $row["post_id"]?>" hidden>
-                    <textarea class="scripted-textarea" name="body" id="edit-post-body-<?php echo $row["post_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
-                    <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($row["image_href"], ENT_QUOTES) ?>">
+                <form class="edit-post-form" method="post" id="edit-post-form" hidden>
+                    <textarea class="scripted-textarea" name="body"><?php echo htmlentities($post["body"], ENT_QUOTES) ?></textarea>
+                    <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($post["image_href"], ENT_QUOTES) ?>">
                     <input type="submit" name="edit_post" value="Edit">
                     <input type="hidden" name="post_id" value="<?php echo $row["post_id"] ?>">
                 </form>
