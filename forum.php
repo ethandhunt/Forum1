@@ -302,14 +302,10 @@ if (isset($_POST["mark_read"])) {
                     <?php
                         if ($post["user"]["banned"]) {
                             echo "(banned)";
-                        } else {
-                            if ($post["user"]["administrator"]) {
-                                echo "(Administrator)";
-                            } else {
-                                if ($post["user"]["moderator"]) {
-                                    echo "(Moderator)";
-                                } 
-                            }
+                        } elseif ($post["user"]["administrator"]) {
+                            echo "(Administrator)";
+                        } elseif ($post["user"]["moderator"]){
+                            echo "(Moderator)";
                         }
                     ?>
                 </td>
