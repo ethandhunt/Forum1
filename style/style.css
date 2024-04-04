@@ -101,11 +101,7 @@ td a {
   
 .dropdown {
     position: absolute;
-    /* display: inline-block; */
-    /* float: right; */
-    right: 8px;
-    /* display: inline; */
-    /* text-align: right; */
+    right: 25px;
 }
   
 .dropdown-content {
