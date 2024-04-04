@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 04, 2024 at 09:53 AM
+-- Host: localhost
+-- Generation Time: Apr 04, 2024 at 12:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -93,6 +93,19 @@ CREATE TABLE `comment_reports` (
   `report_timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `statement` varchar(1000) NOT NULL,
   `dismissed` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment_votes`
+--
+
+CREATE TABLE `comment_votes` (
+  `user_id` int(11) NOT NULL,
+  `comment_id` int(11) NOT NULL,
+  `vote_id` int(11) NOT NULL,
+  `weight` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -194,6 +207,12 @@ ALTER TABLE `comment_reports`
   ADD PRIMARY KEY (`report_id`);
 
 --
+-- Indexes for table `comment_votes`
+--
+ALTER TABLE `comment_votes`
+  ADD PRIMARY KEY (`vote_id`);
+
+--
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
@@ -244,6 +263,12 @@ ALTER TABLE `comments`
 --
 ALTER TABLE `comment_reports`
   MODIFY `report_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `comment_votes`
+--
+ALTER TABLE `comment_votes`
+  MODIFY `vote_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `posts`
