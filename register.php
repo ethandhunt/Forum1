@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
             $bad_avatar_message = "avatar file extension must be one of " . implode(", ", $allowed_file_extensions) . " (case sensitive) <br> you can ask me to add a filetype to the allow list";
         }
     } else {
-        $avatar_path = "avatars/default.jpg";
+        $avatar_path = "avatars/default.png";
     }
 
     $ip_addr = $_SERVER["REMOTE_ADDR"];
