@@ -11,7 +11,7 @@ $online_users = $conn->query("SELECT * FROM users WHERE last_online > NOW() - IN
 
 $blocked_users_ids = array();
 foreach ($blocked_users as $user) {
-    array_push($blocked_users_ids, $user["user_id"]);
+    array_push($blocked_users_ids, $user["blocked_user_id"]);
 }
 
 function can_vote($post_id, $type) {
@@ -272,11 +272,11 @@ if (!isset($_SESSION["user_id"])) {
 
         $anchor_append_class = " unread";
         if (
-            // post was marked as read
+            // post was marked as read AND
             array_key_exists($post["post_id"], $_SESSION["read_posts"]) && (
                 // most recent comment is the same
                 isset($post["most_recent_comment"]) && $_SESSION["read_posts"][$post["post_id"]] == $post["most_recent_comment"]["comment_id"]
-                // post doesn't have any comments
+                // OR post doesn't have any comments (set to null on no comments)
                 || is_null($post["most_recent_comment"])
             )
         ) {
