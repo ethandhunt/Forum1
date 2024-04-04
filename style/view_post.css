@@ -230,3 +230,11 @@ button i, .report-anchor i {
   width: 200px;
 }
 /* end edit-comment-form css */
+
+.vote {
+  color: lightgray;
+}
+.can_vote {
+  color: black;
+  cursor: pointer;
+}
