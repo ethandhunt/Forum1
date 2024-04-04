@@ -8,8 +8,20 @@
     padding: 0px 5px 0px 5px;
 }
 
+.forum-post-username {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100px;
+}
+
 .forum-table {
-    margin: 10px;
+    padding: 10px;
+    width: 100%;
+    object-fit: contain;
+    /* table-layout: fixed; */
+    overflow: hidden;
+    font-size: 14px;
+    margin-bottom: 20px;
 }
 
 .form-post-user-image img {
@@ -35,7 +47,7 @@
     border-radius: 3px;
 }
 .forum-post-title {
-    width: 100%;
+    /* width: 100%; */
     color: black;
 }
 .forum-post-likes {
