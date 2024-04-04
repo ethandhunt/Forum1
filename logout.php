@@ -21,8 +21,6 @@ if (isset($_SESSION["user_id"]) && isset($_POST["logout"])) {
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <form method="post">
         <input type="submit" name="logout" value="Log out">
     </form>

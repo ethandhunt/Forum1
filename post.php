@@ -36,8 +36,6 @@ if (!isset($_SESSION["user_id"])) {
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <form class="post-form" method="post">
         <input type="text" id="title" name="title" placeholder="Title" maxlength=60>
         <textarea type="text" id="body" name="body" placeholder="Body" rows=20 cols=100 maxlength=2000></textarea>

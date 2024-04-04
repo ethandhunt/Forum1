@@ -6,7 +6,13 @@ $user_id = $_SESSION["user_id"];
 $likes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH);
 $comments = $conn->query("SELECT comment_id, post_id, body, timestamp FROM comments")->fetch_all(MYSQLI_BOTH);
 $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
+$blocked_users = $conn->query("SELECT * FROM blocked_users WHERE user_id=$user_id")->fetch_all(MYSQLI_BOTH);
 $online_users = $conn->query("SELECT * FROM users WHERE last_online > NOW() - INTERVAL 1 MINUTE")->fetch_all(MYSQLI_BOTH);
+
+$blocked_users_ids = array();
+foreach ($blocked_users as $user) {
+    array_push($blocked_users_ids, $user["blocked_user_id"]);
+}
 
 function can_vote($post_id, $type) {
     global $likes, $user_id;
@@ -169,16 +175,6 @@ if (!isset($_SESSION["user_id"])) {
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
-    <?php
-    if (random_int(0, 5) == 0) {
-        ?>
-        <img src="easter/ad2.gif" style="margin:auto">
-        <?php
-    }
-    ?>
-
     <div class="pre-post-table">
         <div class="pre-left">
             <form class="sortby-form">
@@ -220,7 +216,7 @@ if (!isset($_SESSION["user_id"])) {
     for ($i=0; $i < count($posts); $i++) {
         $row = $posts[$i];
         $post_user_id = $row["author_user_id"];
-        $user = $conn->query("SELECT username FROM users WHERE user_id=$post_user_id")->fetch_array();
+        $user = $conn->query("SELECT * FROM users WHERE user_id=$post_user_id")->fetch_array();
         $posts_arr[$i] = array(
             'post_id' => $row['post_id'],
             'username' => $user['username'],
@@ -276,19 +272,22 @@ if (!isset($_SESSION["user_id"])) {
 
         $anchor_append_class = " unread";
         if (
-            // post was marked as read
+            // post was marked as read AND
             array_key_exists($post["post_id"], $_SESSION["read_posts"]) && (
                 // most recent comment is the same
                 isset($post["most_recent_comment"]) && $_SESSION["read_posts"][$post["post_id"]] == $post["most_recent_comment"]["comment_id"]
-                // post doesn't have any comments
+                // OR post doesn't have any comments (set to null on no comments)
                 || is_null($post["most_recent_comment"])
             )
         ) {
             $anchor_append_class = "";
         }
-        ?>
-        <tr class="forum-post-link">
-            <td>
+
+        if (!in_array($post["user_id"], $blocked_users_ids)) {
+            ?>
+
+            <tr class="forum-post-link">
+            <td class="forum-post-pinned">
                 <?php
                 if($post["pinned"]) {
                     ?>
@@ -296,17 +295,39 @@ if (!isset($_SESSION["user_id"])) {
                     <?php
                 }
                 ?>
-            </td>
-            <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"> <?php echo htmlentities($post["username"], ENT_QUOTES) ?> </a> </td>
-            <td class="forum-post-mentions<?php if($post["mentions"]>0) {echo " mentioned";} ?>"> @<?php echo $post["mentions"] ?> </td>
-            <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" class="forum-post-link<?php echo $anchor_append_class ?>"> <?php echo $post["title"] ?> </a> </td>
-            <td class="forum-post-timestamp"> <?php echo $post["timestamp_pretty"] ?> </td>
-            <td class="forum-post-comments"> <?php echo $post["comments"] ?> comments </td>
-            <td class="forum-post-likes" id="likes-<?php echo $post["post_id"] ?>"> <?php echo $post["likes"] ?> </td>
-            <td> <i class="fa fa-caret-up vote <?php echo $upvote_append_class ?>" id="upvote-<?php echo $post["post_id"]?>" onclick="vote(<?php echo $post["post_id"]?>,'up')"></i> </td>
-            <td> <i class="fa fa-caret-down vote <?php echo $downvote_append_class ?>" id="downvote-<?php echo $post["post_id"]?>" onclick="vote(<?php echo $post["post_id"]?>,'down')"></i> </td>
-        </tr>
-        <?php
+            </td> 
+                <!-- <td class="form-post-user-image"><img src="<?php echo $user["avatar_path"] ?>" width=45px></td> -->
+                <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo $post["username"] ?></a> </td>
+                <td>        
+                    <?php
+                        if ($user["banned"]) {
+                            echo "(banned)";
+                        } else {
+                            if ($user["administrator"]) {
+                                echo "(Administrator)";
+                            } else {
+                                if ($user["moderator"]) {
+                                    echo "(Moderator)";
+                                } 
+                            }
+                        }
+                    ?>
+                </td>
+                <td>•</td>
+                <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" class="forum-post-link<?php echo $anchor_append_class ?>"> <?php echo $post["title"] ?> </a> </td>
+                <td class="forum-post-mentions<?php if($post["mentions"]>0) {echo " mentioned";} ?>"> @<?php echo $post["mentions"] ?> </td>
+                <td>•</td>
+                <td class="forum-post-timestamp"> <?php echo $post["timestamp_pretty"] ?> </td>
+                <td>•</td>
+                <td class="forum-post-comments"> <?php echo $post["comments"] ?> Comments </td>
+                <td>•</td>
+                <td class="forum-post-likes" id="likes-<?php echo $post["post_id"] ?>"> <?php echo $post["likes"] ?> </td>
+                <td> <i class="fa fa-caret-up vote <?php echo $upvote_append_class ?>" id="upvote-<?php echo $post["post_id"]?>" onclick="vote(<?php echo $post["post_id"]?>,'up')"></i> </td>
+                <td> <i class="fa fa-caret-down vote <?php echo $downvote_append_class ?>" id="downvote-<?php echo $post["post_id"]?>" onclick="vote(<?php echo $post["post_id"]?>,'down')"></i> </td>
+            </tr>
+            <?php
+        }
+        
     }
     ?>
     </table>

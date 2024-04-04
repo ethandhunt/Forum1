@@ -40,6 +40,32 @@ function delete_post() {
     }
 }
 
+function block_user(user_id) {
+    if (confirm("block this user?")) {
+        fetch(`view_post.php${document.location.search}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `block_user=1&blocked_user_id=${user_id}`
+        }).then((res) => {
+            console.log(`blocked user_id ${user_id}`)
+            location.reload()
+        })
+    }
+}
+
+function unblock_user(user_id) {
+    if (confirm("unblock this user?")) {
+        fetch(`view_post.php${document.location.search}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `unblock_user=1&blocked_user_id=${user_id}`
+        }).then((res) => {
+            console.log(`unblocked user_id ${user_id}`)
+            location.reload()
+        })
+    }
+}
+
 function pin_post() {
     let pin_value = parseInt(document.getElementById("post-pinned").innerText)
     let new_pin_value = 1 - pin_value
@@ -52,5 +78,18 @@ function pin_post() {
             console.log(`pinned post`)
             document.location.href = 'forum.php'
         })
+    }
+}
+
+function show_comment(comment_id) {
+    let content = document.getElementById(`post-comment-${comment_id}`)
+    let button = document.getElementById(`show-comment-${comment_id}`)
+    
+    if (content.style.display == "block") {
+        content.style.display = "none"
+        button.textContent="Show Comment"
+    } else {
+        content.style.display = "block"
+        button.textContent="Hide Comment"
     }
 }

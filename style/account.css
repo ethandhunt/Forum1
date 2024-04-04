@@ -1,0 +1,55 @@
+.account {
+    margin: 20px;
+    height: 180px;
+}
+
+td h2 {
+    padding: 0px 8px 0px 0px;
+}
+
+.account img {
+    border-radius: 25%;
+    float: left;
+}
+
+.update-account {
+    margin: 20px;
+}
+
+table {
+    padding-left: 1%;
+    display: inline-block;
+}
+
+tbody tr {
+    display: block;
+}
+
+tr td {
+    padding: 0px 5px 0px 5px;
+}
+
+.account-form textarea {
+    resize: none;
+}
+.account-form {
+    margin: 5px 10px 0px 0px;
+    display: inline-block;
+}
+.account-form input {
+    padding: 6px 10px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    display: block;
+    width: 200px;
+}
+
+.account-form input[type=submit] {
+    background-color: rgb(12, 153, 12);
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 200px;
+}
+
+/* end account page css */

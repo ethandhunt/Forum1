@@ -23,6 +23,8 @@ if (isset($_POST['submit'])) {
             $bad_avatar = true;
             $bad_avatar_message = "avatar file extension must be one of " . implode(", ", $allowed_file_extensions) . " (case sensitive) <br> you can ask me to add a filetype to the allow list";
         }
+    } else {
+        $avatar_path = "avatars/default.jpg";
     }
 
     $ip_addr = $_SERVER["REMOTE_ADDR"];
@@ -58,8 +60,6 @@ if (isset($_POST['submit'])) {
 
 <body>
     <?php include "includes/header.php" ?>
-
-    <?php include "includes/navbar.php" ?>
 
     <form class="center-form" method="post" enctype="multipart/form-data">
         <input type="text" name="username" placeholder="Username" maxlength=30>

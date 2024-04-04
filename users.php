@@ -8,6 +8,9 @@ if (!isset($_GET["id"]) || !intval($_GET["id"])) {
 
 $user_id = intval($_GET["id"]);
 $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array();
+$posts = $conn->query("SELECT post_id, author_user_id, title FROM posts")->fetch_all(MYSQLI_BOTH);
+$comments = $conn->query("SELECT * FROM comments")->fetch_all(MYSQLI_BOTH);
+$post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
 ?>
 
 <!DOCTYPE html>
@@ -22,52 +25,110 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
+    <div class="account-details">
+        <img src="<?php echo $user["avatar_path"] ?>" width=180px>
 
-    <table class="account-details">
-        <tr>
-            <th> Username </th>
-            <th> User_id </th>
-            <th> Avatar </th>
-            <th> Join date </th>
-            <th> Moderator </th>
-            <th> Administrator </th>
-            <th> Banned </th>
-        </tr>
-        <tr>
-            <td> <?php echo prettify_username($user["username"]) ?> </td>
-            <td> <?php echo $user["user_id"] ?> </td>
-            <td> <img src="<?php echo $user["avatar_path"] ?>" width=100> </td>
-            <td> <?php echo prettify_datetime($user["join_datetime"]) ?> </td>
-            <td>
+        <table>
+            <tr>
+                <td> <h2><?php echo $user["username"] ?></h2> </td>
+
+                <td>        
+                    <?php
+                        if ($user["banned"]) {
+                            echo "(banned)";
+                        } else {
+                            if ($user["administrator"]) {
+                                echo "(Administrator)";
+                            } else {
+                                if ($user["moderator"]) {
+                                    echo "(Moderator)";
+                                } 
+                            }
+                        }
+                    ?>
+                </td>
+
+            </tr>
+            <tr>
+                <td> <?php echo $user["about_me"] ?> </td>
+                <td>•</td>
+                <td> Joined <?php echo prettify_datetime($user["join_datetime"]) ?> </td>
+            </tr>
+            <td><br></td>
+            <tr>
+                <td>
+                    <?php
+                         $amount = 0;
+
+                         for ($i=0; $i < count($comments); $i++) {
+                             $row = $comments[$i];
+
+                             if ($row["author_user_id"] == $user_id) {
+                                 $amount++;
+                             }
+                         }
+                         
+                         echo $amount . " Comment(s)";
+                    ?>
+                </td>
+                <td>•</td>
+                <td>
+                    <!-- <?php 
+                        $amount = 0;
+
+                        for ($i=0; $i < count($post_votes); $i++) {
+                            $row = $post_votes[$i];
+
+                            if ($row["user_id"] == $user_id) {
+                                if ($row["weight"] >= 1) {
+                                    $amount++;
+                                }
+                            }
+                        }
+
+                        echo $amount . " Upvote(s) Given"
+                    ?> -->
+
+                    <?php 
+                        $amount = 0;
+
+                        for ($i=0; $i < count($posts); $i++) {
+                            $row = $posts[$i];
+
+                            if ($row['author_user_id'] == $user_id) {
+                                $amount++;
+                            }
+                        }
+
+                        echo $amount . " Post(s)"
+                    ?>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="account-activity">
+        <div class="recent-posts"> 
+            <h2>Recent Posts</h2>   
+            <table>
                 <?php
-                if ($user["moderator"]) {
-                    echo "Moderator";
-                } else {
-                    echo "Not";
+                for ($i=0; $i < count($posts); $i++) {
+                    if ($i == 5) break;
+                    $row = $posts[$i];
+
+                    if ($row["author_user_id"] == $user_id) {
+                        ?>
+                        <tr class="form-post">
+                            <td><a href="view_post.php?id=<?php echo $row["post_id"] ?>"><?php echo prettify_title($row["title"])?></a></td>
+                        </tr>
+                        <?php
+                    }
                 }
+                
                 ?>
-            </td>
-            <td>
-                <?php
-                if ($user["administrator"]) {
-                    echo "Administrator";
-                } else {
-                    echo "Not";
-                }
-                ?>
-            </td>
-            <td>
-                <?php
-                if ($user["banned"]) {
-                    echo "Banned";
-                } else {
-                    echo "Not banned";
-                }
-                ?>
-            </td>
-        </tr>
-    </table>
+            </table>
+        </div>
+    </div>
 
     <?php
     if ($_SESSION["administrator"]) {

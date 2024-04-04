@@ -25,7 +25,7 @@ if (isset($_POST["set_password"])) {
 }
 
 $user_id = $_SESSION["user_id"];
-$user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE user_id=$user_id")->fetch_array();
+$user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array();
 ?>
 
 <!DOCTYPE html>
@@ -34,39 +34,65 @@ $user = $conn->query("SELECT username, about_me, avatar_path FROM users WHERE us
 <head>
     <title> Account </title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/account.css">
 </head>
 
 <body>
     <?php include "includes/header.php" ?>
+    
+    <div class="account">
+        <img src="<?php echo $user["avatar_path"] ?>" width=180px>
 
-    <?php include "includes/navbar.php" ?>
-
-    <div class="account-details">
         <table>
-            <tr id="account-details-username">
-                <td class="td-left"> username: </td> <td> <?php echo $user["username"] ?> </td>
+            <tr>
+                <td> <h2><?php echo $user["username"] ?></h2> </td>
+
+                <td>        
+                    <?php
+                        if ($user["banned"]) {
+                            echo "(banned)";
+                        } else {
+                            if ($user["administrator"]) {
+                                echo "(Administrator)";
+                            } else {
+                                if ($user["moderator"]) {
+                                    echo "(Moderator)";
+                                } 
+                            }
+                        }
+                    ?>
+                </td>
             </tr>
-            <tr id="account-details-about-me">
-                <td class="td-left"> about me: </td> <td> <?php echo $user["about_me"] ?> </td>
+            <tr>
+                <td> <?php echo $user["about_me"] ?> </td>
+            </tr>
+            <tr>
+                <td> Joined <?php echo prettify_datetime($user["join_datetime"]) ?> </td>
             </tr>
         </table>
-        avatar: <br> <img src="<?php echo $user["avatar_path"] ?>" width=100>
     </div>
 
-    <form class="account-form" enctype="multipart/form-data" method="post">
-        <label for="avatar"> Upload an avatar </label>
-        <input type="file" name="avatar">
-        <input type="submit" name="update_avatar" value="Update avatar">
-    </form>
-    <form class="account-form" method="post">
-        <input type="text" name="about_me" id="about_me" placeholder="About Me" maxlength=100 value="<?php echo prettify_about_me($user["about_me"]) ?>">
-        <input type="submit" name="update_about_me" value="Update about me">
-    </form>
+    <div class="update-account">
+        <h2>Update Profile</h2>
 
-    <form class="account-form" method="post">
-        <input type="password" name="password" placeholder="Password" maxlength=100 autocomplete="new-password">
-        <input type="submit" name="set_password" value="Set password">
-    </form>
+        <form class="account-form" enctype="multipart/form-data" method="post">
+            <label for="avatar"> Upload Avatar </label>
+            <input type="file" name="avatar">   
+            <input type="submit" name="update_avatar" value="Update">
+        </form>
+        
+        <form class="account-form" method="post">
+            <label for="about_me"> Update About Me </label>
+            <input type="text" name="about_me" id="about_me" placeholder="About Me" maxlength=100 value="<?php echo prettify_about_me($user["about_me"]) ?>">
+            <input type="submit" name="update_about_me" value="Update">
+        </form>
+
+        <form class="account-form" method="post">
+            <label for="password"> Update Password </label>
+            <input type="password" name="password" placeholder="Password" maxlength=100 autocomplete="new-password">
+            <input type="submit" name="set_password" value="Update">
+        </form>
+    </div>
 
     <?php include "includes/footer.php" ?>
 </body>

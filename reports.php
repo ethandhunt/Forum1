@@ -33,8 +33,6 @@ array_multisort($comment_reports_dismissed, SORT_ASC, $comment_reports);
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <h1> Post reports </h1>
     <table class="reports-table">
         <tr>

@@ -69,7 +69,7 @@ function get_unused_avatars() {
     }
     foreach ($avatar_files as $filename) {
         $filename = "avatars/$filename";
-        if (!in_array($filename, $used_avatars) && !is_dir($filename)) {
+        if (!in_array($filename, $used_avatars) && !is_dir($filename) && $filename != "avatars/default.png") {
             array_push($unused_avatars, $filename);
         }
     }
@@ -93,8 +93,6 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
 
 <body>
     <?php include "includes/header.php" ?>
-
-    <?php include "includes/navbar.php" ?>
 
     <form method="post" class="user-admin-form">
         <label for="find_by"> Select by: </label>

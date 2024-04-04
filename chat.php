@@ -103,8 +103,6 @@ if (isset($_POST["send_message"])) {
 <content>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <?php
     if ($show_chat) {
         if ($invalid_password) {

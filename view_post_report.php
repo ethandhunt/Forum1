@@ -84,8 +84,6 @@ $post = $post_query->fetch_array();
 <body>
     <?php include "includes/header.php" ?>
 
-    <?php include "includes/navbar.php" ?>
-
     <div class="report-details">
         <h2> Reported post </h2>
         <table class="reported-post-table">
