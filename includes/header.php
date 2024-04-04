@@ -12,55 +12,53 @@ error_reporting(E_ALL);
 
     <div class="navbar-container">
         <ul>
-            <li>
-                <?php
+            <?php
                 if (!isset($_SESSION["user_id"])) {
                     ?>
-                    <a href="register.php"> Register </a>
-                    <a href="login.php"> Login </a>
+                    <li> <a href="register.php"> Register </a> </li>
+                    <li> <a href="login.php"> Login </a> </li>
                     <?php
                 }
                 if (isset($_SESSION["user_id"])) {
                     ?>
-                    <a href="forum.php"> Home </a>
+                    <li> <a href="forum.php"> Home </a> </li>
 
                     <?php
                 }
                 if (isset($_SESSION["banned"]) && !$_SESSION["banned"]) {
                     ?>
-                    <a href="post.php"> Post </a>
-                    <a href="chat.php?view=chatrooms"> Chat </a>
+                    <li> <a href="post.php"> Post </a> </li>
+                    <li> <a href="chat.php?view=chatrooms"> Chat </a> </li>
                     <?php
                 }
                 ?>
                 <?php
                 if (isset($_SESSION['administrator']) && $_SESSION['administrator']) {
                     ?>
-                    <a href="admin.php"> Admin </a>
+                    <li> <a href="admin.php"> Admin </a> </li>
                     <?php
                 }
                 if (isset($_SESSION['moderator']) && $_SESSION['moderator']) {
                     ?>
-                    <a href="reports.php"> Reports </a>
+                    <li> <a href="reports.php"> Reports </a> </li>
                     <?php
                 }
                 if (isset($_SESSION["banned"]) && $_SESSION["banned"]) {
                     ?>
-                    <a class="ban-message" href="banned.php">
+                    <li> <a class="ban-message" href="banned.php">
                         You are banned
-                    </a>
+                    </a> </li>
                     <?php
                 }
                 ?>
-            </li>
-        </ul>   
+        </ul>
     </div>
 
     <?php
     if (isset($_SESSION["user_id"])) {
         ?>
         <div class="dropdown">
-            <img class="dropbtn" src="avatars/default.jpg" width=100>
+            <img class="dropbtn" src="avatars/default.png" width=100>
             <div class="dropdown-content">
                 <a href="account.php">Profile</a>
                 <form method="post">
@@ -69,7 +67,7 @@ error_reporting(E_ALL);
             </div>
         </div>
         <?php
-        }
+    }
     ?>
 
 </div>

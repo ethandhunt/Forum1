@@ -246,7 +246,12 @@ if (is_null($post)) {
 $author_id = $post["author_user_id"];
 $author = $conn->query("SELECT * FROM users WHERE user_id=$author_id")->fetch_array();
 $comments = $conn->query("SELECT * FROM comments WHERE post_id=$post_id")->fetch_all(MYSQLI_BOTH);
-$blocked_users = $conn->query("SELECT * FROM blocked_users WHERE user_id=$user_id")->fetch_array();
+$blocked_users = $conn->query("SELECT * FROM blocked_users WHERE user_id=$user_id")->fetch_all(MYSQLI_BOTH);
+
+$blocked_users_ids = array();
+foreach ($blocked_users as $user) {
+    array_push($blocked_users_ids, $user["blocked_user_id"]);
+}
 
 if (count($comments) > 0) {
     $_SESSION["read_posts"][$post_id] = $comments[count($comments)-1]["comment_id"];
@@ -297,14 +302,10 @@ if ($author["administrator"]) {
                         <?php
                             if ($author["banned"]) {
                                 echo "(banned)";
-                            } else {
-                                if ($author["administrator"]) {
-                                    echo "(Administrator)";
-                                } else {
-                                    if ($author["moderator"]) {
-                                        echo "(Moderator)";
-                                    }
-                                }
+                            } elseif ($author["administrator"]) {
+                                echo "(Administrator)";
+                            } elseif ($author["moderator"]) {
+                                echo "(Moderator)";
                             }
                         ?>
                     </td>
@@ -313,12 +314,12 @@ if ($author["administrator"]) {
                         <?php
                             if ($author_id == $_SESSION["user_id"] && !$_SESSION["banned"]) {
                                 ?>
-                                <button class="edit-button" onclick="edit_post(<?php echo $row["$post_id"] ?>)"><i class="fa fa-edit"></i>Edit</button>
+                                <button class="edit-button" onclick="edit_post(<?php echo $post_id ?>)"><i class="fa fa-edit"></i>Edit</button>
                                 <?php
                             }
                             if ($author_id == $_SESSION["user_id"] || $_SESSION["moderator"]) {
                                 ?>
-                                <button class="delete-button" onclick="delete_post(<?php echo $row["$post_id"] ?>)"><i class="fa fa-trash"></i>Delete</button>
+                                <button class="delete-button" onclick="delete_post(<?php echo $post_id ?>)"><i class="fa fa-trash"></i>Delete</button>
                                 <?php
                             }
                             if ($_SESSION["moderator"]) {
@@ -333,7 +334,7 @@ if ($author["administrator"]) {
                             }
                             if (!$_SESSION["banned"]) {
                                 ?>
-                                <a class="report-anchor" href="report.php?post_id=<?php echo $row["post_id"] ?>"><i class="fa fa-flag"></i>Report</a>
+                                <a class="report-anchor" href="report.php?post_id=<?php echo $post_id ?>"><i class="fa fa-flag"></i>Report</a>
                                 <?php
                             }
                         ?>
@@ -350,13 +351,14 @@ if ($author["administrator"]) {
                     <?php
                 }
                 ?>
+                <img class="post-image" src="<?php echo filter_var(htmlentities($post["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
             </div>
             <?php
             if ($author_id == $_SESSION["user_id"]) {
                 ?>
-                <form class="edit-post-form" method="post" id="edit-post-form-<?php echo $row["post_id"]?>" hidden>
-                    <textarea class="scripted-textarea" name="body" id="edit-post-body-<?php echo $row["post_id"] ?>"><?php echo htmlentities($row["body"], ENT_QUOTES) ?></textarea>
-                    <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($row["image_href"], ENT_QUOTES) ?>">
+                <form class="edit-post-form" method="post" id="edit-post-form" hidden>
+                    <textarea class="scripted-textarea" name="body"><?php echo htmlentities($post["body"], ENT_QUOTES) ?></textarea>
+                    <input type="text" name="image_href" placeholder="Image URL" value="<?php echo htmlentities($post["image_href"], ENT_QUOTES) ?>">
                     <input type="submit" name="edit_post" value="Edit">
                     <input type="hidden" name="post_id" value="<?php echo $row["post_id"] ?>">
                 </form>
@@ -397,8 +399,8 @@ if ($author["administrator"]) {
                         $downvote_append_class = "can_vote";
                     }
                     ?>
-                    <?php 
-                        if ($blocked_users["blocked_user_id"] == $comment_author_id) {
+                    <?php
+                        if (in_array($comment_author_id, $blocked_users_ids)) {
                             ?>
                             <div class="blocked-post-comment">
                                 <div class="blocked-post-content">
@@ -409,7 +411,7 @@ if ($author["administrator"]) {
                                             </td>
                                             <td>•</td>
                                             <td>
-                                                <button id="show-comment" onclick="show_comment(<?php echo $comment_id ?>)">Show Comment</button>
+                                                <button id="show-comment-<?php echo $row["comment_id"] ?>" onclick="show_comment(<?php echo $row["comment_id"] ?>)">Show Comment</button>
                                             </td>
                                             <td>•</td>
                                             <td>
@@ -430,8 +432,8 @@ if ($author["administrator"]) {
                                     </table>
                                 </div>
                             </div>
-                            <div style="display: none;" id="post-comment-<?php echo $comment_id ?>" class="post-comment post">
-                                <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
+                            <div style="display: none;" id="post-comment-<?php echo $row["comment_id"] ?>" class="post-comment post">
+                                <img src="<?php echo $comment_author["avatar_path"] ?>" class="post-avatar">
                                 <div class="post-content">
                                     <table>
                                         <tr class="post-user">
@@ -444,14 +446,10 @@ if ($author["administrator"]) {
                                                 <?php
                                                     if ($comment_author["banned"]) {
                                                         echo "(banned)";
-                                                    } else {
-                                                        if ($comment_author["administrator"]) {
-                                                            echo "(Administrator)";
-                                                        } else {
-                                                            if ($comment_author["moderator"]) {
-                                                                echo "(Moderator)";
-                                                            }
-                                                        }
+                                                    } elseif ($comment_author["administrator"]) {
+                                                        echo "(Administrator)";
+                                                    } elseif ($comment_author["moderator"]) {
+                                                        echo "(Moderator)";
                                                     }
                                                 ?>
                                             </td>
@@ -469,6 +467,7 @@ if ($author["administrator"]) {
                                             <?php
                                         }
                                         ?>
+                                        <img class="post-image" src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
                                     </div>
                                     <?php
                                     if ($comment_author_id == $_SESSION["user_id"]) {
@@ -489,7 +488,7 @@ if ($author["administrator"]) {
                         } else {
                             ?>
                             <div class="post-comment post">
-                                <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
+                                <img src="<?php echo $comment_author["avatar_path"] ?>" class="post-avatar">
                                 <div class="post-content">
                                     <table>
                                         <tr class="post-user">
@@ -502,14 +501,10 @@ if ($author["administrator"]) {
                                                 <?php
                                                     if ($comment_author["banned"]) {
                                                         echo "(banned)";
-                                                    } else {
-                                                        if ($comment_author["administrator"]) {
-                                                            echo "(Administrator)";
-                                                        } else {
-                                                            if ($comment_author["moderator"]) {
-                                                                echo "(Moderator)";
-                                                            }
-                                                        }
+                                                    } elseif ($comment_author["administrator"]) {
+                                                        echo "(Administrator)";
+                                                    } elseif ($comment_author["moderator"]) {
+                                                        echo "(Moderator)";
                                                     }
                                                 ?>
                                             </td>
@@ -556,6 +551,7 @@ if ($author["administrator"]) {
                                             <?php
                                         }
                                         ?>
+                                        <img class="post-image" src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
                                     </div>
                                     <?php
                                     if ($comment_author_id == $_SESSION["user_id"]) {
@@ -584,6 +580,7 @@ if ($author["administrator"]) {
         ?>
         <form class="comment-form" method="post">
             <textarea class="scripted-textarea" name="body" id="body"></textarea>
+            <input type="text" name="image_href" placeholder="Image link">
             <input type="submit" name="comment" value="Comment">
         </form>
         <?php

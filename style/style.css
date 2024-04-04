@@ -75,7 +75,7 @@ td a {
     padding: 0px 18px;
     font-size: 200;
 
-    width: 1500px;
+    /* width: 1500px; */
 }
 
 .navbar-container li a {
@@ -100,8 +100,12 @@ td a {
 }
   
 .dropdown {
-    position: relative;
-    display: inline-block;
+    position: absolute;
+    /* display: inline-block; */
+    /* float: right; */
+    right: 8px;
+    /* display: inline; */
+    /* text-align: right; */
 }
   
 .dropdown-content {
@@ -110,6 +114,7 @@ td a {
     background-color: #f1f1f1;
     min-width: 140px;
     z-index: 1;
+    right: 0;
 }
   
 .dropdown-content a {

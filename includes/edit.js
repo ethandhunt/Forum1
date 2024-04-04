@@ -83,7 +83,7 @@ function pin_post() {
 
 function show_comment(comment_id) {
     let content = document.getElementById(`post-comment-${comment_id}`)
-    let button = document.getElementById('show-comment')
+    let button = document.getElementById(`show-comment-${comment_id}`)
     
     if (content.style.display == "block") {
         content.style.display = "none"

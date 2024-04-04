@@ -10,8 +10,13 @@ $user_id = $_SESSION["user_id"];
 $likes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH);
 $comments = $conn->query("SELECT comment_id, post_id, body, timestamp FROM comments")->fetch_all(MYSQLI_BOTH);
 $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
-$blocked_users = $conn->query("SELECT * FROM blocked_users WHERE user_id=$user_id")->fetch_array();
+$blocked_users = $conn->query("SELECT * FROM blocked_users WHERE user_id=$user_id")->fetch_all(MYSQLI_BOTH);
 $online_users = $conn->query("SELECT * FROM users WHERE last_online > NOW() - INTERVAL 1 MINUTE")->fetch_all(MYSQLI_BOTH);
+
+$blocked_users_ids = array();
+foreach ($blocked_users as $user) {
+    array_push($blocked_users_ids, $user["blocked_user_id"]);
+}
 
 function can_vote($post_id, $type) {
     global $likes, $user_id;
@@ -171,7 +176,7 @@ if (isset($_POST["mark_read"])) {
     <?php include "includes/header.php" ?>
 
     <div class="pre-post-table">
-        <!-- <div class="pre-left">
+        <div class="pre-left">
             <form class="sortby-form">
                 <input type="submit" name="sortby" value="Sort by:">
                 <select name="sortby" title="press [Sort by:] to sort">
@@ -196,7 +201,7 @@ if (isset($_POST["mark_read"])) {
                 echo "<div class='online-user'>$y</div>";
             }
             ?>
-        </div> -->
+        </div>
     </div>
 
     <table class="forum-table">
@@ -267,18 +272,18 @@ if (isset($_POST["mark_read"])) {
 
         $anchor_append_class = " unread";
         if (
-            // post was marked as read
+            // post was marked as read AND
             array_key_exists($post["post_id"], $_SESSION["read_posts"]) && (
                 // most recent comment is the same
                 isset($post["most_recent_comment"]) && $_SESSION["read_posts"][$post["post_id"]] == $post["most_recent_comment"]["comment_id"]
-                // post doesn't have any comments
+                // OR post doesn't have any comments (set to null on no comments)
                 || is_null($post["most_recent_comment"])
             )
         ) {
             $anchor_append_class = "";
         }
 
-        if ($blocked_users["blocked_user_id"] != $post["user_id"]) {
+        if (!in_array($post["user_id"], $blocked_users_ids)) {
             ?>
 
             <tr class="forum-post-link">
