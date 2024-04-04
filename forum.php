@@ -219,7 +219,7 @@ if (isset($_POST["mark_read"])) {
         $user = $conn->query("SELECT * FROM users WHERE user_id=$post_user_id")->fetch_array();
         $posts_arr[$i] = array(
             'post_id' => $row['post_id'],
-            'username' => $user['username'],
+            'user' => $user,
             'user_id' => $row['author_user_id'],
             'title' => prettify_title($row['title']),
             'likes' => get_likes($row['post_id']),
@@ -297,22 +297,22 @@ if (isset($_POST["mark_read"])) {
                 ?>
             </td> 
                 <!-- <td class="form-post-user-image"><img src="<?php echo $user["avatar_path"] ?>" width=45px></td> -->
-                <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo $post["username"] ?></a> </td>
-                <!-- <td>        
+                <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo $post["user"]['username'] ?></a> </td>
+                <td>        
                     <?php
-                        if ($user["banned"]) {
+                        if ($post["user"]["banned"]) {
                             echo "(banned)";
                         } else {
-                            if ($user["administrator"]) {
+                            if ($post["user"]["administrator"]) {
                                 echo "(Administrator)";
                             } else {
-                                if ($user["moderator"]) {
+                                if ($post["user"]["moderator"]) {
                                     echo "(Moderator)";
                                 } 
                             }
                         }
                     ?>
-                </td> -->
+                </td>
                 <td>•</td>
                 <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" class="forum-post-link<?php echo $anchor_append_class ?>"> <?php echo $post["title"] ?> </a> </td>
                 <td class="forum-post-mentions<?php if($post["mentions"]>0) {echo " mentioned";} ?>"> @<?php echo $post["mentions"] ?> </td>
