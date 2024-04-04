@@ -20,7 +20,7 @@
     object-fit: contain;
     /* table-layout: fixed; */
     overflow: hidden;
-    font-size: 14px;
+    /* font-size: 14px; */
     margin-bottom: 20px;
 }
 
@@ -47,7 +47,7 @@
     border-radius: 3px;
 }
 .forum-post-title {
-    /* width: 100%; */
+    width: 100%;
     color: black;
 }
 .forum-post-likes {
