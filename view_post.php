@@ -240,14 +240,10 @@ if ($author["administrator"]) {
                         <?php
                             if ($author["banned"]) {
                                 echo "(banned)";
-                            } else {
-                                if ($author["administrator"]) {
-                                    echo "(Administrator)";
-                                } else {
-                                    if ($author["moderator"]) {
-                                        echo "(Moderator)";
-                                    }
-                                }
+                            } elseif ($author["administrator"]) {
+                                echo "(Administrator)";
+                            } elseif ($author["moderator"]) {
+                                echo "(Moderator)";
                             }
                         ?>
                     </td>
@@ -293,6 +289,7 @@ if ($author["administrator"]) {
                     <?php
                 }
                 ?>
+                <img class="post-image" src="<?php echo filter_var(htmlentities($post["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
             </div>
             <?php
             if ($author_id == $_SESSION["user_id"]) {
@@ -363,7 +360,7 @@ if ($author["administrator"]) {
                                 </div>
                             </div>
                             <div style="display: none;" id="post-comment-<?php echo $row["comment_id"] ?>" class="post-comment post">
-                                <img src="<?php echo $author["avatar_path"] ?>" class="post-avatar">
+                                <img src="<?php echo $comment_author["avatar_path"] ?>" class="post-avatar">
                                 <div class="post-content">
                                     <table>
                                         <tr class="post-user">
@@ -376,14 +373,10 @@ if ($author["administrator"]) {
                                                 <?php
                                                     if ($comment_author["banned"]) {
                                                         echo "(banned)";
-                                                    } else {
-                                                        if ($comment_author["administrator"]) {
-                                                            echo "(Administrator)";
-                                                        } else {
-                                                            if ($comment_author["moderator"]) {
-                                                                echo "(Moderator)";
-                                                            }
-                                                        }
+                                                    } elseif ($comment_author["administrator"]) {
+                                                        echo "(Administrator)";
+                                                    } elseif ($comment_author["moderator"]) {
+                                                        echo "(Moderator)";
                                                     }
                                                 ?>
                                             </td>
@@ -401,6 +394,7 @@ if ($author["administrator"]) {
                                             <?php
                                         }
                                         ?>
+                                        <img class="post-image" src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
                                     </div>
                                     <?php
                                     if ($comment_author_id == $_SESSION["user_id"]) {
@@ -434,14 +428,10 @@ if ($author["administrator"]) {
                                                 <?php
                                                     if ($comment_author["banned"]) {
                                                         echo "(banned)";
-                                                    } else {
-                                                        if ($comment_author["administrator"]) {
-                                                            echo "(Administrator)";
-                                                        } else {
-                                                            if ($comment_author["moderator"]) {
-                                                                echo "(Moderator)";
-                                                            }
-                                                        }
+                                                    } elseif ($comment_author["administrator"]) {
+                                                        echo "(Administrator)";
+                                                    } elseif ($comment_author["moderator"]) {
+                                                        echo "(Moderator)";
                                                     }
                                                 ?>
                                             </td>
@@ -484,6 +474,7 @@ if ($author["administrator"]) {
                                             <?php
                                         }
                                         ?>
+                                        <img class="post-image" src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
                                     </div>
                                     <?php
                                     if ($comment_author_id == $_SESSION["user_id"]) {

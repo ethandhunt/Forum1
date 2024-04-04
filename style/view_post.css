@@ -21,10 +21,10 @@
   overflow: hidden;
 }
 
-.post img {
+/* .post img {
   border-radius: 25%;
   float: left;
-}
+} */
 
 .post-content table {
   padding-left: 20px;
@@ -53,6 +53,8 @@
 .post-avatar {
   object-fit: contain;
   width: 120px;
+  border-radius: 25%;
+  float: left;
 }
 
 .post-body {
@@ -95,14 +97,15 @@ td a {
   margin: 20px;
   display: flex;
 }
+*/
 
-.post-image img {
+.post-image {
   max-width: 200px;
   max-height: 200px;
   background-size: cover;
   float: right;
   margin: 10px;
-} */
+}
 
 
 button { 
