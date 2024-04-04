@@ -1,9 +1,11 @@
 function edit_comment(comment_id) {
     let edit_form = document.getElementById(`edit-comment-form-${comment_id}`)
     let prev_body = document.getElementById(`comment-body-${comment_id}`)
+    let img = document.getElementById(`comment-image-${comment_id}`)
 
     edit_form.hidden = false
     prev_body.style.display = 'none'
+    img.style.display = 'none'
 }
 
 function delete_comment(comment_id) {
@@ -22,9 +24,11 @@ function delete_comment(comment_id) {
 function edit_post() {
     let edit_form = document.getElementById(`edit-post-form`)
     let prev_body = document.getElementById(`post-body`)
+    let img = document.getElementById(`post-image`)
 
     edit_form.hidden = false
     prev_body.style.display = 'none'
+    img.style.display = 'none'
 }
 
 function delete_post() {
@@ -87,9 +91,11 @@ function show_comment(comment_id) {
     
     if (content.style.display == "block") {
         content.style.display = "none"
+        img.style.display = "none"
         button.textContent="Show Comment"
     } else {
         content.style.display = "block"
+        img.style.display = "block"
         button.textContent="Hide Comment"
     }
 }
