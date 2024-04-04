@@ -551,8 +551,8 @@ if ($author["administrator"]) {
                                             <?php
                                         }
                                         ?>
-                                        <img class="post-image" src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
                                     </div>
+                                    <img class="post-image" src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
                                     <?php
                                     if ($comment_author_id == $_SESSION["user_id"]) {
                                         ?>
