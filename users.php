@@ -19,7 +19,7 @@ $post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
 <head>
     <title> <?php echo prettify_username($user["username"]) ?> </title>
     <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/users_2.css">
+    <link rel="stylesheet" href="style/users.css">
 </head>
 
 <body>
