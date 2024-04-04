@@ -298,7 +298,7 @@ if (isset($_POST["mark_read"])) {
             </td> 
                 <!-- <td class="form-post-user-image"><img src="<?php echo $user["avatar_path"] ?>" width=45px></td> -->
                 <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo $post["username"] ?></a> </td>
-                <td>        
+                <!-- <td>        
                     <?php
                         if ($user["banned"]) {
                             echo "(banned)";
@@ -312,7 +312,7 @@ if (isset($_POST["mark_read"])) {
                             }
                         }
                     ?>
-                </td>
+                </td> -->
                 <td>•</td>
                 <td class="forum-post-title"> <a href="<?php echo "view_post.php?id=" . $post["post_id"] ?>" class="forum-post-link<?php echo $anchor_append_class ?>"> <?php echo $post["title"] ?> </a> </td>
                 <td class="forum-post-mentions<?php if($post["mentions"]>0) {echo " mentioned";} ?>"> @<?php echo $post["mentions"] ?> </td>
