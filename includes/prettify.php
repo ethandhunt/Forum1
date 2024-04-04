@@ -44,6 +44,10 @@ function prettify_body($body_raw, $length=-1) {
     $body = htmlentities($body_raw, ENT_QUOTES);
     $body = str_replace("\n", "<br>\n", $body);
     $body = str_replace("@".$_SESSION["username"], "<span class=\"mention\">@".$_SESSION["username"]."</span>", $body);
+
+    if (ctype_space($body) || $body == "") {
+        $body = '(empty body)';
+    }
     return $body;
 }
 ?>

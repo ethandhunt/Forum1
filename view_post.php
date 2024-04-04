@@ -283,7 +283,7 @@ if ($author["administrator"]) {
     <div hidden id="post-pinned"><?php echo $post["pinned"] ?></div>
 
     <div class="post-title">
-         <?php echo ($post["title"]) ?>
+         <?php echo prettify_title($post["title"]) ?>
          •
          <?php echo prettify_datetime($post["timestamp"]) ?>
     </div> 
@@ -372,7 +372,7 @@ if ($author["administrator"]) {
         if (count($comments) > 0) {
             ?>
             <div class="comment-title">
-                <?php echo prettify_title("Comments") ?>
+                <?php echo ("Comments") ?>
                 <?php
                     $amount = 0;
                     for ($i=0; $i < count($comments); $i++) {
