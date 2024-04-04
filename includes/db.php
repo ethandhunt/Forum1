@@ -37,4 +37,13 @@ if (isset($_SESSION["user_id"])) {
     $addr = $_SERVER["REMOTE_ADDR"];
     $conn->query("UPDATE users SET last_online=NOW(), last_address='$addr' WHERE user_id=$user_id");
 }
+
+if (isset($_POST["logout"])) {
+    unset($_SESSION["user_id"]);
+    unset($_SESSION["username"]);
+    unset($_SESSION["moderator"]);
+    unset($_SESSION["administrator"]);
+    unset($_SESSION["banned"]);
+    header("Location: index.php");
+}
 ?>

@@ -1,3 +1,9 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
+
 <div class="header">
     <img src="images/logo.jpg" class="logo">
     <div class="title">
@@ -57,7 +63,9 @@
             <img class="dropbtn" src="avatars/default.jpg" width=100>
             <div class="dropdown-content">
                 <a href="account.php">Profile</a>
-                <a href="logout.php">Logout</a>
+                <form method="post">
+                    <input type="submit" name="logout" value="Log out">
+                </form>
             </div>
         </div>
         <?php
