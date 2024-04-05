@@ -145,8 +145,10 @@ if (isset($_POST["vote"])) {
     }
 }
 
-if (isset($_GET["sortby"])) {
-    $_SESSION["sortby"] = $_GET["sortby"];
+if (isset($_POST["sortby"])) {
+    $sort = $_POST['sort'];
+
+    $_SESSION["sortby"] = $sort;
 }
 
 if (isset($_POST["mark_read"])) {
@@ -170,38 +172,38 @@ if (isset($_POST["mark_read"])) {
     <link rel="stylesheet" href="style/forum.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="includes/vote.js"></script>
+    <script src="includes/script.js"></script>
 </head>
 
 <body>
     <?php include "includes/header.php" ?>
 
-    <div class="pre-post-table">
-        <div class="pre-left">
-            <form class="sortby-form">
-                <input type="submit" name="sortby" value="Sort by:">
-                <select name="sortby" title="press [Sort by:] to sort">
-                    <option <?php if ($_SESSION["sortby"] == 'votes') {echo"selected";}?>> votes </option>
-                    <option <?php if ($_SESSION["sortby"] == 'recent') {echo"selected";}?>> recent </option>
-                    <option <?php if ($_SESSION["sortby"] == 'mentions') {echo"selected";}?>> mentions </option>
-                    <option <?php if ($_SESSION["sortby"] == 'comments') {echo"selected";}?>> comments </option>
-                    <option <?php if ($_SESSION["sortby"] == 'recent comments') {echo"selected";}?>> recent comments </option>
+    <div class="pre-forum-table">
+        <ul class="pre-forum-list">
+            <li>
+                <select class="sortby" id="sortby">
+                    <option value="votes" <?php if ($_SESSION["sortby"] == 'votes') {echo"selected";}?>> Votes </option>
+                    <option value="recent" <?php if ($_SESSION["sortby"] == 'recent') {echo"selected";}?>> Recent </option>
+                    <option value="mentions" <?php if ($_SESSION["sortby"] == 'mentions') {echo"selected";}?>> Mentions </option>
+                    <option value="comments" <?php if ($_SESSION["sortby"] == 'comments') {echo"selected";}?>> Comments </option>
+                    <option value="recent comments" <?php if ($_SESSION["sortby"] == 'recent comments') {echo"selected";}?>> Recent Comments </option>
                 </select>
-            </form>
-
-            <form class="mark-read-form" method="post">
-                <input type="submit" name="mark_read" value="Mark all as read">
-            </form>
-        </div>
-
-        <div class="online-div pre-right">
-            Online users (<?php echo count($online_users) ?>): 
-            <?php
-            foreach ($online_users as $x) {
-                $y = prettify_username($x["username"]);
-                echo "<div class='online-user'>$y</div>";
-            }
-            ?>
-        </div>
+            </li>
+            <li>
+                <form class="mark-read-form" method="post">
+                    <input type="submit" name="mark_read" value="Read All">
+                </form>
+            </li>
+            <li>
+                Online users (<?php echo count($online_users) ?>): 
+                <?php
+                foreach ($online_users as $x) {
+                    $y = prettify_username($x["username"]);
+                    echo "<div class='online-user'>$y</div>";
+                }
+                ?>
+            </li>
+        </ul>
     </div>
 
     <table class="forum-table">
@@ -327,6 +329,13 @@ if (isset($_POST["mark_read"])) {
     }
     ?>
     </table>
+
+    <script>
+        // prevent confirm form resubmission dialogue
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
 
     <?php include "includes/footer.php" ?>
 </body>
