@@ -49,5 +49,7 @@ function vote_comment(comment_id, type) {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         // body: form_data
         body: `vote_comment=1&comment_id=${comment_id}&vote_type=${type}`
-    }).then((res) => console.log(`${type}voted comment_id ${comment_id}`))
+    }).then((res) => {
+        console.log(`${type}voted comment_id ${comment_id}`)
+    })
 }
