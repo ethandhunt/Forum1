@@ -42,9 +42,9 @@
   display: flex;
 }
 
-.post-user {
+/* .post-user {
   border-bottom: 2px solid rgba(66, 66, 66, 0.473);
-}
+} */
 
 .post-username {
   display: inline-block;
