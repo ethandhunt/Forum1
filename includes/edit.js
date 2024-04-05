@@ -52,7 +52,7 @@ function block_user(user_id) {
             body: `block_user=1&blocked_user_id=${user_id}`
         }).then((res) => {
             console.log(`blocked user_id ${user_id}`)
-            location.reload()
+            document.location.href = 'forum.php'
         })
     }
 }
