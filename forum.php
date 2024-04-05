@@ -197,7 +197,7 @@ if (isset($_POST["mark_read"])) {
             Online users (<?php echo count($online_users) ?>): 
             <?php
             foreach ($online_users as $x) {
-                $y = $x["username"];
+                $y = prettify_username($x["username"]);
                 echo "<div class='online-user'>$y</div>";
             }
             ?>
@@ -297,7 +297,7 @@ if (isset($_POST["mark_read"])) {
                 ?>
             </td> 
                 <!-- <td class="form-post-user-image"><img src="<?php echo $user["avatar_path"] ?>" width=45px></td> -->
-                <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo $post["user"]['username'] ?></a> </td>
+                <td class="forum-post-username"> <a href="users.php?id=<?php echo $post["user_id"] ?>"><?php echo prettify_username($post["user"]['username']) ?></a> </td>
                 <td>        
                     <?php
                         if ($post["user"]["banned"]) {

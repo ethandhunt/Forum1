@@ -107,7 +107,7 @@ if (isset($_POST["unblock_user"])) {
         }
     }
 
-    $conn->query("DELETE FROM blocked_users WHERE user_id=$user_id");
+    $conn->query("DELETE FROM blocked_users WHERE user_id=$user_id, blocked_user_id=$blocked_user_id");
 }
 
 if (isset($_POST["edit_comment"])) {
@@ -411,7 +411,7 @@ if ($author["administrator"]) {
                                             </td>
                                             <td>•</td>
                                             <td>
-                                                <button id="show-comment-<?php echo $row["comment_id"] ?>" onclick="show_comment(<?php echo $row["comment_id"] ?>)">Show Comment</button>
+                                                <button id="show-comment-<?php echo $comment_id ?>" onclick="show_comment(<?php echo $comment_id ?>)">Show Comment</button>
                                             </td>
                                             <td>•</td>
                                             <td>
@@ -467,8 +467,8 @@ if ($author["administrator"]) {
                                             <?php
                                         }
                                         ?>
-                                        <img class="post-image" id="comment-image-<?php echo $comment_id ?>" src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
                                     </div>
+                                    <img class="post-image" id="comment-image-<?php echo $comment_id ?>" src="<?php echo filter_var(htmlentities($row["image_href"], ENT_QUOTES), FILTER_SANITIZE_URL) ?>">
                                     <?php
                                     if ($comment_author_id == $_SESSION["user_id"]) {
                                         ?>

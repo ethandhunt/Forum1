@@ -34,7 +34,7 @@ $post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
 
         <table>
             <tr>
-                <td> <h2><?php echo $user["username"] ?></h2> </td>
+                <td> <h2><?php echo prettify_username($user["username"]) ?></h2> </td>
 
                 <td>        
                     <?php
@@ -54,7 +54,7 @@ $post_votes = $conn->query("SELECT * FROM post_votes")->fetch_all(MYSQLI_BOTH)
 
             </tr>
             <tr>
-                <td> <?php echo $user["about_me"] ?> </td>
+                <td> <?php echo prettify_about_me($user["about_me"]) ?> </td>
                 <td>•</td>
                 <td> Joined <?php echo prettify_datetime($user["join_datetime"]) ?> </td>
             </tr>

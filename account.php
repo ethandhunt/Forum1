@@ -49,7 +49,7 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
 
         <table>
             <tr>
-                <td> <h2><?php echo $user["username"] ?></h2> </td>
+                <td> <h2><?php echo prettify_username($user["username"]) ?></h2> </td>
 
                 <td>        
                     <?php
@@ -68,7 +68,7 @@ $user = $conn->query("SELECT * FROM users WHERE user_id=$user_id")->fetch_array(
                 </td>
             </tr>
             <tr>
-                <td> <?php echo $user["about_me"] ?> </td>
+                <td> <?php echo prettify_about_me($user["about_me"]) ?> </td>
             </tr>
             <tr>
                 <td> Joined <?php echo prettify_datetime($user["join_datetime"]) ?> </td>

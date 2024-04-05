@@ -161,7 +161,7 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
                         <th> About me </th>
                     </tr>
                     <tr>
-                        <td style="padding-right: 20px"><?php echo $user["username"] ?></td>
+                        <td style="padding-right: 20px"><?php echo prettify_username($user["username"]) ?></td>
                         <td><?php echo $user["user_id"] ?></td>
                         <td> <img style="width: 100px" src="<?php echo $user["avatar_path"] ?>"> </td>
                         <td><?php echo prettify_about_me($user["about_me"]) ?></td>
@@ -219,7 +219,7 @@ $posts = $conn->query("SELECT * FROM posts")->fetch_all(MYSQLI_BOTH);
                         <th> Banned </th>
                     </tr>
                     <tr>
-                        <td style="padding-right: 20px"><?php echo $user["username"] ?></td>
+                        <td style="padding-right: 20px"><?php echo prettify_username($user["username"]) ?></td>
                         <td><?php echo $user["user_id"] ?></td>
                         <td> <img style="width: 100px" src="<?php echo $user["avatar_path"] ?>"> </td>
                         <td style="padding-right: 20px"><?php echo prettify_about_me($user["about_me"]) ?></td>
